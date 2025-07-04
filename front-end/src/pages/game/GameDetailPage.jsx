@@ -18,7 +18,7 @@ const GameDetailPage = () => {
     });
   };
   
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <div style={{ paddingTop: '10vh'}}>로딩 중...</div>;
 
   return (
     <>

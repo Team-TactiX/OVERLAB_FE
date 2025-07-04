@@ -64,16 +64,11 @@ const ScheduleSection = () => {
 
     const fetchGamesForAllTeams = async () => {
       try {
-        const allGames = [];
-        for (const team of teams) {
-          const res = await fetch(`/api/games/team/${team.teamId}`);
-          if (res.ok) {
-            const data = await res.json();
-            const gamesWithTeam = data.map((game) => ({ ...game, team }));
-            allGames.push(...gamesWithTeam);
-          }
+        const res = await fetch(`/api/games/user/${userMail}`);
+        if (res.ok) {
+          const data = await res.json();
+          setGames(data);
         }
-        setGames(allGames);
       } catch (error) {
         console.error(error);
       } finally {

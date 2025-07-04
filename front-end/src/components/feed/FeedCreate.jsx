@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 
 const FeedCreate = ({ userMail, onClose }) => {
   const [teamData, setTeamData] = useState([]);
+  const [matchData, setMatchData] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState('');
+  const [selectedMatch, setSelectedMatch] = useState('');
   const [teamId, setTeamId] = useState('');
   const [category, setCategory] = useState('매칭');
   const [startDate, setStartDate] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [gameId, setGameId] = useState('');
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -19,6 +22,8 @@ const FeedCreate = ({ userMail, onClose }) => {
         if (filtered.length > 0) {
           setSelectedTeam(filtered[0]);
           setTeamId(filtered[0].teamId);
+          handleMatch(filtered[0].teamId);
+          console.log(filtered[0].teamId)
         }
       } catch (err) {
         console.error('팀 정보 오류:', err);
@@ -27,6 +32,25 @@ const FeedCreate = ({ userMail, onClose }) => {
 
     fetchTeamData();
   }, [userMail]);
+
+  const handleMatch = async (teamId) => {
+    try {
+      const response = await fetch(`/api/games/team/${teamId}`);
+      if (response.ok) {
+        const games = await response.json();
+        setMatchData(games);
+        const filtered = games.filter(match => match.team.teamManager.userMail === userMail);
+        if (filtered.length > 0) {
+          setSelectedMatch(filtered[0]);
+        }
+      } else {
+        throw new Error('게임을 찾을 수 없습니다.');
+      }
+    } catch (error) {
+      alert(error.message);
+      document.getElementById("gameList").innerHTML = '';
+    }
+  }
 
   const handleSubmit = async () => {
     if (!teamId || !title.trim() || !content.trim()) return alert('입력 누락');
@@ -39,6 +63,7 @@ const FeedCreate = ({ userMail, onClose }) => {
       title,
       content,
       teamId: Number(teamId),
+      gameId: Number(gameId),
       userMail,
       category,
       matchDay: (category === '매칭' || category === '용병') ? startDate : formattedDate,
@@ -52,7 +77,7 @@ const FeedCreate = ({ userMail, onClose }) => {
       });
       if (!res.ok) throw new Error();
       alert('등록 완료!');
-      window.location.reload(); // or optionally call a parent callback
+      window.location.reload();
     } catch (err) {
       alert('오류 발생');
       console.error(err);
@@ -79,6 +104,7 @@ const FeedCreate = ({ userMail, onClose }) => {
               const team = teamData.find(t => t.teamName === e.target.value);
               setSelectedTeam(team);
               setTeamId(team.teamId);
+              handleMatch(team.teamId);
             }}
             className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border"
           >
@@ -87,6 +113,27 @@ const FeedCreate = ({ userMail, onClose }) => {
             ))}
           </select>
         </div>
+
+        {/* 매치 선택 */}
+        {category === '용병' && (
+          <div className="mb-[3vh]">
+          <div className="text-[1.7vh] font-semibold mb-[1vh]">매치 선택 <span className="text-green-500 ml-[0.3vh]">⚽</span></div>
+          <select
+            value={selectedMatch?.gameName || ''}
+            onChange={e => {
+              const match = matchData.find(m => m.gameName === e.target.value);
+              setSelectedMatch(match);
+              // community 테이블 gameId 컬럼 추가 후 수정
+              // setGameId(match.gameId);
+            }}
+            className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border"
+          >
+            {matchData.map(match => (
+              <option key={match.gameId} value={match.gameName}>{match.gameName}</option>
+            ))}
+          </select>
+        </div>
+        )}
 
         {/* 카테고리 선택 */}
         <div className="mb-[3vh]">

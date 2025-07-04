@@ -66,7 +66,7 @@ const FeedMatch = ({ post, userMail, onClose }) => {
     if (!res.ok) return alert('매칭 후 삭제 실패');
     alert('매칭 성공!');
     onClose();
-    navigate(`/teams/${requesterTeam.teamId}`);
+    navigate(`/team/${requesterTeam.teamId}`);
   };
 
   return (
@@ -80,10 +80,14 @@ const FeedMatch = ({ post, userMail, onClose }) => {
                 <option key={t.teamId} value={t.teamId}>{t.teamName}</option>
               ))}
             </select>
+            <button onClick={onClose} className="w-full p-2 bg-red-500 text-white">취소</button>
             <button onClick={handleMatch} className="w-full p-2 bg-green-500 text-white">신청</button>
           </>
         ) : (
-          <p>신청 가능한 팀이 없습니다.</p>
+          <>
+            <p>신청 가능한 팀이 없습니다.</p>
+            <button onClick={onClose} className="w-full p-2 bg-red-500 text-white">취소</button>
+          </>
         )}
       </div>
     </div>

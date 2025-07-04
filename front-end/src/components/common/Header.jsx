@@ -1,15 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import logo from "../../assets/logo.png"
 
 const HeaderWrapper = styled.header`
   position: fixed;
   text-align: left;
   font-size: 3vh;
   font-family: "MarinesBold", sans-serif;
-  padding: 2vh 0;
+  padding: 2vh 1vw;
   width: 100%;
   z-index: 9999;
   background-color: #f9f9f9;
+`;
+
+const LogoWrapper = styled.div`
+  position: relative;
+  height: 4.5vh;
+  width: auto;
+  background-image: url(${logo});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  z-index: 10000;
   &:hover {
     cursor: pointer;
   }
@@ -22,7 +34,11 @@ const Header = () => {
     navigate("/main");
   };
 
-  return <HeaderWrapper onClick={hanbleMove}>Ground Hub</HeaderWrapper>;
+  return (
+    <HeaderWrapper>
+      <LogoWrapper onClick={hanbleMove} />
+    </HeaderWrapper>
+  );
 };
 
 export default Header;

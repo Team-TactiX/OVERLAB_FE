@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const useGameData = () => {
-  const gameId = sessionStorage.getItem('gameId');
+  const { gameId } = useParams('gameId');
   const [game, setGame] = useState(null);
   const [users, setUsers] = useState([]);
   const [teamId, setTeamId] = useState(null);

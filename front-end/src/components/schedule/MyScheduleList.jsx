@@ -22,16 +22,11 @@ const MyScheduleList = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const allGames = [];
-        for (const team of teams) {
-          const res = await fetch(`/api/games/team/${team.teamId}`);
-          if (res.ok) {
-            const data = await res.json();
-            const gamesWithTeam = data.map(g => ({ ...g, team }));
-            allGames.push(...gamesWithTeam);
-          }
+        const res = await fetch(`/api/games/user/${userMail}`);
+        if (res.ok) {
+          const data = await res.json();
+          setGames(data);
         }
-        setGames(allGames);
       } catch (e) {
         console.error(e);
       } finally {

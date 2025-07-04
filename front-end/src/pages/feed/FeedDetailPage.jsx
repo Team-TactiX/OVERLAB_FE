@@ -4,6 +4,7 @@ import Feed from '../../components/feed/Feed';
 import FeedEdit from '../../components/feed/FeedEdit';
 import FeedMatch from '../../components/feed/FeedMatch';
 import useFeedDelete from '../../components/feed/FeedDelete';
+import FeedMercenary from '../../components/feed/FeedMercenary';
 
 const FeedDetailPage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const FeedDetailPage = () => {
   const [post, setPost] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showMatchModal, setShowMatchModal] = useState(false);
+  const [showMercenaryModal, setShowMercenaryModal] = useState(false);
 
   const handleDelete = useFeedDelete(post?.contentId);
 
@@ -101,6 +103,13 @@ const FeedDetailPage = () => {
               </button>
             )}
 
+            {post.category === '용병' && (
+              <button onClick={() => setShowMercenaryModal(true)} className="flex justify-between items-center p-[2vh]">
+                <span>용병 신청</span>
+                <span>➔</span>
+              </button>
+            )}
+
             <button onClick={() => navigate(`/team/${post.team.teamId}`)} className="flex justify-between items-center p-[2vh]">
               <span>팀 상세페이지</span>
               <span>➔</span>
@@ -130,6 +139,11 @@ const FeedDetailPage = () => {
       {/* 매칭 모달 */}
       {post && showMatchModal && (
         <FeedMatch post={post} userMail={userMail} onClose={() => setShowMatchModal(false)} />
+      )}
+
+      {/* 용병 모달 */}
+      {post && showMercenaryModal && (
+        <FeedMercenary  post={post} userMail={userMail} onClose={() => setShowMercenaryModal(false)} />
       )}
     </div>
   );
