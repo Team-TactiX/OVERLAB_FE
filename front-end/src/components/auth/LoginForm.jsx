@@ -1,47 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import styled from 'styled-components';
 
-const AuthFormContainer = styled.form`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const StyledTitle = styled.p`
-  font-size: 2.4vh;
-  font-weight: bold;
-  margin-bottom: 4vh;
-`;
-
-const StyledInput = styled.input`
-  width: 90%;
-  height: 6vh;
-  font-size: 2vh;
-  border-radius: 6px;
-  border: 1px solid #b9b9b9;
-  padding: 1vh;
-  margin-bottom: 2vh;
-  box-sizing: border-box;
-`;
-
-const StyledButton = styled.button`
-  background-color: black;
-  color: white;
-  width: 90%;
-  height: 6vh;
-  font-size: 2vh;
-  border-radius: 6px;
-  margin-bottom: 2vh;
-  box-sizing: border-box;
-  border: none;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const AuthForm = () => {
+const LoginForm = () => {
   const [userMail, setUserMail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -81,24 +41,60 @@ const AuthForm = () => {
   };
 
   return (
-    <AuthFormContainer onSubmit={handleLogin}>
-      <StyledTitle>로그인</StyledTitle>
-      <StyledInput
-        type="email"
-        placeholder="Email@domain.com"
-        onChange={(e) => setUserMail(e.target.value)}
-      />
-      <StyledInput
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <StyledButton type="submit" disabled={isLoading}>
-        {isLoading ? '로그인 중...' : '로그인'}
-      </StyledButton>
+    <>
+      <h2 className="mt-[3vh] text-[26px] font-semibold text-black">계정에 로그인하세요</h2>
 
-    </AuthFormContainer>
+      <form onSubmit={handleLogin} className="mx-auto w-full max-w-[288px] mt-[4vh] flex flex-col gap-[20px]">
+        <div className="relative flex flex-col">
+          <label className="text-[16px] text-[#6F6F6F] mb-[5px]">이메일</label>
+          <input
+            type="email"
+            value={userMail}
+            placeholder="이메일을 입력하세요"
+            onChange={(e) => setUserMail(e.target.value)}
+            className="w-full h-[42px] bg-[#FAFAFA] rounded-[10px] px-4 text-[15px] focus:outline-green-500"
+          />
+          {userMail && (
+            <button
+              type="button"
+              onClick={() => setUserMail('')}
+              className="absolute right-3 top-[35px] text-gray-400 hover:text-gray-600 text-[18px] font-bold"
+            >
+              ×
+            </button>
+          )}
+        </div>
+
+        <div className="relative flex flex-col">
+          <label className="text-[16px] text-[#6F6F6F] mb-[5px]">비밀번호</label>
+          <input
+            type="password"
+            value={password}
+            placeholder="비밀번호를 입력하세요"
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full h-[42px] bg-[#FAFAFA] rounded-[10px] px-4 text-[15px] focus:outline-green-500"
+          />
+          {password && (
+            <button
+              type="button"
+              onClick={() => setPassword('')}
+              className="absolute right-3 top-[35px] text-gray-400 hover:text-gray-600 text-[18px] font-bold"
+            >
+              ×
+            </button>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full h-[42px] bg-[#00B140] rounded-[10px] text-white font-semibold text-[15px] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLoading ? "로그인 중..." : "로그인"}
+        </button>
+      </form>
+    </>
   );
 };
 
-export default AuthForm;
+export default LoginForm;
