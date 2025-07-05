@@ -21,7 +21,7 @@ const TeamMemberList = ({ teamId }) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch(`/api/teams/${teamId}/users-in-team`);
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`);
       const data = await res.json();
       setUsers(data.filter((user) => user.userMail !== userMail));
     };
@@ -39,7 +39,7 @@ const TeamMemberList = ({ teamId }) => {
             teamId={teamId}
             refreshUsers={() => {
               // refetch users after actions
-              fetch(`/api/teams/${teamId}/users-in-team`)
+              fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`)
                 .then((res) => res.json())
                 .then((data) =>
                   setUsers(data.filter((u) => u.userMail !== userMail))

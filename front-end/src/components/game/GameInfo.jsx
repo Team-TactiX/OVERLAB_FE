@@ -138,7 +138,7 @@ const GameInfo = ({ setUpdate }) => {
     const checkPermission = async () => {
       if (!userMail || !teamId) return;
       try {
-        const response = await fetch(`/api/teams/${teamId}`);
+        const response = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}`);
         const data = await response.json();
         if (data.teamManager.userMail === userMail) {
           setHasPermission(true);

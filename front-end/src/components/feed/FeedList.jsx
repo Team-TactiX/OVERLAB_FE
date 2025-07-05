@@ -9,7 +9,7 @@ const FeedList = ({ category }) => {
   useEffect(() => {
     const fetchCommunity = async () => {
       try {
-        const res = await fetch(`/api/community/category/${category}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/community/category/${category}`);
         const data = await res.json();
         setPosts(data);
       } catch (err) {

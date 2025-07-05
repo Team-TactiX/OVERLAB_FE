@@ -176,7 +176,7 @@ const PRGameUpdate = ({prGameId, setUpdate, setSelectedPositionKey, setIsOpen, p
     });
 
     try {
-      const res = await fetch('/api/pr-games/update', {
+      const res = await fetch('http://52.78.12.127:8080/api/pr-games/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

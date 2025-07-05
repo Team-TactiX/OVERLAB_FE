@@ -50,8 +50,8 @@ const PRGameList = () => {
   useEffect(() => {
     const fetchGame = async () => {
       try {
-        const res = await fetch(`/api/pr-games/findByGameId/${gameId}`);
-        const response = await fetch(`/api/games/saved-formation/${gameId}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/pr-games/findByGameId/${gameId}`);
+        const response = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
         if (!res.ok || !response.ok) {
           throw new Error('서버 응답 오류');
         }
@@ -77,7 +77,7 @@ const PRGameList = () => {
   
   const handleDeleteGame = async (prGameId) => {
     try {
-      const res = await fetch(`/api/pr-games/remove/${prGameId}`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/pr-games/remove/${prGameId}`, {
         method: 'DELETE',
       });
 

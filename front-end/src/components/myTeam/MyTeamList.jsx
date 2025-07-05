@@ -8,7 +8,7 @@ const MyTeamList = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await fetch(`/api/teams/mail/${userMail}`);
+        const response = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
         if (response.ok) {
           const data = await response.json();
           setTeams(data);

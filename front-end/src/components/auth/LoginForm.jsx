@@ -18,14 +18,13 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/users/login', {
+      const response = await fetch('http://52.78.12.127:8080/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail, password }),
       });
 
       if (response.ok) {
-        const data = await response.json();
         sessionStorage.setItem('userMail', userMail);
         navigate('/main');
       } else {

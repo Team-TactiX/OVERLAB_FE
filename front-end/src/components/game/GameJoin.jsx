@@ -25,7 +25,7 @@ const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition
   const handleJoinGame = async () => {
     if (isAlreadyJoined) return alert('이미 참가 중입니다.');
     try {
-      const res = await fetch(`/api/games/${gameId}/insert-to-game`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/insert-to-game`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail }),
@@ -48,7 +48,7 @@ const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition
       if (hasPermission) {
         await handleRemovePosition(); // 포지션 제거 먼저
       }
-      const res = await fetch(`/api/games/${gameId}/remove-from-game`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/remove-from-game`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail }),

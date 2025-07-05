@@ -15,7 +15,7 @@ const FeedCreate = ({ userMail, onClose }) => {
   useEffect(() => {
     const fetchTeamData = async () => {
       try {
-        const res = await fetch(`/api/teams/mail/${userMail}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
         const data = await res.json();
         const filtered = data.filter(team => team.teamManager.userMail === userMail);
         setTeamData(filtered);
@@ -34,7 +34,7 @@ const FeedCreate = ({ userMail, onClose }) => {
 
   const handleMatch = async (teamId) => {
     try {
-      const response = await fetch(`/api/games/team/${teamId}`);
+      const response = await fetch(`http://52.78.12.127:8080/api/games/team/${teamId}`);
       if (response.ok) {
         const games = await response.json();
         setMatchData(games);

@@ -21,7 +21,7 @@ const TeamJoin = () => {
     if (!teamId || !userMail) return alert('정보 누락');
 
     try {
-      const res = await fetch(`/api/teams/${teamId}/add-user`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/add-user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail }),

@@ -5,7 +5,7 @@ const FeedMercenary = ({ post, userMail, onClose }) => {
   const navigate = useNavigate();
   const handleMercenary = async () => {
     try {
-      const res = await fetch(`/api/games/${gameId}/insert-to-game`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/insert-to-game`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail }),

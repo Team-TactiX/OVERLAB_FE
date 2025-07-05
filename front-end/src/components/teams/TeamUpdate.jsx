@@ -103,7 +103,7 @@ const TeamUpdate = () => {
 
   useEffect(() => {
     const fetchTeam = async () => {
-      const res = await fetch(`/api/teams/${teamId}`);
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}`);
       const data = await res.json();
       setTeam(data);
       setTeamName(data.teamName);
@@ -125,7 +125,7 @@ const TeamUpdate = () => {
       secondColor,
     };
 
-    const res = await fetch('/api/teams/update-team', {
+    const res = await fetch('http://52.78.12.127:8080/api/teams/update-team', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedTeam),
@@ -136,7 +136,7 @@ const TeamUpdate = () => {
       if (logoFile) {
         const formData = new FormData();
         formData.append('file', logoFile);
-        await fetch(`/api/teams/${teamId}/upload-logo`, {
+        await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/upload-logo`, {
           method: 'POST',
           body: formData,
         });
@@ -151,7 +151,7 @@ const TeamUpdate = () => {
     const confirmDelete = window.confirm('정말 팀을 삭제하시겠습니까?');
     if (!confirmDelete) return;
 
-    const res = await fetch(`/api/teams/delete-team`, {
+    const res = await fetch(`http://52.78.12.127:8080/api/teams/delete-team`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ teamId: Number(teamId) }),

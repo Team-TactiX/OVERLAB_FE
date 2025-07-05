@@ -111,7 +111,7 @@ const PRGameCreate = ({ setUsers, setIsOpen, setSelectedPositionKey }) => {
 
   useEffect(() => {
     const fetchGame = async () => {
-      const res = await fetch(`/api/games/saved-formation/${gameId}`);
+      const res = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
       const data = await res.json();
       const filtereddData = data.playersMail.filter((player) => player.userMail !== userMail);
       setGame(filtereddData);
@@ -140,7 +140,7 @@ const PRGameCreate = ({ setUsers, setIsOpen, setSelectedPositionKey }) => {
     });
 
     try {
-      const res = await fetch('/api/pr-games/create', {
+      const res = await fetch('http://52.78.12.127:8080/api/pr-games/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prGamePayload),

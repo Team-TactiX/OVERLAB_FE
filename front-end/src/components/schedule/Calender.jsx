@@ -13,7 +13,7 @@ const Calender = () => {
 
   useEffect(() => {
     const fetchTeams = async () => {
-      const res = await fetch(`/api/teams/mail/${userMail}`);
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
       if (res.ok) {
         const data = await res.json();
         setTeams(data);
@@ -28,7 +28,7 @@ const Calender = () => {
     const fetchGames = async () => {
       const allGames = [];
       for (const team of teams) {
-        const res = await fetch(`/api/games/team/${team.teamId}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/games/team/${team.teamId}`);
         if (res.ok) {
           const data = await res.json();
           const filtered = data.filter((g) => dayjs(g.date).isSame(currentDate, 'month'));

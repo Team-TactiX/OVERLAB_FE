@@ -9,8 +9,8 @@ const TeamList = ({ keyword }) => {
     const fetchTeams = async () => {
       try {
         const url = keyword && keyword.trim()
-          ? `/api/teams/name/${keyword.trim()}`
-          : `/api/teams/`;
+          ? `http://52.78.12.127:8080/api/teams/name/${keyword.trim()}`
+          : `http://52.78.12.127:8080/api/teams/`;
 
         const response = await fetch(url);
         if (response.ok) {
