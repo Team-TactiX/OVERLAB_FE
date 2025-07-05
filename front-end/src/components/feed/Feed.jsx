@@ -7,7 +7,7 @@ const Feed = ({ onLoaded }) => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await fetch(`/api/community/${contentId}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/community/${contentId}`);
         if (!res.ok) throw new Error('게시글 불러오기 실패');
         const data = await res.json();
         onLoaded(data);

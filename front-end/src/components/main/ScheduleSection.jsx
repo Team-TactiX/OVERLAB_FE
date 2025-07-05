@@ -41,7 +41,7 @@ const ScheduleSection = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await fetch(`/api/teams/mail/${userMail}`);
+        const response = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
         if (response.ok) {
           const data = await response.json();
           setTeams(data);
@@ -64,7 +64,7 @@ const ScheduleSection = () => {
 
     const fetchGamesForAllTeams = async () => {
       try {
-        const res = await fetch(`/api/games/user/${userMail}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/games/user/${userMail}`);
         if (res.ok) {
           const data = await res.json();
           setGames(data);

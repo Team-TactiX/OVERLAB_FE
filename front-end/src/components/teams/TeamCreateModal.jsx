@@ -147,7 +147,7 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
 
     let userData;
     try {
-      const response = await fetch(`/api/users/check/${userMail}`);
+      const response = await fetch(`http://52.78.12.127:8080/api/users/check/${userMail}`);
       if (response.ok) {
         userData = await response.json();
       } else {
@@ -186,7 +186,7 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
       formData.append('team', new Blob([JSON.stringify(newTeam)], { type: 'application/json' }));
       formData.append('logo', finalLogoFile);
 
-      const response = await fetch('/api/teams/create-team', {
+      const response = await fetch('http://52.78.12.127:8080/api/teams/create-team', {
         method: 'POST',
         body: formData,
       });

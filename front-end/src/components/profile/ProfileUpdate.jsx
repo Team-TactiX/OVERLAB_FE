@@ -121,7 +121,7 @@ const ProfileUpdate = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`/api/users/check/${userMail}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/users/check/${userMail}`);
         if (!res.ok) throw new Error('유저 정보를 불러올 수 없습니다.');
         const data = await res.json();
         setUserName(data.userName);
@@ -155,7 +155,7 @@ const ProfileUpdate = () => {
     }
 
     try {
-      const res = await fetch('/api/users/update', {
+      const res = await fetch('http://52.78.12.127:8080/api/users/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

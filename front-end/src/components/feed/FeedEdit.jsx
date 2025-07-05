@@ -18,7 +18,7 @@ const FeedEdit = ({ post, onUpdate, onClose }) => {
   useEffect(() => {
     const fetchTeamData = async () => {
       try {
-        const res = await fetch(`/api/teams/mail/${userMail}`);
+        const res = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
         const data = await res.json();
         const filtered = data.filter(team => team.teamManager.userMail === userMail);
         setTeamData(filtered);
@@ -33,7 +33,7 @@ const FeedEdit = ({ post, onUpdate, onClose }) => {
 
   const handleMatch = async (teamId) => {
     try {
-      const response = await fetch(`/api/games/team/${teamId}`);
+      const response = await fetch(`http://52.78.12.127:8080/api/games/team/${teamId}`);
       if (response.ok) {
         const games = await response.json();
         setMatchData(games);
@@ -47,7 +47,7 @@ const FeedEdit = ({ post, onUpdate, onClose }) => {
   }
 
   const handleEdit = async () => {
-    const res = await fetch(`/api/community/${post.contentId}`, {
+    const res = await fetch(`http://52.78.12.127:8080/api/community/${post.contentId}`, {
       method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

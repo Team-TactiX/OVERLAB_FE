@@ -26,7 +26,7 @@ const TeamMember = ({ user, teamId, refreshUsers }) => {
   const userMail = sessionStorage.getItem('userMail');
 
   const handleRemove = async () => {
-    const res = await fetch(`/api/teams/${teamId}/remove-user`, {
+    const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/remove-user`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userMail: user.userMail }),
@@ -40,7 +40,7 @@ const TeamMember = ({ user, teamId, refreshUsers }) => {
   };
 
   const handlePromote = async () => {
-    const res = await fetch(`/api/teams/${teamId}/transfer-manager`, {
+    const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/transfer-manager`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ currentManagerMail: userMail, newManagerMail: user.userMail }),

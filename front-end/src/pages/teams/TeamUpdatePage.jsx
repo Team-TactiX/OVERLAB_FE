@@ -16,7 +16,7 @@ const TeamUpdatePage = () => {
 
   useEffect(() => {
     const fetchTeam = async () => {
-      const res = await fetch(`/api/teams/${teamId}`);
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}`);
       const data = await res.json();
       setTeam(data);
     };

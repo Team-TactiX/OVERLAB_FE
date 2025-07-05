@@ -108,12 +108,12 @@ const PRGame = ({ prGameId, setUpdate }) => {
 
   useEffect(() => {
     const fetchGame = async () => {
-      const res = await fetch(`/api/pr-games/findByPRGameId/${prGameId}`);
+      const res = await fetch(`http://52.78.12.127:8080/api/pr-games/findByPRGameId/${prGameId}`);
       const prData = await res.json();
       setPrGame(prData);
       setAuthorMail(prData.user.userMail)
 
-      const response = await fetch(`/api/games/saved-formation/${gameId}`);
+      const response = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
       const gameData = await response.json();
       setGame(gameData);
       setTeamManagerMail(gameData.team.teamManager.userMail)
@@ -124,7 +124,7 @@ const PRGame = ({ prGameId, setUpdate }) => {
 
   const margeGame = async () => {
     try {
-      const res = await fetch('/api/games/change-from-pr-to-game', {
+      const res = await fetch('http://52.78.12.127:8080/api/games/change-from-pr-to-game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prGameId }),

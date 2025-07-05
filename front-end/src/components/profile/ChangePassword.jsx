@@ -23,7 +23,7 @@ const ChangePassword = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/users/update/password', {  // 비밀번호 전용 API라면 이렇게 분리 추천
+      const res = await fetch('http://52.78.12.127:8080/api/users/update/password', {  // 비밀번호 전용 API라면 이렇게 분리 추천
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

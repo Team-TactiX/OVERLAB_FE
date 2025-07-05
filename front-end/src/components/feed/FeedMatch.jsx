@@ -8,7 +8,7 @@ const FeedMatch = ({ post, userMail, onClose }) => {
 
   useEffect(() => {
     const fetchTeams = async () => {
-      const res = await fetch(`/api/teams/mail/${userMail}`);
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
       const data = await res.json();
       const filtered = data.filter(t => t.teamManager.userMail === userMail && t.teamId !== post.team.teamId);
       setMyTeams(filtered);
@@ -62,7 +62,7 @@ const FeedMatch = ({ post, userMail, onClose }) => {
       }
     }
 
-    const res = await fetch(`/api/community/${post.contentId}`, { method: 'DELETE' });
+    const res = await fetch(`http://52.78.12.127:8080/api/community/${post.contentId}`, { method: 'DELETE' });
     if (!res.ok) return alert('매칭 후 삭제 실패');
     alert('매칭 성공!');
     onClose();

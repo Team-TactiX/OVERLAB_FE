@@ -5,7 +5,7 @@ const Profile = () => {
   const userMail = sessionStorage.getItem('userMail');
 
   useEffect(() => {
-    fetch(`/api/users/check/${userMail}`)
+    fetch(`http://52.78.12.127:8080/api/users/check/${userMail}`)
       .then(res => res.ok ? res.json() : Promise.reject(res))
       .then(setUserData)
       .catch(err => console.error(err));

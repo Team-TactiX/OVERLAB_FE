@@ -85,7 +85,7 @@ const TeamMatch = ({ games, teamManagerMail }) => {
 
   const handleLeave = async () => {
     try {
-      const res = await fetch(`/api/teams/${teamId}/remove-user`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/remove-user`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail }),

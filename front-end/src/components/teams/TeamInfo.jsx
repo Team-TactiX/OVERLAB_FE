@@ -117,15 +117,15 @@ const TeamInfo = ({ teamId }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const teamRes = await fetch(`/api/teams/${teamId}`);
+      const teamRes = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}`);
       const teamData = await teamRes.json();
       setTeam(teamData);
       setTeamManagerMail(teamData.teamManager?.userMail || '');
 
-      const userRes = await fetch(`/api/teams/${teamId}/users-in-team`);
+      const userRes = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`);
       setTeamUser(await userRes.json());
 
-      const gamesRes = await fetch(`/api/games/team/${teamId}`);
+      const gamesRes = await fetch(`http://52.78.12.127:8080/api/games/team/${teamId}`);
       const text = await gamesRes.text();
       setGames(text ? JSON.parse(text) : []);
     };
