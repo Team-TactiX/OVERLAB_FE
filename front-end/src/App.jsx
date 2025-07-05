@@ -23,6 +23,8 @@ import GameDetailPage from './pages/game/GameDetailPage';
 import PRGameListPage from './pages/prgame/PRGameListPage';
 import PRGamePage from './pages/prgame/PRGamePage';
 import PRGameCreatePage from './pages/prgame/PRGameCreatePage';
+import TeamFeedDetailPage from './pages/teamfeed/TeamFeedDetailPage';
+import TeamFeedListPage from './pages/teamfeed/TeamFeedListPage';
 
 function App() {
   const location = useLocation();
@@ -83,6 +85,9 @@ function App() {
         <Route path="/pr/list/:gameId" element={<PRGameListPage />} />
         <Route path="/pr/create/:gameId" element={<PRGameCreatePage />} />
 
+        {/* teamfeed */}
+        <Route path="/teamfeed/list/:teamId" element={<TeamFeedListPage />} />
+        <Route path="/teamfeed/:teamFeedId" element={<TeamFeedDetailPage />} />
       </Routes>
       {shouldShowBottomTab && <BottomTab />}
     </>

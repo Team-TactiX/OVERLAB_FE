@@ -6,6 +6,7 @@ import altImage from '../../img/alt_image.png';
 import setting from '../../img/setting.png';
 import TeamMatch from './TeamMatch';
 import TeamJoin from './TeamJoin';
+import TeamFeedList from './TeamFeedList';
 
 const Wrapper = styled.div`
   display: flex;
@@ -193,6 +194,11 @@ const TeamInfo = ({ teamId }) => {
               ))}
           </MemberList>
         )}
+      </SectionCard>
+
+      {/* 팀 게시글 */}
+      <SectionCard>
+        <TeamFeedList />
       </SectionCard>
 
       {/* 매치 정보 or 팀 가입 */}

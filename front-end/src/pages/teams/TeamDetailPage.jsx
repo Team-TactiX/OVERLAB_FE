@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import TeamInfo from '../../components/teams/TeamInfo';
+import TeamMemberList from '../../components/teams/TeamMemberList'
 
 const PageWrapper = styled.div`
   padding: 8vh 2vh 2vh;
