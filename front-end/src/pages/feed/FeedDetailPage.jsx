@@ -46,8 +46,8 @@ const FeedDetailPage = () => {
 
       {post && (
         <div className="bg-white rounded-[2vh] shadow p-[3vh] mt-[2vh]">
-          {/* 매칭 or 팀원 모집 정보 */}
-          {post.category === '매칭' ? (
+          {/* 게시글 정보 */}
+          {(post.category === '매칭' || post.category === '용병') ? (
             <div className="bg-green-50 p-[2vh] rounded-[1vh] mb-[2vh]">
               <div className="flex justify-between mb-[1vh] text-[1.8vh]">
                 <span className="text-gray-500">🕒 매칭 날짜</span>
@@ -61,6 +61,13 @@ const FeedDetailPage = () => {
                 <span className="text-gray-500">지역</span>
                 <span className="text-gray-700 font-medium">{post.team.location}</span>
               </div>
+              {post.category === '용병' && (
+                <div className="flex justify-between text-[1.8vh]">
+                  <span className="text-gray-500">매치 이름</span>
+                  <span className="text-gray-700 font-medium">{post.game.gameName}</span>
+                </div>
+                )
+              }
             </div>
           ) : (
             <div className="bg-orange-100 p-[2vh] rounded-[1vh] mb-[2vh]">

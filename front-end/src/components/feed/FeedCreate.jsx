@@ -23,7 +23,6 @@ const FeedCreate = ({ userMail, onClose }) => {
           setSelectedTeam(filtered[0]);
           setTeamId(filtered[0].teamId);
           handleMatch(filtered[0].teamId);
-          console.log(filtered[0].teamId)
         }
       } catch (err) {
         console.error('팀 정보 오류:', err);
@@ -42,6 +41,7 @@ const FeedCreate = ({ userMail, onClose }) => {
         const filtered = games.filter(match => match.team.teamManager.userMail === userMail);
         if (filtered.length > 0) {
           setSelectedMatch(filtered[0]);
+          setGameId(filtered[0].gameId)
         }
       } else {
         throw new Error('게임을 찾을 수 없습니다.');
@@ -63,7 +63,7 @@ const FeedCreate = ({ userMail, onClose }) => {
       title,
       content,
       teamId: Number(teamId),
-      gameId: Number(gameId),
+      gameId: (category == '용병') ? Number(gameId) : 0,
       userMail,
       category,
       matchDay: (category === '매칭' || category === '용병') ? startDate : formattedDate,
@@ -123,8 +123,7 @@ const FeedCreate = ({ userMail, onClose }) => {
             onChange={e => {
               const match = matchData.find(m => m.gameName === e.target.value);
               setSelectedMatch(match);
-              // community 테이블 gameId 컬럼 추가 후 수정
-              // setGameId(match.gameId);
+              setGameId(match.gameId);
             }}
             className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border"
           >

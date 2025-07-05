@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 const FeedMercenary = ({ post, userMail, onClose }) => {
-  // community 테이블 gameId 컬럼 추가 후 수정
-  // const gameId = post.gameId
-  const gameId = 6;
+  const gameId = post.game.gameId
   const navigate = useNavigate();
   const handleMercenary = async () => {
     try {
