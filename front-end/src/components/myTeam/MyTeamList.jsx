@@ -1,35 +1,12 @@
-import { useEffect, useState } from 'react';
 import MyTeam from './MyTeam';
 
-const MyTeamList = () => {
-  const [teams, setTeams] = useState([]);
-  const userMail = sessionStorage.getItem('userMail');
-
-  useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const response = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
-        if (response.ok) {
-          const data = await response.json();
-          setTeams(data);
-        } else {
-          alert(await response.text());
-        }
-      } catch (err) {
-        console.error(err);
-        alert('서버와의 통신 중 오류가 발생했습니다.');
-      }
-    };
-
-    fetchTeams();
-  }, [userMail]);
-
+const MyTeamList = ({ teams }) => {
   if (teams.length === 0) {
     return <div className="text-[1.6vh] text-center mt-[4vh]">참여 중인 팀이 없습니다.</div>;
   }
 
   return (
-    <div className="grid grid-cols-3 gap-[2.5vh] justify-items-center p-[2vh] pb-[15vh]">
+    <div className="flex flex-col gap-[2vh]">
       {teams.map((team, index) => (
         <MyTeam key={index} team={team} />
       ))}

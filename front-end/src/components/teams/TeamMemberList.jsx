@@ -1,19 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import TeamMember from './TeamMember';
-
-const Title = styled.h2`
-  font-size: 2.4vh;
-  font-weight: 600;
-  margin: 3vh 0 2vh;
-  text-align: center;
-`;
-
-const UsersBox = styled.ul`
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid #ddd;
-`;
 
 const TeamMemberList = ({ teamId }) => {
   const [users, setUsers] = useState([]);
@@ -30,24 +16,27 @@ const TeamMemberList = ({ teamId }) => {
 
   return (
     <>
-      <Title>팀원 목록</Title>
-      <UsersBox>
-        {users.map((user) => (
-          <TeamMember
-            key={user.userMail}
-            user={user}
-            teamId={teamId}
-            refreshUsers={() => {
-              // refetch users after actions
-              fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`)
-                .then((res) => res.json())
-                .then((data) =>
-                  setUsers(data.filter((u) => u.userMail !== userMail))
-                );
-            }}
-          />
-        ))}
-      </UsersBox>
+      {/* 팀원 관리 */}
+      <div className="w-full px-4">
+  <h2 className="text-lg font-semibold mb-2">팀원 관리</h2>
+
+  <ul>
+    {users.map((user) => (
+      <TeamMember
+        key={user.userMail}
+        user={user}
+        teamId={teamId}
+        refreshUsers={() => {
+          fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`)
+            .then((res) => res.json())
+            .then((data) =>
+              setUsers(data.filter((u) => u.userMail !== userMail))
+            );
+        }}
+      />
+    ))}
+  </ul>
+</div>
     </>
   );
 };

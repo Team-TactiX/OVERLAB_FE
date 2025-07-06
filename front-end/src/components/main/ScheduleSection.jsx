@@ -1,3 +1,4 @@
+// ScheduleSection.jsx
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -25,10 +26,7 @@ const ScheduleSection = () => {
 
   const gamesByDate = games.reduce((acc, game) => {
     const gameDate = dayjs(game.date);
-    if (
-      gameDate.month() === currentDate.month() &&
-      gameDate.year() === currentDate.year()
-    ) {
+    if (gameDate.month() === currentDate.month() && gameDate.year() === currentDate.year()) {
       const day = gameDate.date();
       if (!acc[day]) acc[day] = [];
       if (!acc[day].includes(game.team.firstColor)) {
@@ -84,8 +82,8 @@ const ScheduleSection = () => {
     return (
       <div className="py-[0.5vh]">
         <div className="flex justify-between items-center mb-[1.5vh] mt-[1vh]">
-          <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-green-500 pb-[0.7vh]">
-            Schedule
+          <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-green-500 pb-[0.7vh] flex items-center gap-[0.5vh]">
+            📅 Schedule
           </h2>
         </div>
         <div className="text-center py-[2vh] text-[1.8vh]">불러오는 중...</div>
@@ -93,21 +91,24 @@ const ScheduleSection = () => {
     );
   }
 
-  const sortedGames = [...games].sort((a, b) =>
-    dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1
-  );
+  const sortedGames = [...games].sort((a, b) => (dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1));
 
   return (
-    <div className="py-[0.5vh]">
+    <div className="py-[1.5vh]">
       <div className="flex justify-between items-center mb-[1.5vh] mt-[1vh]">
-        <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-green-500 pb-[0.7vh]">
-          Schedule
-        </h2>
-        <Link to="/my-schedule" className="text-[1.5vh] text-gray-400 no-underline">
+        {/* 라벨 추가 */}
+        <div>
+          <div className="text-[1.2vh] text-orange-500 font-bold mb-[0.5vh]">GAME</div>
+          <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-orange-500 pb-[0.7vh] flex items-center gap-[0.5vh]">
+            📅 Schedule
+          </h2>
+        </div>
+        <Link to="/my-schedule" className="text-[1.5vh] text-blue-500 no-underline hover:underline">
           더보기
         </Link>
       </div>
 
+      {/* 스크롤 카드 */}
       <ScrollContainer
         className="flex gap-[1.1vh] overflow-x-auto pb-[1vh] cursor-grab active:cursor-grabbing scrollbar-hide"
         horizontal
@@ -119,19 +120,23 @@ const ScheduleSection = () => {
             <Link
               key={game.gameId}
               to={`/game/${game.gameId}`}
-              className="no-underline text-black flex-shrink-0"
+              className="no-underline text-black flex-shrink-0 relative"
             >
-              <div className="flex flex-col items-center w-[16vh] min-w-[16vh] bg-white border border-gray-200 rounded-[1.2vh] p-[1.5vh] text-center cursor-pointer transition hover:border-green-500 hover:shadow-lg">
+              {/* 미니 뱃지 추가 */}
+              <div className="absolute top-[0.5vh] right-[0.5vh] bg-orange-500 text-white text-[1vh] px-[0.6vh] rounded-full">
+                경기
+              </div>
+              <div className="flex flex-col items-center w-[16vh] min-w-[16vh] bg-white border-2 border-gray-200 rounded-[1.2vh] p-[1.5vh] text-center cursor-pointer transition hover:border-green-500 hover:shadow-lg">
                 <div className="text-[1.6vh] font-bold mb-[0.5vh] truncate w-full min-w-0">
                   {dayjs(game.date).format('MM/DD (ddd)')}
                 </div>
                 <img
                   src={`/logos/${game.oppoLogo}`}
                   onError={(e) => { e.target.src = altImage; }}
-                  className="w-[7vh] h-[7vh] rounded-full object-cover mb-[1vh]"
+                  className="w-[7vh] h-[7vh] rounded-full object-cover mb-[1vh] border border-white"
                   alt="match logo"
                 />
-                <div className="text-[1.6vh] truncate w-full min-w-0 whitespace-nowrap">
+                <div className="text-[1.6vh] truncate w-full min-w-0 whitespace-nowrap hover:text-green-500">
                   {`${game.team.teamName} VS ${game.versus}`}
                 </div>
                 <div className="text-[1.5vh] text-gray-600 truncate w-full min-w-0 whitespace-nowrap">
@@ -143,10 +148,11 @@ const ScheduleSection = () => {
         )}
       </ScrollContainer>
 
+      {/* 달력 */}
       <div className="mt-[3vh]">
         <div className="flex justify-between items-center mb-[1.5vh]">
           <h3 className="text-[2vh] font-bold">{currentDate.format('YYYY년 M월')}</h3>
-          <Link to="/calender" className="text-[1.5vh] text-gray-400 no-underline">
+          <Link to="/calender" className="text-[1.5vh] text-blue-500 no-underline hover:underline">
             더보기
           </Link>
         </div>
@@ -170,9 +176,7 @@ const ScheduleSection = () => {
                 key={i}
                 className={`aspect-square min-h-[6vh] flex flex-col items-center justify-center relative ${isToday ? 'text-green-500 font-bold' : 'text-black font-normal'}`}
               >
-                <div className="text-[1.7vh]">
-                  {d}
-                </div>
+                <div className="text-[1.7vh]">{d}</div>
                 {gamesByDate[d] && (
                   <div className="flex justify-center gap-[0.3vh] absolute bottom-[0.5vh] left-1/2 transform -translate-x-1/2">
                     {gamesByDate[d].map((color, idx) => (

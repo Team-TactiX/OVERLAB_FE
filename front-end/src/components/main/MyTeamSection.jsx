@@ -1,3 +1,4 @@
+// MyTeamSection.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import altImage from '../../img/alt_image.png';
@@ -45,10 +46,14 @@ const MyTeamSection = () => {
   return (
     <div className="py-[1.5vh]">
       <div className="flex justify-between items-center mb-[1.5vh] mt-[1vh]">
-        <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-green-500 pb-[0.7vh] inline-block">
-          My Team
-        </h2>
-        <Link to="/my-team" className="text-[1.5vh] text-gray-400 no-underline">
+        {/* 라벨 추가 */}
+        <div>
+          <div className="text-[1.2vh] text-green-500 font-bold mb-[0.5vh]">TEAM</div>
+          <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-green-500 pb-[0.7vh] flex items-center gap-[0.5vh]">
+            🏆 My Team
+          </h2>
+        </div>
+        <Link to="/my-team" className="text-[1.5vh] text-blue-500 no-underline hover:underline">
           더보기
         </Link>
       </div>
@@ -64,17 +69,21 @@ const MyTeamSection = () => {
             <Link
               key={team.teamId}
               to={`/team/${team.teamId}`}
-              className="flex-shrink-0 bg-white border border-gray-300 p-[0.6vh] no-underline text-black flex flex-col items-center hover:border-green-500 transition box-border rounded-[1.2vh] w-[12vh] min-w-[12vh]"
+              className="flex-shrink-0 bg-white border border-gray-300 p-[0.6vh] no-underline text-black flex flex-col items-center hover:border-green-500 hover:shadow-lg transition box-border rounded-[1.2vh] w-[12vh] min-w-[12vh] relative"
             >
+              {/* 미니 뱃지 추가 */}
+              <div className="absolute top-[0.5vh] right-[0.5vh] bg-green-500 text-white text-[1vh] px-[0.6vh] rounded-full">
+                내 팀
+              </div>
               <img
                 src={`http://52.78.12.127:8080/logos/${team.logo}`}
                 onError={(e) => {
                   e.target.src = altImage;
                 }}
-                className="w-[7vh] h-[7vh] rounded-full object-cover mb-[0.5vh]"
+                className="w-[7vh] h-[7vh] rounded-full object-cover mb-[0.5vh] border border-white"
                 alt="team logo"
               />
-              <div className="text-[1.6vh] font-semibold text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-[12vh]">
+              <div className="text-[1.6vh] font-semibold text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-[12vh] hover:text-green-500">
                 {team.teamName}
               </div>
             </Link>

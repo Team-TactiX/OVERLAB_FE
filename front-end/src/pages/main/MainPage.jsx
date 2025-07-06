@@ -7,11 +7,11 @@ const PageWrapper = styled.div`
   padding-top: 8vh;
   padding-bottom: 2vh;
   background-color: #ffffff;
-  min-height: 100vh;
+  min-height: 120vh;
 `;
 
 const SectionWrapper = styled.div`
-  padding: 2vh 2vw;
+  padding: 1vh 1.7vw;
 
   @media (max-width: 768px) {
     padding: 1.5vh 3vw;
@@ -23,9 +23,10 @@ const SectionWrapper = styled.div`
 `;
 
 const Divider = styled.div`
-  height: 2vh;
+  height: 0.4vh;
   background-color: #f2f2f2;
-  margin: 2vh 0;
+  margin: 1vh 0;
+  border-radius: 1vh;
 `;
 
 const MainPage = () => {

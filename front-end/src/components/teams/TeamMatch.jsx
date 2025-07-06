@@ -1,83 +1,6 @@
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import altImage from '../../img/alt_image.png';
-
-const Section = styled.div`
-  margin-top: 4vh;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2.2vh;
-  margin-bottom: 2vh;
-`;
-
-const MatchCard = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5vh;
-  margin-bottom: 1.5vh;
-  border-radius: 1vh;
-  background-color: #f8f8f8;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-`;
-
-const TeamBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 25%;
-`;
-
-const Logo = styled.img`
-  width: 6vh;
-  height: 6vh;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.5vh;
-`;
-
-const TeamName = styled.div`
-  font-size: 1.6vh;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const CenterInfo = styled.div`
-  text-align: center;
-  font-size: 1.6vh;
-  width: 30%;
-`;
-
-const VsText = styled.div`
-  font-size: 2.6vh;
-  font-weight: bold;
-  margin: 1vh 0;
-`;
-
-const ButtonBox = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 2vh;
-  margin-top: 3vh;
-`;
-
-const StyledButton = styled.button`
-  background-color: black;
-  color: white;
-  width: 100%;
-  height: 6vh;
-  font-size: 2vh;
-  border-radius: 0.7vh;
-  &:hover {
-    cursor: pointer;
-  }
-  &:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-  }
-`;
 
 const TeamMatch = ({ games, teamManagerMail }) => {
   const userMail = sessionStorage.getItem('userMail');
@@ -108,53 +31,74 @@ const TeamMatch = ({ games, teamManagerMail }) => {
   );
 
   return (
-    <Section>
-      <SectionTitle>📅 경기 일정</SectionTitle>
+    <div className="flex flex-col gap-4">
+      <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+        <span className="text-red-500 text-xl"></span>
+      </h2>
+
       {games.length === 0 ? (
-        <div style={{ fontSize: '1.6vh', color: '#888' }}>
-          예정된 경기가 없습니다.
-        </div>
+        <div className="text-center text-gray-500 text-sm">예정된 경기가 없습니다.</div>
       ) : (
         sortedGames.map((game) => (
           <Link
             key={game.gameId}
             to={`/game/${game.gameId}`}
-            style={{ textDecoration: 'none', color: 'inherit' }}
+            className="flex flex-col bg-blue-50 hover:bg-blue-100 transition p-4 rounded-xl shadow-sm"
           >
-            <MatchCard>
-              <TeamBox>
-                <Logo
+            <div className="text-center text-blue-900 font-medium text-sm mb-2">
+              {game.gameName}
+            </div>
+
+            <div className="flex items-center justify-between">
+              {/* 홈 팀 */}
+              <div className="flex flex-col items-center w-1/4">
+                <img
                   src={`http://52.78.12.127:8080/logos/${game.team.logo}`}
                   onError={(e) => (e.target.src = altImage)}
+                  alt="home"
+                  className="w-14 h-14 rounded-full object-cover mb-1 border border-gray-300"
                 />
-                <TeamName>{game.team.teamName}</TeamName>
-              </TeamBox>
-              <CenterInfo>
-                <div>{game.gameName}</div>
-                <div>{dayjs(game.date).format('YYYY.MM.DD')}</div>
-                <VsText>VS</VsText>
-              </CenterInfo>
-              <TeamBox>
-                <Logo
+                <span className="text-xs font-medium text-gray-700 text-center">{game.team.teamName}</span>
+              </div>
+
+              {/* 경기 정보 */}
+              <div className="flex flex-col items-center w-1/2 text-center">
+                <span className="text-xs text-gray-500 mb-1">{dayjs(game.date).format('YYYY.MM.DD HH:mm')}</span>
+                <span className="text-2xl font-bold text-blue-800">VS</span>
+              </div>
+
+              {/* 어웨이 팀 */}
+              <div className="flex flex-col items-center w-1/4">
+                <img
                   src={`http://52.78.12.127:8080/logos/${game.logo}`}
                   onError={(e) => (e.target.src = altImage)}
+                  alt="away"
+                  className="w-14 h-14 rounded-full object-cover mb-1 border border-gray-300"
                 />
-                <TeamName>{game.versus}</TeamName>
-              </TeamBox>
-            </MatchCard>
+                <span className="text-xs font-medium text-gray-700 text-center">{game.versus}</span>
+              </div>
+            </div>
           </Link>
         ))
       )}
-      <ButtonBox>
+
+      <div className="flex justify-center mt-4">
         {userMail === teamManagerMail ? (
-          <Link to="/game/create" style={{ width: '100%' }}>
-            <StyledButton>경기 추가</StyledButton>
+          <Link to="/game/create" className="w-full">
+            <button className="w-full h-12 border border-blue-500 text-blue-500 rounded-full text-base font-semibold hover:bg-blue-50 transition">
+              경기 추가
+            </button>
           </Link>
         ) : (
-          <StyledButton onClick={handleLeave}>팀 탈퇴하기</StyledButton>
+          <button
+            onClick={handleLeave}
+            className="w-full h-12 border border-red-500 text-red-500 rounded-full text-base font-semibold hover:bg-red-50 transition"
+          >
+            팀 탈퇴하기
+          </button>
         )}
-      </ButtonBox>
-    </Section>
+      </div>
+    </div>
   );
 };
 

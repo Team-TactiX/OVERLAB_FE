@@ -74,21 +74,44 @@ const FeedMatch = ({ post, userMail, onClose }) => {
       <div onClick={e => e.stopPropagation()} className="bg-white rounded-[2vh] p-[4vh_3vh] w-[90%] max-w-[360px] box-border shadow-lg">
         <h3 className="text-[2.4vh] font-bold mb-[2vh]">매칭 신청</h3>
         {myTeams.length > 0 ? (
-          <>
-            <select value={selectedTeamId} onChange={e => setSelectedTeamId(e.target.value)} className="w-full mb-[2vh] p-2 border">
-              {myTeams.map(t => (
-                <option key={t.teamId} value={t.teamId}>{t.teamName}</option>
-              ))}
-            </select>
-            <button onClick={onClose} className="w-full p-2 bg-red-500 text-white">취소</button>
-            <button onClick={handleMatch} className="w-full p-2 bg-green-500 text-white">신청</button>
-          </>
-        ) : (
-          <>
-            <p>신청 가능한 팀이 없습니다.</p>
-            <button onClick={onClose} className="w-full p-2 bg-red-500 text-white">취소</button>
-          </>
-        )}
+  <>
+    <select
+      value={selectedTeamId}
+      onChange={e => setSelectedTeamId(e.target.value)}
+      className="w-full mb-[2vh] p-[1.5vh] border border-gray-300 rounded-[1vh] text-[1.7vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border"
+    >
+      {myTeams.map(t => (
+        <option key={t.teamId} value={t.teamId}>{t.teamName}</option>
+      ))}
+    </select>
+
+    <div className="flex justify-between gap-[1.5vh]">
+      <button
+        onClick={onClose}
+        className="flex-1 border border-gray-400 text-gray-600 py-[1.2vh] rounded-[1vh] hover:bg-gray-100 active:scale-95 transition"
+      >
+        취소
+      </button>
+      <button
+        onClick={handleMatch}
+        className="flex-1 border border-green-500 text-green-500 py-[1.2vh] rounded-[1vh] hover:bg-green-50 active:scale-95 transition"
+      >
+        신청
+      </button>
+    </div>
+  </>
+) : (
+  <>
+    <p className="text-center text-[1.7vh] mb-[2vh]">신청 가능한 팀이 없습니다.</p>
+    <button
+      onClick={onClose}
+      className="w-full border border-gray-400 text-gray-600 py-[1.2vh] rounded-[1vh] hover:bg-gray-100 active:scale-95 transition"
+    >
+      취소
+    </button>
+  </>
+)}
+
       </div>
     </div>
   );

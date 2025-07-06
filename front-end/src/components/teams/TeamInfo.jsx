@@ -1,111 +1,11 @@
-// src/components/teams/TeamInfo.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import altImage from '../../img/alt_image.png';
 import setting from '../../img/setting.png';
 import TeamMatch from './TeamMatch';
 import TeamJoin from './TeamJoin';
 import TeamFeedList from './TeamFeedList';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
-`;
-
-const SectionCard = styled.div`
-  background-color: #ffffff;
-  border-radius: 1.2vh;
-  padding: 2vh;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-`;
-
-const TeamCard = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2vh;
-`;
-
-const TeamLogo = styled.img`
-  width: 8vh;
-  height: 8vh;
-  border-radius: 1vh;
-  object-fit: cover;
-`;
-
-const TeamInfoBox = styled.div`
-  flex: 1;
-`;
-
-const TeamName = styled.div`
-  font-size: 2.4vh;
-  font-weight: bold;
-  margin-bottom: 1vh;
-`;
-
-const Tag = styled.div`
-  font-size: 1.6vh;
-  color: #666;
-`;
-
-const ColorDots = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1vh;
-`;
-
-const DotBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1vh;
-`;
-
-const Dot = styled.div`
-  width: 2vh;
-  height: 2vh;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
-  border: ${(props) =>
-    props.color === 'white' ? '1px solid #333' : `1px solid ${props.color}`};
-`;
-
-const DotLabel = styled.div`
-  font-size: 1.6vh;
-  color: #333;
-`;
-
-const SettingButton = styled(Link)`
-  background-color: #eee;
-  width: 5vh;
-  height: 5vh;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SettingImg = styled.img`
-  width: 3vh;
-  height: 3vh;
-`;
-
-const MemberToggle = styled.h2`
-  font-size: 2.2vh;
-  cursor: pointer;
-  margin-top: 3vh;
-`;
-
-const MemberList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin-top: 1.5vh;
-`;
-
-const MemberItem = styled.li`
-  font-size: 1.8vh;
-  margin-bottom: 1vh;
-`;
+import UniformIcon from '../common/UniformIcon';
 
 const TeamInfo = ({ teamId }) => {
   const [team, setTeam] = useState(null);
@@ -132,7 +32,7 @@ const TeamInfo = ({ teamId }) => {
     fetchData();
   }, [teamId]);
 
-  if (!team) return <div>로딩 중...</div>;
+  if (!team) return <div className="text-center py-10">로딩 중...</div>;
 
   const isInTeam = teamUser.some(
     (user) => user.userMail?.toLowerCase() === userMail?.toLowerCase()
@@ -141,75 +41,65 @@ const TeamInfo = ({ teamId }) => {
   const manager = teamUser.find((u) => u.userMail === teamManagerMail);
 
   return (
-    <Wrapper>
-      {/* 팀 상세 정보 */}
-      <SectionCard>
-        <TeamCard>
-          <TeamLogo
+    <div className="flex flex-col gap-8 p-4 max-w-lg mx-auto bg-white min-h-screen">
+
+      {/* 팀 요약 */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <img
             src={`http://52.78.12.127:8080/logos/${team.logo}`}
             onError={(e) => (e.target.src = altImage)}
+            alt="팀 로고"
+            className="w-16 h-16 rounded-lg object-cover"
           />
-          <TeamInfoBox>
-            <TeamName>{team.teamName}</TeamName>
-            <Tag>📍 위치: {team.location}</Tag>
-          </TeamInfoBox>
-          <ColorDots>
-            <DotBox>
-              <DotLabel>HOME</DotLabel>
-              <Dot color={team.firstColor} />
-            </DotBox>
-            <DotBox>
-              <DotLabel>AWAY</DotLabel>
-              <Dot color={team.secondColor} />
-            </DotBox>
-          </ColorDots>
+          <div>
+            <h1 className="text-lg font-bold">{team.teamName}</h1>
+            <div className="text-gray-500 text-sm">📍 {team.location}</div>
+            <div className="text-gray-500 text-sm">👥 {teamUser.length}명</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <UniformIcon color={team.firstColor} size="28px" />
+          <UniformIcon color={team.secondColor} size="28px" />
           {userMail === teamManagerMail && (
-            <SettingButton to={`/team/update/${teamId}`}>
-              <SettingImg src={setting} alt="설정" />
-            </SettingButton>
+            <Link to={`/team/update/${teamId}`} className="ml-2">
+              <img src={setting} alt="설정" className="w-5 h-5" />
+            </Link>
           )}
-        </TeamCard>
-      </SectionCard>
+        </div>
+      </div>
 
       {/* 팀원 명단 */}
-      <SectionCard>
-        <MemberToggle onClick={() => setShowMembers(!showMembers)}>
-          {showMembers
-            ? `👥 팀 명단(${teamUser.length}명) ▼`
-            : `👥 팀 명단(${teamUser.length}명) ▲`}
-        </MemberToggle>
+      <div>
+        <div className="flex justify-between items-center cursor-pointer border-b pb-2" onClick={() => setShowMembers(!showMembers)}>
+          <h2 className="text-base font-semibold">👥 팀 명단</h2>
+          <span className="text-sm text-gray-500">{showMembers ? '숨기기 ▲' : '보기 ▼'}</span>
+        </div>
         {showMembers && (
-          <MemberList>
+          <ul className="mt-3 flex flex-col gap-2 text-sm text-gray-700">
             {manager && (
-              <MemberItem>
-                👑 {manager.userName} ({manager.firstPosition}, {manager.secondPosition}, {manager.thirdPosition})
-              </MemberItem>
+              <li>👑 {manager.userName} ({manager.firstPosition}, {manager.secondPosition}, {manager.thirdPosition})</li>
             )}
-            {teamUser
-              .filter((u) => u.userMail !== teamManagerMail)
-              .map((u) => (
-                <MemberItem key={u.userMail}>
-                  {u.userName} ({u.firstPosition}, {u.secondPosition}, {u.thirdPosition})
-                </MemberItem>
-              ))}
-          </MemberList>
+            {teamUser.filter(u => u.userMail !== teamManagerMail).map(u => (
+              <li key={u.userMail}>👤 {u.userName} ({u.firstPosition}, {u.secondPosition}, {u.thirdPosition})</li>
+            ))}
+          </ul>
         )}
-      </SectionCard>
+      </div>
 
       {/* 팀 게시글 */}
-      <SectionCard>
-        <TeamFeedList />
-      </SectionCard>
+      <TeamFeedList />
 
-      {/* 매치 정보 or 팀 가입 */}
-      <SectionCard>
+      {/* 경기 일정 */}
+      <div>
+        <h2 className="text-base font-semibold mb-4">📅 경기 일정</h2>
         {isInTeam ? (
           <TeamMatch games={games} teamManagerMail={teamManagerMail} />
         ) : (
           <TeamJoin />
         )}
-      </SectionCard>
-    </Wrapper>
+      </div>
+    </div>
   );
 };
 

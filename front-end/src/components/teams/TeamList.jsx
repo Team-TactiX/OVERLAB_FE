@@ -1,8 +1,7 @@
-// TeamList.jsx
 import { useEffect, useState } from 'react';
 import TeamCard from './TeamCard';
 
-const TeamList = ({ keyword }) => {
+const TeamList = ({ keyword, posts }) => {
   const [teams, setTeams] = useState(null);
 
   useEffect(() => {
@@ -33,9 +32,9 @@ const TeamList = ({ keyword }) => {
   if (teams.length === 0) return <div>검색 결과가 없습니다.</div>;
 
   return (
-    <div className="grid grid-cols-3 gap-[2vh]">
+    <div className="flex flex-col gap-[2vh]">
       {teams.map((team, i) => (
-        <TeamCard key={i} team={team} />
+        <TeamCard key={i} team={team} posts={posts} />
       ))}
     </div>
   );
