@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import TeamCard from './TeamCard';
 
-const TeamList = ({ keyword, posts }) => {
+const TeamList = ({ refreshFlag, keyword }) => {
   const [teams, setTeams] = useState(null);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -27,6 +28,24 @@ const TeamList = ({ keyword, posts }) => {
 
     fetchTeams();
   }, [keyword]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch('http://52.78.12.127:8080/api/community');
+        if (res.ok) {
+          const data = await res.json();
+          setPosts(data);
+        } else {
+          console.error(await res.text());
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchPosts();
+  }, [refreshFlag]);
 
   if (!teams) return <div>로딩 중...</div>;
   if (teams.length === 0) return <div>검색 결과가 없습니다.</div>;

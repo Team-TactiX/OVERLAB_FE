@@ -7,7 +7,6 @@ const TeamListPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [refreshFlag, setRefreshFlag] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [posts, setPosts] = useState([]);
 
   const handleRefresh = () => setRefreshFlag((prev) => !prev);
 
@@ -15,24 +14,6 @@ const TeamListPage = () => {
     setSearchKeyword(keyword);
     handleRefresh();
   };
-
-  // 모집 게시글 가져오기
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('http://52.78.12.127:8080/api/community');
-        if (res.ok) {
-          const data = await res.json();
-          setPosts(data);
-        } else {
-          console.error(await res.text());
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchPosts();
-  }, [refreshFlag]);
 
   return (
     <div className="min-h-screen bg-[#f9f9f9] flex flex-col items-center pt-[4vh] px-4">
@@ -48,7 +29,7 @@ const TeamListPage = () => {
       </div>
 
       <div className="flex-1 w-full max-w-[500px] overflow-y-auto pb-[15vh]">
-        <TeamList key={refreshFlag} keyword={searchKeyword} posts={posts} />
+        <TeamList key={refreshFlag} refreshFlag={refreshFlag} keyword={searchKeyword} />
       </div>
 
       {/* 팀 생성 버튼 */}

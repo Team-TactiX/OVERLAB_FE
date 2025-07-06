@@ -1,16 +1,38 @@
-import altImage from '../../img/alt_image.png';
 import { Link, useParams } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-const teamFeedList = [
-  { id: 1, title: '첫 번째 게시글', img: altImage },
-  { id: 2, title: '두 번째 게시글', img: altImage },
-  { id: 3, title: '세 번째 게시글', img: altImage },
-  { id: 4, title: '네 번째 게시글', img: altImage },
-];
+const StyledImg = styled.img`
+  width: 10vh;
+  height: 10vh;
+  object-fit: cover;
+  border-radius: 0.4vh;
+`;
+
+const StyledVideo = styled.video`
+  width: 10vh;
+  height: 10vh;
+  object-fit: cover;
+  border-radius: 0.4vh;
+`;
 
 const TeamFeedList = () => {
   const { teamId } = useParams();
+  const [teamFeedList, setTeamFeedList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`http://52.78.12.127:8080/api/files/team/${teamId}`);
+      const data = await res.json();
+      setTeamFeedList(data);
+      console.log(data)
+    };
+    fetchData();
+
+  }, [teamId]);
+
+  if(!teamFeedList) return <>로딩중</>
 
   return (
     <div className="flex flex-col gap-2">
@@ -25,16 +47,22 @@ const TeamFeedList = () => {
         className="flex gap-3 overflow-x-auto pb-1 cursor-grab active:cursor-grabbing scrollbar-hide"
         horizontal
       >
-        {teamFeedList.map((feed) => (
+        {teamFeedList.map((teamFeed) => (
           <Link
-            key={feed.id}
-            to={`/teamfeed/${feed.id}`}
+            key={teamFeed.fileId}
+            to={`/teamfeed/${teamFeed.fileId}`}
             className="flex-shrink-0 w-[10vh] min-w-[10vh] bg-white border border-gray-300 p-[0.6vh] no-underline text-black flex flex-col items-center hover:border-blue-500 transition rounded-lg"
           >
             <div className="w-[7vh] h-[7vh] rounded-lg overflow-hidden mb-[0.5vh]">
-              <img src={feed.img} alt={feed.title} className="w-full h-full object-cover" />
+              {teamFeed.fileType.startsWith('image/') ? (
+                <StyledImg src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`} alt={teamFeed.fileType} />
+              ) : teamFeed.fileType.startsWith('video/') ? (
+                <StyledVideo src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`} controls />
+              ) : (
+                <span>지원되지 않는 파일</span>
+              )}
             </div>
-            <div className="text-[1.4vh] text-center truncate max-w-[9vh]">{feed.title}</div>
+            <div className="text-[1.4vh] text-center truncate max-w-[9vh]">{teamFeed.title}</div>
           </Link>
         ))}
       </ScrollContainer>

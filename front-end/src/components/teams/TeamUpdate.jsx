@@ -1,9 +1,9 @@
 // TeamUpdate.jsx: 팀원 목록 제목과 리스트만 보여줌
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import altImage from '../../img/alt_image.png';
 import UniformIcon from '../common/UniformIcon';
+import TeamMemberList from './TeamMemberList';
 
 const Container = styled.div`
   display: flex;
@@ -64,26 +64,13 @@ const UniformLabel = styled.span`
   margin-right: 0.5vh;
 `;
 
-const MemberBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1vh 0;
-  border-bottom: 1px solid #ddd;
-`;
-
-const TeamUpdate = () => {
-  const [team, setTeam] = useState(null);
+const TeamUpdate = ({ team, setTeam, setLogoFile, teamId }) => {
   const [teamName, setTeamName] = useState('');
   const [location, setLocation] = useState('');
   const [firstColor, setFirstColor] = useState('');
   const [secondColor, setSecondColor] = useState('');
   const [logo, setLogo] = useState(null);
-  const [logoFile, setLogoFile] = useState(null);
   const [teamUser, setTeamUser] = useState([]);
-
-  const teamId = sessionStorage.getItem('teamId');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -94,7 +81,11 @@ const TeamUpdate = () => {
       setLocation(data.location);
       setFirstColor(data.firstColor);
       setSecondColor(data.secondColor);
-      setLogo(`http://52.78.12.127:8080/logos/${data.logo}`);
+      if (data.logo) {
+        setLogo(`http://52.78.12.127:8080/logos/${data.logo}`);
+      } else {
+        setLogo(altImage);
+      }
 
       const userRes = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`);
       setTeamUser(await userRes.json());
@@ -102,6 +93,16 @@ const TeamUpdate = () => {
 
     fetchTeam();
   }, [teamId]);
+
+  useEffect(() => {
+    setTeam(prev => ({
+      ...prev,
+      teamName,
+      location,
+      firstColor,
+      secondColor,
+    }))
+  }, [teamName, location, firstColor, secondColor])
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -144,21 +145,6 @@ const TeamUpdate = () => {
           <input type="color" value={secondColor} onChange={(e) => setSecondColor(e.target.value)} className="w-10 h-6 border cursor-pointer" />
         </UniformColor>
       </UniformBox>
-
-      {/* 팀원 목록 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-2">팀원 목록</h2>
-        {teamUser.map((user) => (
-          <MemberBox key={user.userMail}>
-            <div className="text-sm">
-              {user.userName}
-              <br />
-              <span className="text-gray-500">{user.userMail}</span>
-            </div>
-            <button className="bg-red-500 text-white text-xs px-3 py-1 rounded">방출</button>
-          </MemberBox>
-        ))}
-      </div>
     </Container>
   );
 };

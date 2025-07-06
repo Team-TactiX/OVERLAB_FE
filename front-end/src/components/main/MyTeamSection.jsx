@@ -16,6 +16,7 @@ const MyTeamSection = () => {
         if (response.ok) {
           const data = await response.json();
           setTeams(data);
+          console.log(data)
         } else {
           console.log(await response.text());
         }
@@ -73,7 +74,7 @@ const MyTeamSection = () => {
             >
               {/* 미니 뱃지 추가 */}
               <div className="absolute top-[0.5vh] right-[0.5vh] bg-green-500 text-white text-[1vh] px-[0.6vh] rounded-full">
-                내 팀
+                {team.teamManager.userMail === userMail ? '매니저' : '팀원'}
               </div>
               <img
                 src={`http://52.78.12.127:8080/logos/${team.logo}`}

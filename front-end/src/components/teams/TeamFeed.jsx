@@ -19,10 +19,10 @@ const StyledImg = styled.img`
   height: 10vh;
 `
 
-const TeamFeed = ({ id, teamFeed }) => {
+const TeamFeed = ({ teamFeed }) => {
   return (
     <Containder>
-      <Link to={`/teamfeed/${id}`}>
+      <Link to={`/teamfeed/${teamFeed.id}`}>
         <Title>{teamFeed.title}</Title>
         <StyledImg src={teamFeed.img} />
       </Link>

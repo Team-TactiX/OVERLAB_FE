@@ -20,6 +20,7 @@ const TeamMemberList = ({ teamId }) => {
       <div className="w-full px-4">
   <h2 className="text-lg font-semibold mb-2">팀원 관리</h2>
 
+
   <ul>
     {users.map((user) => (
       <TeamMember

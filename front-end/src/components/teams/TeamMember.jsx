@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const UserBox = styled.li`
@@ -13,17 +14,9 @@ const ButtonBox = styled.div`
   gap: 1vh;
 `;
 
-const Button = styled.button`
-  background-color: black;
-  color: white;
-  padding: 0.8vh 1.6vh;
-  border-radius: 0.7vh;
-  font-size: 1.4vh;
-  cursor: pointer;
-`;
-
 const TeamMember = ({ user, teamId, refreshUsers }) => {
   const userMail = sessionStorage.getItem('userMail');
+  const navigate = useNavigate()
 
   const handleRemove = async () => {
     const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/remove-user`, {
@@ -47,7 +40,7 @@ const TeamMember = ({ user, teamId, refreshUsers }) => {
     });
     if (res.ok) {
       alert('팀 매니저가 변경되었습니다.');
-      window.location.reload();
+      navigate(`/team/${teamId}`)
     } else {
       alert(await res.text());
     }
@@ -55,12 +48,16 @@ const TeamMember = ({ user, teamId, refreshUsers }) => {
 
   return (
     <UserBox>
-      {user.userName} ({user.userMail})
+      <div className="text-sm">
+        {user.userName}
+        <br />
+        <span className="text-gray-500">{user.userMail}</span>
+      </div>
       <ButtonBox>
-        <Button onClick={handlePromote}>매니저 임명</Button>
-        <Button style={{ backgroundColor: '#c0392b' }} onClick={handleRemove}>
+        <button className="bg-black text-white text-xs px-3 py-1 rounded" onClick={handlePromote}>매니저 임명</button>
+        <button className="bg-red-500 text-white text-xs px-3 py-1 rounded" onClick={handleRemove}>
           방출
-        </Button>
+        </button>
       </ButtonBox>
     </UserBox>
   );
