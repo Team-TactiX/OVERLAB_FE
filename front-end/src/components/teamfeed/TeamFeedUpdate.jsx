@@ -1,11 +1,85 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import styled from "styled-components";
+import altImage from '../../img/alt_image.png';
 
-const TeamFeedUpdate = ({ setUpdate }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+const ImagePreview = styled.img`
+  width: 30vh;
+  height: 30vh;
+  margin: 2vh;
+  object-fit: fill;
+`;
+
+const StyledVideo = styled.video`
+  width: 30vh;
+  height: 30vh;
+  margin: 2vh;
+  object-fit: fill;
+  border-radius: 1vh;
+`;
+
+const TeamFeedUpdate = ({ setUpdate, teamFeedId, teamFeed }) => {
+  const teamId = teamFeed.teamId;
+  const [title, setTitle] = useState(teamFeed.title);
+  const [content, setContent] = useState(teamFeed.content);
+  const [file, setFile] = useState(''); // 파일 객체 (image or video)
+  const [fileType, setFileType] = useState(teamFeed.fileType);
+  const [fileUrl, setFileUrl] = useState(`http://52.78.12.127:8080/media/${teamFeed.realFileName}`); // 미리보기 URL
+  const fileInputRef = useRef(null);
+
+  const handleFileUpload = (e) => {
+    const uploaded = e.target.files[0];
+    if (uploaded) {
+      setFile(uploaded);
+      setFileType(uploaded.type);
+      setFileUrl(URL.createObjectURL(uploaded));
+    }
+  };
+
+  const handleClickFileInput = () => {
+    fileInputRef.current?.click(); // 숨겨진 input을 트리거
+  };
 
   const handleUpdate = async () => {
-    // 업데이트 로직
+    if (!title || !content) {
+      alert('내용을 전부 입력해주세요.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("teamId", teamId);
+      formData.append("title", title);
+      formData.append("content", content);
+
+      const response = await fetch(`http://52.78.12.127:8080/api/files/fileInfo/${teamFeed.fileId}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file)
+        const res = await fetch(`http://52.78.12.127:8080/api/files/fileData/${teamFeed.fileId}`, {
+          method: 'PUT',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          alert(await response.text() || '팀 게시글 파일 수정 실패');
+        }
+      }
+      
+
+      if (response.ok) {
+        alert('팀 게시글 수정 완료!');
+        window.location.reload();
+      } else {
+        alert(await response.text() || '팀 게시글 수정 실패');
+      }
+    } catch (error) {
+      console.error('팀 게시글 수정 중 오류:', error);
+      alert('서버 요청 중 문제가 발생했습니다.');
+    }
   };
 
   return (
@@ -20,31 +94,57 @@ const TeamFeedUpdate = ({ setUpdate }) => {
         </div>
 
         <div className="mb-[3vh]">
-          <div className="text-[1.7vh] font-semibold mb-[1vh]">팀 <span className="text-green-500 ml-[0.3vh]">⚽</span></div>
+        <div className="text-[1.7vh] font-semibold mb-[1vh]">파일
+          <span className="text-green-500 ml-[0.3vh]">📎</span>
+          <button
+            onClick={handleClickFileInput}
+            className="text-[1.5vh] bg-gray-200 hover:bg-gray-300 rounded-[1vh] px-[1.2vh] py-[0.8vh] transition"
+          >
+            파일 변경
+          </button>        
         </div>
 
-        {/* 제목 */}
-        <div className="mb-[3vh]">
-          <div className="text-[1.7vh] font-semibold mb-[1vh]">제목 <span className="text-green-500 ml-[0.3vh]">⚽</span></div>
-          <input
-            type="text"
-            placeholder="제목 입력"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border"
+        {fileType?.startsWith('video/') ? (
+          <StyledVideo src={fileUrl} controls />
+        ) : (
+          <ImagePreview
+            src={fileUrl || altImage}
+            onError={(e) => { e.target.src = altImage; }}
           />
-        </div>
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,video/*"
+          onChange={handleFileUpload}
+          style={{ display: 'none' }}
+        />
 
-        {/* 내용 */}
-        <div className="mb-[3vh]">
-          <div className="text-[1.7vh] font-semibold mb-[1vh]">내용 <span className="text-green-500 ml-[0.3vh]">⚽</span></div>
-          <textarea
-            placeholder="내용 입력"
-            value={content}
-            onChange={e => setContent(e.target.value)}
-            className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border resize-none h-[10vh]"
-          />
-        </div>
+      </div>
+
+      {/* 제목 */}
+      <div className="mb-[3vh]">
+        <div className="text-[1.7vh] font-semibold mb-[1vh]">제목 <span className="text-green-500 ml-[0.3vh]">✏️</span></div>
+        <input
+          type="text"
+          placeholder="제목 입력"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border"
+        />
+      </div>
+
+      {/* 내용 */}
+      <div className="mb-[3vh]">
+        <div className="text-[1.7vh] font-semibold mb-[1vh]">내용 <span className="text-green-500 ml-[0.3vh]">📝</span></div>
+        <textarea
+          placeholder="내용 입력"
+          value={content}
+          onChange={e => setContent(e.target.value)}
+          className="w-full text-[1.7vh] p-[1.5vh] border border-gray-300 rounded-[1vh] bg-[#f9f9f9] focus:outline-green-500 focus:bg-white box-border resize-none h-[10vh]"
+        />
+      </div>
+        
 
         {/* 등록 버튼 */}
         <button

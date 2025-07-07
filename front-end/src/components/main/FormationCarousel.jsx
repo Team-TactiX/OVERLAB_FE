@@ -23,7 +23,7 @@ const FormationCarousel = () => {
   const currentFormation = formations[currentIndex];
 
   return (
-    <div className="w-full mb-[2vh] flex justify-center items-center gap-[1vh]">
+    <div className="w-full mb-[2vh] flex justify-center items-center gap-[1vh] pt-[3vh]">
       {/* Prev Button */}
       <button
         onClick={handlePrev}
