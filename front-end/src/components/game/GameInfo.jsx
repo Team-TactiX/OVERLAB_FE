@@ -170,7 +170,8 @@ const GameInfo = ({ setUpdate }) => {
           value?.userMail === userMail ? [key, null] : [key, value],
         )
       );
-      const response = await fetch('/api/games/update-game', {
+      
+      const response = await fetch('http://52.78.12.127:8080/api/games/update-game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),

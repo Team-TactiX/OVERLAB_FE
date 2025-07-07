@@ -13,12 +13,16 @@ const usePRGameData = () => {
   useEffect(() => {
     const fetchGame = async () => {
       try {
-        const res = await fetch(`/api/pr-games/findByPRGameId/${prGameId}`);
+        const res = await fetch(
+          `http://52.78.12.127:8080/api/pr-games/findByPRGameId/${prGameId}`,
+        );
         const data = await res.json();
         setPRGame(data);
         setTeamId(data.team?.teamId || null);
 
-        const response = await fetch(`/api/games/saved-formation/${gameId}`);
+        const response = await fetch(
+          `http://52.78.12.127:8080/api/games/saved-formation/${gameId}`,
+        );
         const gameData = await response.json();
 
         setGame(gameData);

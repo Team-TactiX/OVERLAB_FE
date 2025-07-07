@@ -11,7 +11,9 @@ const useGameData = () => {
   useEffect(() => {
     const fetchGame = async () => {
       try {
-        const res = await fetch(`/api/games/saved-formation/${gameId}`);
+        const res = await fetch(
+          `http://52.78.12.127:8080/api/games/saved-formation/${gameId}`,
+        );
         const data = await res.json();
         setGame(data);
         setUsers(data.playersMail || []);
