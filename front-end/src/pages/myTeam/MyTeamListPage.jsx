@@ -68,18 +68,20 @@ const MyTeamListPage = () => {
       <div className="fixed bottom-[12vh] right-[calc(clamp(1vh,(100vw-50vh)/2+1vh,100vw))] z-[1000] group">
   <button
     onClick={() => navigate('/my-schedule')}
-    className="w-[6vh] h-[6vh] border border-purple-500 text-purple-500 rounded-full bg-transparent cursor-pointer flex items-center justify-center hover:bg-purple-50 active:scale-95 transition"
+    className="w-[6.5vh] h-[6.5vh] bg-green-500 text-white rounded-full cursor-pointer shadow-lg flex items-center justify-center hover:bg-green-400 active:scale-95 transition-transform"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-[2.5vh] h-[2.5vh]">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-[3vh] h-[3vh]">
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12h.01M12 12h.01M9 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   </button>
 
+  {/* 툴팁 */}
   <div className="absolute right-[calc(100%+1.5vh)] top-1/2 -translate-y-1/2 bg-gray-200 text-gray-800 text-[1.6vh] px-[1.2vh] py-[0.7vh] rounded-[1vh] shadow group-hover:opacity-100 opacity-0 transition-opacity duration-300 whitespace-nowrap">
     내 경기 일정
     <div className="absolute top-1/2 left-full -translate-y-1/2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-gray-200"></div>
   </div>
 </div>
+
 
     </div>
   );

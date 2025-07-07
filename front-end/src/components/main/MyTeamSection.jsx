@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import altImage from '../../img/alt_image.png';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import { FaCrown, FaUser } from 'react-icons/fa';
 
 const MyTeamSection = () => {
   const [teams, setTeams] = useState([]);
@@ -73,9 +74,23 @@ const MyTeamSection = () => {
               className="flex-shrink-0 bg-white border border-gray-300 p-[0.6vh] no-underline text-black flex flex-col items-center hover:border-green-500 hover:shadow-lg transition box-border rounded-[1.2vh] w-[12vh] min-w-[12vh] relative"
             >
               {/* 미니 뱃지 추가 */}
-              <div className="absolute top-[0.5vh] right-[0.5vh] bg-green-500 text-white text-[1vh] px-[0.6vh] rounded-full">
-                {team.teamManager.userMail === userMail ? '매니저' : '팀원'}
-              </div>
+              <div className={`absolute top-[0.5vh] right-[0.5vh] flex items-center gap-[0.2vh] px-[0.5vh] py-[0.1vh] rounded-full shadow-sm
+  ${team.teamManager.userMail === userMail ? 'bg-yellow-300 text-black' : 'bg-green-400 text-white'}`}>
+  {team.teamManager.userMail === userMail ? (
+    <>
+      <FaCrown className="text-[1.1vh]" />
+      <span className="text-[1.1vh] font-medium leading-none">매니저</span>
+    </>
+  ) : (
+    <>
+      <FaUser className="text-[1.1vh]" />
+      <span className="text-[1.1vh] font-medium leading-none">팀원</span>
+    </>
+  )}
+</div>
+
+
+
               <img
                 src={`http://52.78.12.127:8080/logos/${team.logo}`}
                 onError={(e) => {

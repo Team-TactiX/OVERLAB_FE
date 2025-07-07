@@ -2,22 +2,32 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ChangeButton = styled.button`
-  background-color: black;
+  background-color: #00b894; // 스포티한 민트 색상
   color: white;
   width: 100%;
   height: 5.5vh;
   font-size: 1.8vh;
-  border-radius: 1vh;
-  margin: 0;
-  box-sizing: border-box;
+  font-weight: 700;
+  border-radius: 2vh; // 더 둥글게
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); // 살짝 그림자
+  transition: all 0.2s ease;
+
   &:hover {
+    background-color: white;
+    color: #00b894;
+    border: 1px solid #00b894;
     cursor: pointer;
   }
+
   &:disabled {
-    background-color: #999;
+    background-color: #bbb;
+    color: #666;
     cursor: not-allowed;
+    border: none;
   }
 `;
+
 
 const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition }) => {
   const isAlreadyJoined = users?.some((user) => user.userMail === userMail);

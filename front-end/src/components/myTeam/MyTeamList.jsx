@@ -6,7 +6,7 @@ const MyTeamList = ({ teams }) => {
   }
 
   return (
-    <div className="flex flex-col gap-[2vh]">
+    <div className="flex flex-col gap-[1vh]">
       {teams.map((team, index) => (
         <MyTeam key={index} team={team} />
       ))}

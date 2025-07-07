@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import field from '../../img/field.png';
+import playerIcon from '../../img/player.png';
 import useGameData from '../../hooks/useGameData';
 import GameJoin from './GameJoin';
 import GameDelete from './GameDelete';
@@ -16,7 +17,7 @@ const PageWrapper = styled.div`
 const Card = styled.div`
   width: 90%;
   max-width: 60vh;
-  background-color: #fff;
+  background-color: #f9f9f9;;
   border-radius: 12px;
   padding: 3vh 3vw;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -54,21 +55,31 @@ const ButtonBox = styled.div`
   height: 100%;
 `;
 
-const StyledButton = styled.button`
+const PlayerCard = styled.div`
   position: absolute;
   top: ${(props) => props.$top};
   left: ${(props) => props.$left};
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: rgba(240, 228, 57, 0.7);
-  color: black;
-  border: 2px solid black;
-  border-radius: 20vh;
-  cursor: pointer;
-  width: 8.2vh;
-  height: 4vh;
-  font-size: 1.5vh;
+  justify-content: center;
+  cursor: default;
+
+  img {
+    width: 4.5vh;
+    height: 4.5vh;
+    object-fit: contain;
+  }
+`;
+
+const PlayerName = styled.span`
+  position: absolute;
+  top: ${(props) => props.$top};
+  left: ${(props) => props.$left};
+  color: white;
+  font-size: 1.8vh;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 0 0.5vh black, 0 0 1vh black;
 `;
 
 const ControlButtonBox = styled.div`
@@ -107,31 +118,31 @@ const GameInfo = ({ setUpdate }) => {
   sessionStorage.setItem('teamId', teamId);
 
   const positionList = [
-    { key: 'stId', label: 'ST', top: '1vh', left: '20.3vh' },
-    { key: 'lsId', label: 'LS', top: '4vh', left: '11.6vh' },
-    { key: 'rsId', label: 'RS', top: '4vh', left: '29vh' },
-    { key: 'lwId', label: 'LW', top: '7vh', left: '3.6vh' },
-    { key: 'cfId', label: 'CF', top: '7vh', left: '20.3vh' },
-    { key: 'rwId', label: 'RW', top: '7vh', left: '37.6vh' },
-    { key: 'lamId', label: 'LAM', top: '13vh', left: '11.6vh' },
-    { key: 'camId', label: 'CAM', top: '13vh', left: '20.3vh' },
-    { key: 'ramId', label: 'RAM', top: '13vh', left: '29vh' },
-    { key: 'lmId', label: 'LM', top: '19vh', left: '3vh' },
-    { key: 'lcmId', label: 'LCM', top: '19vh', left: '11.6vh' },
-    { key: 'cmId', label: 'CM', top: '19vh', left: '20.3vh' },
-    { key: 'rcmId', label: 'RCM', top: '19vh', left: '29vh' },
-    { key: 'rmId', label: 'RM', top: '19vh', left: '37.6vh' },
-    { key: 'lwbId', label: 'LWB', top: '25vh', left: '3vh' },
-    { key: 'ldmId', label: 'LDM', top: '25vh', left: '11.6vh' },
-    { key: 'cdmId', label: 'CDM', top: '25vh', left: '20.3vh' },
-    { key: 'rdmId', label: 'RDM', top: '25vh', left: '29vh' },
-    { key: 'rwbId', label: 'RWB', top: '25vh', left: '37.6vh' },
-    { key: 'lbId', label: 'LB', top: '31vh', left: '3vh' },
-    { key: 'lcbId', label: 'LCB', top: '31vh', left: '11.6vh' },
-    { key: 'swId', label: 'SW', top: '31vh', left: '20.3vh' },
-    { key: 'rcbId', label: 'RCB', top: '31vh', left: '29vh' },
-    { key: 'rbId', label: 'RB', top: '31vh', left: '37.6vh' },
-    { key: 'gkId', label: 'GK', top: '37vh', left: '20.3vh' },
+    { key: 'stId', top: '1vh', left: '20.3vh' },
+    { key: 'lsId', top: '3vh', left: '11.6vh' },
+    { key: 'rsId', top: '3vh', left: '29vh' },
+    { key: 'lwId', top: '6vh', left: '3.6vh' },
+    { key: 'cfId', top: '6vh', left: '20.3vh' },
+    { key: 'rwId', top: '6vh', left: '37.6vh' },
+    { key: 'lamId', top: '12vh', left: '11.6vh' },
+    { key: 'camId', top: '12vh', left: '20.3vh' },
+    { key: 'ramId', top: '12vh', left: '29vh' },
+    { key: 'lmId', top: '18vh', left: '3vh' },
+    { key: 'lcmId', top: '18vh', left: '11.6vh' },
+    { key: 'cmId', top: '18vh', left: '20.3vh' },
+    { key: 'rcmId', top: '18vh', left: '29vh' },
+    { key: 'rmId', top: '18vh', left: '37.6vh' },
+    { key: 'lwbId', top: '24vh', left: '3vh' },
+    { key: 'ldmId', top: '24vh', left: '11.6vh' },
+    { key: 'cdmId', top: '24vh', left: '20.3vh' },
+    { key: 'rdmId', top: '24vh', left: '29vh' },
+    { key: 'rwbId', top: '24vh', left: '37.6vh' },
+    { key: 'lbId', top: '30vh', left: '3vh' },
+    { key: 'lcbId', top: '30vh', left: '11.6vh' },
+    { key: 'swId', top: '30vh', left: '20.3vh' },
+    { key: 'rcbId', top: '30vh', left: '29vh' },
+    { key: 'rbId', top: '30vh', left: '37.6vh' },
+    { key: 'gkId', top: '36vh', left: '20.3vh' },
   ];
 
   useEffect(() => {
@@ -183,9 +194,17 @@ const GameInfo = ({ setUpdate }) => {
             <ButtonBox>
               {positionList.map(({ key, top, left }) =>
                 game[key] ? (
-                  <StyledButton key={key} $top={top} $left={left}>
-                    {game[key].userName}
-                  </StyledButton>
+                  <>
+                    <PlayerCard key={key} $top={top} $left={left}>
+                      <img src={playerIcon} alt="player" />
+                    </PlayerCard>
+                    <PlayerName
+                      $top={key === 'gkId' ? `calc(${top} + 2vh)` : `calc(${top} + 2.5vh)`}
+                      $left={left}
+                    >
+                      {game[key].userName}
+                    </PlayerName>
+                  </>
                 ) : null
               )}
             </ButtonBox>

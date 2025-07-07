@@ -23,7 +23,7 @@ const SectionWrapper = styled.div`
 `;
 
 const Divider = styled.div`
-  height: 0.4vh;
+  height: 0.7vh;
   background-color: #f2f2f2;
   margin: 1vh 0;
   border-radius: 1vh;
