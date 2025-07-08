@@ -1,33 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-
-const ChangeButton = styled.button`
-  background-color: #00b894; // 스포티한 민트 색상
-  color: white;
-  width: 100%;
-  height: 5.5vh;
-  font-size: 1.8vh;
-  font-weight: 700;
-  border-radius: 2vh; // 더 둥글게
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); // 살짝 그림자
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: white;
-    color: #00b894;
-    border: 1px solid #00b894;
-    cursor: pointer;
-  }
-
-  &:disabled {
-    background-color: #bbb;
-    color: #666;
-    cursor: not-allowed;
-    border: none;
-  }
-`;
-
+import soccerFieldIcon from '../../img/field.png'; // 축구장 아이콘 이미지 경로
 
 const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition }) => {
   const isAlreadyJoined = users?.some((user) => user.userMail === userMail);
@@ -56,7 +28,7 @@ const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition
     if (!isAlreadyJoined) return alert('참가 중이 아닙니다.');
     try {
       if (hasPermission) {
-        await handleRemovePosition(); // 포지션 제거 먼저
+        await handleRemovePosition();
       }
       const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/remove-from-game`, {
         method: 'DELETE',
@@ -76,18 +48,36 @@ const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition
   };
 
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-        <ChangeButton onClick={handleJoinGame} style={{ width: '48%' }}>
-          경기 참가
-        </ChangeButton>
-        <ChangeButton onClick={handleLeaveGame} style={{ width: '48%' }}>
-          참가 취소
-        </ChangeButton>
+    <div className="w-full">
+      <div className="flex justify-between w-full gap-[1vh] mb-[2vh]">
+        {/* 경기 참가 버튼 */}
+        <button
+          onClick={handleJoinGame}
+          className="flex items-center justify-center gap-2 bg-[#00C851] text-white font-semibold text-[1.8vh] rounded-[3vh] h-[5.5vh] w-[48%] shadow-md hover:bg-[#00b44b] hover:-translate-y-[0.3vh] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200"
+        >
+          <span className="text-[2vh] font-bold">⚽</span>
+          <span className="tracking-wide">경기 참가</span>
+        </button>
+
+        {/* 참가 취소 버튼 (연한 빨간색) */}
+        <button
+          onClick={handleLeaveGame}
+          className="flex items-center justify-center gap-2 bg-[#FFCDD2] text-[#B71C1C] font-semibold text-[1.8vh] rounded-[3vh] h-[5.5vh] w-[48%] shadow-md hover:bg-[#EF9A9A] hover:-translate-y-[0.3vh] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200"
+        >
+          <span className="text-[2vh] font-bold">❌</span>
+          <span className="tracking-wide">참가 취소</span>
+        </button>
       </div>
+
+      {/* 포메이션 요청 버튼 */}
       {!hasPermission && (
-        <Link to={`/pr/list/${gameId}`} style={{ width: '100%', display: 'block', marginTop: '2vh' }}>
-          <ChangeButton>포메이션 요청</ChangeButton>
+        <Link to={`/pr/list/${gameId}`} className="w-full block">
+          <button
+            className="flex items-center justify-center gap-2 bg-white text-[#00C851] font-semibold text-[1.8vh] rounded-[3vh] h-[5.5vh] w-full shadow-md border-2 border-[#00C851] hover:text-green hover:-translate-y-[0.3vh] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200"
+          >
+            <img src={soccerFieldIcon} alt="축구장" className="w-[2.4vh] h-[2.4vh]" />
+            <span className="tracking-wide">포메이션 요청</span>
+          </button>
         </Link>
       )}
     </div>
