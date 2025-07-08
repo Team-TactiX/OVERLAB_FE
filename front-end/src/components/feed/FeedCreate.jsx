@@ -70,7 +70,7 @@ const FeedCreate = ({ userMail, onClose }) => {
     };
 
     try {
-      const res = await fetch('/api/community', {
+      const res = await fetch('http://52.78.12.127:8080/api/community', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

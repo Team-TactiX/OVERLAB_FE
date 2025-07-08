@@ -1,35 +1,35 @@
+import { useParams } from "react-router-dom";
 import Comment from "./Comment";
 import CommentCreate from "./CommentCreate";
+import { useEffect, useState } from "react";
 
 const CommentList = ({ videoRef }) => {
-  const commentes = [
-    {
-      id: 1,
-      author: '김민지',
-      content: '정말 유익한 게시글이네요! 감사합니다 😊',
-      createdAt: '2025-07-06T15:30:00',
-    },
-    {
-      id: 2,
-      author: '이준호',
-      content: '0:10 이 부분은 조금 더 설명이 필요할 것 같아요.',
-      createdAt: '2025-07-06T16:10:00',
-    },
-    {
-      id: 3,
-      author: '박지현',
-      content: '공감합니다! 팀원들과 공유했어요 💬',
-      createdAt: '2025-07-07T08:45:00',
-    },
-  ];
+  const { teamFeedId } = useParams("teamFeedId");
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(`http://52.78.12.127:8080/api/comments/file/${teamFeedId}`)
+        const data = await res.json()
+        setComments(data)
+        console.log(data)
+      } catch (err) {
+      console.error(err);
+        alert('서버 오류')
+      }
+    }
+
+    fetchComments()
+  }, [teamFeedId])
 
   return (
     <div className="mt-4">
-      <CommentCreate />
+      <CommentCreate teamFeedId={teamFeedId} />
       <h3 className="text-md font-semibold mb-2">댓글 리스트</h3>
       <ul className="space-y-2">
-        {commentes.map(comment => (
-          <Comment key={comment.id} comment={comment} videoRef={videoRef} />
+        {comments.map(comment => (
+          <Comment key={comment.feedId} comment={comment} videoRef={videoRef} />
         ))}
       </ul>
     </div>

@@ -129,6 +129,7 @@ const GameUpdate = ({ setUpdate, setSelectedPositionKey, setUsers, setIsOpen, ga
           payload[key] = payload[key].userMail;
         }
       }
+      
       const response = await fetch('/api/games/update-game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -17,7 +17,6 @@ const TeamFeedDetailList = ({ teamId }) => {
       const res = await fetch(`http://52.78.12.127:8080/api/files/team/${teamId}`);
       const data = await res.json();
       setTeamFeedList(data);
-      console.log(data)
     };
     fetchData();
 

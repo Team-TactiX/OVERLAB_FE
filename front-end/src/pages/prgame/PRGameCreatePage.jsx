@@ -27,7 +27,7 @@ const PRGameCreatePage = () => {
 
   return (
     <PRGameCreatePageContainer>
-      <PRGameCreate setUsers={setUsers} setIsOpen={setIsOpen} setSelectedPositionKey={setSelectedPositionKey} />
+      <PRGameCreate game={game} setGame={setGame} setUsers={setUsers} setIsOpen={setIsOpen} setSelectedPositionKey={setSelectedPositionKey} />
       <PopUp
         isOpen={isOpen}
         selectedPositionKey={selectedPositionKey}
@@ -37,6 +37,7 @@ const PRGameCreatePage = () => {
         setGame={setGame}
         setIsOpen={setIsOpen}
         togglePopup={togglePopup}
+        setUsers={setUsers}
       />
 
     </PRGameCreatePageContainer>

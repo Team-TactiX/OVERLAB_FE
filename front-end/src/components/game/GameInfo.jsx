@@ -134,7 +134,10 @@ const GameInfo = ({ setUpdate }) => {
             />
             {hasPermission && (
               <>
-                <button className="flex items-center rounded-full bg-[#00b894] text-white px-[1vh] py-[0.8vh] hover:bg-[#00a57a] active:scale-95 w-full justify-center transition">
+                <button 
+                  onClick={() => setUpdate(true)}
+                  className="flex items-center rounded-full bg-[#00b894] text-white px-[1vh] py-[0.8vh] hover:bg-[#00a57a] active:scale-95 w-full justify-center transition"
+                >
                   수정
                 </button>
                 <GameDelete gameId={gameId} teamId={teamId} />

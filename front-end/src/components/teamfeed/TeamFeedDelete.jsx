@@ -9,7 +9,7 @@ const TeamFeedDelete = ({ teamFeedId, teamFeed }) => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`/api/files/${teamFeedId}`, {
+      const res = await fetch(`http://52.78.12.127:8080/api/files/${teamFeedId}`, {
         method: 'DELETE'
       });
 

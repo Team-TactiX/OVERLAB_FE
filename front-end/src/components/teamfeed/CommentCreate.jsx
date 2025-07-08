@@ -1,10 +1,41 @@
 import { useState } from "react";
 
-const CommentCreate = () => {
+const CommentCreate = ({ teamFeedId }) => {
   const [content, setContent] = useState('');
+  const userMail = sessionStorage.getItem('userMail');
 
-  const handleSubmit = () => {
-    // 생성 로직
+  const handleSubmit = async () => {
+    if (!content.trim()) {
+      alert("댓글을 입력해주세요.");
+      return;
+    }
+
+    const body = {
+      userMail: userMail,
+      content: content,
+      fileId: Number(teamFeedId),
+    };
+
+    try {
+      const res = await fetch('http://52.78.12.127:8080/api/comments/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || '댓글 등록 실패');
+      }
+
+      alert('댓글이 등록되었습니다.');
+      window.location.reload();
+    } catch (err) {
+      console.error('등록 오류:', err);
+      alert('댓글 등록 중 문제가 발생했습니다.');
+    }
   };
 
   return (

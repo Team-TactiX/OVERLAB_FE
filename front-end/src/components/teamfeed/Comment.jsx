@@ -32,14 +32,10 @@ const Comment = ({ comment, videoRef }) => {
     );
   };
 
-  const handleSave = () => {
-    // 수정 로직
-  };
-
   return (
     <li className="p-4 border border-gray-200 rounded-xl bg-white shadow-sm">
       <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-semibold text-gray-800">{comment.author}</span>
+        <span className="text-sm font-semibold text-gray-800">{comment.user.userName}</span>
         <div className="flex items-center gap-2">
           {!isEditing && (
             <button
@@ -60,7 +56,6 @@ const Comment = ({ comment, videoRef }) => {
       ) : (
         <CommentUpdate
           comment={comment}
-          onSave={handleSave}
           onCancel={() => setIsEditing(false)}
         />
       )}

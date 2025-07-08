@@ -46,6 +46,7 @@ const PRGameList = () => {
   const [data, setData] = useState([]);
   const [prGameData, setPRGameData] = useState([]);
   const [teamManagerMail, setTeamManagerMail] = useState(null)
+  sessionStorage.setItem('gameId', gameId)
 
   useEffect(() => {
     const fetchGame = async () => {

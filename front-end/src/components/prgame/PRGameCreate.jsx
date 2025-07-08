@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import field from '../../img/field.png';
 
-const PRGameCreate = ({ setUsers, setIsOpen, setSelectedPositionKey }) => {
+const PRGameCreate = ({ game, setGame, setUsers, setIsOpen, setSelectedPositionKey }) => {
   const { gameId } = useParams();
   const userMail = sessionStorage.getItem('userMail');
-  const [game, setGame] = useState(null);
   const [title, setTitle] = useState('');
   const navigate = useNavigate();
 
@@ -46,12 +45,19 @@ const PRGameCreate = ({ setUsers, setIsOpen, setSelectedPositionKey }) => {
     const fetchGame = async () => {
       const res = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
       const data = await res.json();
-      const filtered = data.playersMail.filter((p) => p.userMail !== userMail);
-      setGame(filtered);
+      setGame(data);
       setUsers(data.playersMail);
     };
+
     fetchGame();
   }, [gameId]);
+
+  const handleResetFormation = () => {
+    positionList.forEach(({ key }) => {
+      setGame((prevGame) => ({ ...prevGame, [key]: null }));
+    })
+  }
+
 
   const handleRequestPRGame = async () => {
     if (!game) return;
@@ -113,7 +119,7 @@ const PRGameCreate = ({ setUsers, setIsOpen, setSelectedPositionKey }) => {
                 style={{ top: top, left: left }}
                 onClick={() => handlePositionClick(key)}
               >
-                {game[key]?.userName || label}
+                {game[key] ? game[key].userName : label}
               </button>
             ))}
           </div>
@@ -123,6 +129,12 @@ const PRGameCreate = ({ setUsers, setIsOpen, setSelectedPositionKey }) => {
           className="w-full bg-[#00b894] text-white py-[1.4vh] text-[2vh] rounded-full hover:bg-[#00a57a] active:scale-95 transition"
         >
           포메이션 요청
+        </button>
+        <button
+          onClick={handleResetFormation}
+          className="w-full bg-[#00b894] text-white py-[1.4vh] text-[2vh] rounded-full hover:bg-[#00a57a] active:scale-95 transition"
+        >
+          포메이션 초기화
         </button>
       </div>
     </div>
