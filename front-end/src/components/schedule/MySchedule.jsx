@@ -48,7 +48,7 @@ const MySchedule = ({ game }) => {
         <div className={`${barColor} w-[0.8vh] h-full rounded-tl-[1.2vh] rounded-bl-[1.2vh]`}></div>
 
         {/* 본문 */}
-        <div className="flex-1 p-[2vh] flex flex-col gap-[1vh]">
+        <div className="flex-1 p-[1vh] flex flex-col gap-[1vh]">
 
           {/* 상단 (날짜 + 상태) */}
           <div className="flex justify-between items-center">
