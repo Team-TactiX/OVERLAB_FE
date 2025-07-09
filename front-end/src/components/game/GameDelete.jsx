@@ -1,25 +1,31 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ChangeButton = styled.button`
-  background-color: black;
-  color: white;
+const RedButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vh;
   width: 100%;
   height: 5.5vh;
   font-size: 1.8vh;
-  border-radius: 1vh;
-  margin: 0;
-  box-sizing: border-box;
+  font-weight: 600;
+  border-radius: 3vh;
+  color: #B71C1C;
+  background-color: #FFCDD2;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {
-    cursor: pointer;
+    transform: translateY(-0.3vh) scale(1.05);
+    background-color: #EF9A9A;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
-  &:disabled {
-    background-color: #999;
-    cursor: not-allowed;
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
-const GameDelete = ({ gameId, teamId, setUpdate }) => {
+const GameDelete = ({ gameId, teamId }) => {
   const navigate = useNavigate();
 
   const handleDeleteGame = async () => {
@@ -47,14 +53,10 @@ const GameDelete = ({ gameId, teamId, setUpdate }) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3vh' }}>
-      <ChangeButton
-        onClick={handleDeleteGame}
-        style={{ width: '13vh', backgroundColor: '#c0392b' }}
-      >
-        경기 삭제
-      </ChangeButton>
-    </div>
+    <RedButton onClick={handleDeleteGame}>
+      <span className="text-[2vh]">🗑️</span>
+      <span className="tracking-wide">경기 삭제</span>
+    </RedButton>
   );
 };
 

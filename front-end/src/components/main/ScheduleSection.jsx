@@ -5,6 +5,7 @@ import 'dayjs/locale/ko';
 import { Link } from 'react-router-dom';
 import altImage from '../../img/alt_image.png';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import { FaCrown, FaUser } from 'react-icons/fa';
 
 dayjs.locale('ko');
 
@@ -123,9 +124,20 @@ const ScheduleSection = () => {
               className="no-underline text-black flex-shrink-0 relative"
             >
               {/* 미니 뱃지 추가 */}
-              <div className="absolute top-[0.5vh] right-[0.5vh] bg-orange-500 text-white text-[1vh] px-[0.6vh] rounded-full">
-                경기
-              </div>
+            <div className={`absolute top-[0.5vh] right-[0.5vh] flex items-center gap-[0.3vh] px-[0.6vh] py-[0.2vh] rounded-full shadow-sm
+  ${game.team.teamManager.userMail === userMail ? 'bg-yellow-300 text-black' : 'bg-green-400 text-white'}`}>
+  {game.team.teamManager.userMail === userMail ? (
+    <>
+      <FaCrown className="text-[1.1vh]" />
+      <span className="text-[1.1vh] font-medium leading-none">매니저</span>
+    </>
+  ) : (
+    <>
+      <FaUser className="text-[1.1vh]" />
+      <span className="text-[1.1vh] font-medium leading-none">팀원</span>
+    </>
+  )}
+</div>
               <div className="flex flex-col items-center w-[16vh] min-w-[16vh] bg-white border-2 border-gray-200 rounded-[1.2vh] p-[1.5vh] text-center cursor-pointer transition hover:border-green-500 hover:shadow-lg">
                 <div className="text-[1.6vh] font-bold mb-[0.5vh] truncate w-full min-w-0">
                   {dayjs(game.date).format('MM/DD (ddd)')}

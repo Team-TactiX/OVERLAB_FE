@@ -86,9 +86,8 @@ const PRGame = ({ prGameId, setUpdate, users, getPRCount, positionList }) => {
   return (
     <PRGameContainer>
       <h2>{prGame?.prGameName}</h2>
-      <h2>참석인원 : {users.length} | 참가인원 : {count}</h2>
-      <div
-        className="relative w-[49vh] h-[42vh] mb-[4vh]"
+      <h2>Starting : {users.length} | <span className="text-green-500">Lineup: {count}</span> </h2>
+      <div className="relative w-[49vh] h-[42vh] mb-[4vh] ml-[1vw]"
         style={{ backgroundImage: `url(${field})`, backgroundSize: '100% 100%' }}
       >
         <div className="absolute w-full h-full">

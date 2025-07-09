@@ -57,15 +57,20 @@ const GameInfo = ({ setUpdate, game, setGame, users, teamId, positionList, getCo
     <div className="min-h-[100vh] w-full bg-[#f9f9f9] flex justify-center py-[10vh]">
       <div className="w-[100%] max-w-[60vh] bg-white rounded-xl p-[3vh_3vw] shadow-lg animate-fadeUp">
         <div className="flex flex-col items-center animate-fadeIn">
+
+          {/* 날짜 + VS 상대팀 */}
           <span className="text-[1.5vh] text-gray-400 mb-[0.5vh]">경기 일정</span>
-          <h2 className="text-[2.6vh] font-extrabold text-[#2c3e50] mb-[1vh]">{game.date.slice(0, 10)}</h2>
-          <h2 className="text-[2.4vh] font-extrabold text-[#2c3e50] mb-[3vh] tracking-wide">
-            <div className="relative inline-flex items-center px-[1.2vh] py-[0.4vh] bg-[#ecf0f1] rounded-[1vh] shadow-md hover:bg-[#dfe6e9] transition">
-              <span className="text-[#2c3e50]">{game.gameName}</span>
-              <span className="absolute top-[-0.5vh] right-[-0.5vh] w-[0.8vh] h-[0.8vh] bg-[#00b894] rounded-full shadow-sm"></span>
-            </div>
+          <h2 className="text-[2.6vh] font-extrabold text-[#2c3e50] mb-[1vh]">
+            {game.date.slice(0, 10)} VS {game.versus}
           </h2>
-          <h2>참석인원 : {users.length} | 참가인원 : {count}</h2>
+
+          {/* 인원 */}
+          <div className="flex gap-[1.5vh] items-center text-[1.6vh] font-semibold mb-[2vh]">
+            <span className="text-gray-500">Starting: {users.length}</span>
+            <span className="text-green-500">Lineup: {count}</span>
+          </div>
+
+          {/* 필드 */}
           <div
             className="relative w-[49vh] h-[42vh] mb-[4vh]"
             style={{ backgroundImage: `url(${field})`, backgroundSize: '100% 100%' }}
@@ -95,6 +100,24 @@ const GameInfo = ({ setUpdate, game, setGame, users, teamId, positionList, getCo
             </div>
           </div>
 
+          {/* 팀명 / 매니저명 + 톱니바퀴 (한 줄, 좌측 정렬) */}
+          <div className="w-full flex justify-between items-center px-[1vh] mb-[1.5vh]">
+            <div className="flex flex-col">
+              <div className="text-[2vh] font-bold text-[#2c3e50]">{game.team?.teamName}</div>
+              <div className="text-[1.6vh] text-gray-600">매니저: {game.team?.teamManager?.userName}</div>
+            </div>
+            {hasPermission && (
+              <button
+                onClick={() => setUpdate(true)}
+                className="text-gray-600 hover:text-black text-[2.2vh]"
+                title="경기 수정"
+              >
+                ⚙️
+              </button>
+            )}
+          </div>
+
+          {/* 참가/취소 버튼 */}
           <div className="flex flex-col gap-[1.5vh] items-center w-full">
             <GameJoin
               game={game}
@@ -106,22 +129,6 @@ const GameInfo = ({ setUpdate, game, setGame, users, teamId, positionList, getCo
               handleRemovePosition={handleRemovePosition}
               positionList={positionList}
             />
-            {hasPermission && (
-              <>
-                <button 
-                  onClick={() => setUpdate(true)}
-                  className="flex items-center rounded-full bg-[#00b894] text-white px-[1vh] py-[0.8vh] hover:bg-[#00a57a] active:scale-95 w-full justify-center transition"
-                >
-                  수정
-                </button>
-                <GameDelete gameId={gameId} teamId={teamId} />
-                <Link to={`/pr/list/${gameId}`} className="w-full">
-                  <button className="flex items-center rounded-full bg-[#00b894] text-white px-[1vh] py-[0.8vh] hover:bg-[#00a57a] active:scale-95 w-full justify-center transition">
-                    요청 확인
-                  </button>
-                </Link>
-              </>
-            )}
           </div>
         </div>
       </div>
