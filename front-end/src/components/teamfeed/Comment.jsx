@@ -4,6 +4,8 @@ import CommentUpdate from "./CommentUpdate";
 
 const Comment = ({ comment, videoRef }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const userMail = sessionStorage.getItem('userMail');
+  const isAuthor = userMail === comment.user.userMail;
 
   const handleTimeClick = (timeStr) => {
     const [min, sec] = timeStr.split(':').map(Number);
@@ -36,7 +38,7 @@ const Comment = ({ comment, videoRef }) => {
     <li className="p-4 border border-gray-200 rounded-xl bg-white shadow-sm">
       <div className="flex justify-between items-center mb-2">
         <span className="text-sm font-semibold text-gray-800">{comment.user.userName}</span>
-        <div className="flex items-center gap-2">
+        {isAuthor && (<div className="flex items-center gap-2">
           {!isEditing && (
             <button
               onClick={() => setIsEditing(true)}
@@ -46,7 +48,7 @@ const Comment = ({ comment, videoRef }) => {
             </button>
           )}
           <CommentDelete comment={comment} />
-        </div>
+        </div>)}
       </div>
 
       {!isEditing ? (

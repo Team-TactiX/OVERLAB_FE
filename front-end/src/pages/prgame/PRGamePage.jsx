@@ -10,7 +10,7 @@ const PRGamePage = () => {
   const [update, setUpdate] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPositionKey, setSelectedPositionKey] = useState(null);
-  const { game, prGame, users, loading, setGame, setPRGame, setUsers } = usePRGameData();
+  const { game, prGame, users, loading, setGame, setPRGame, setUsers, getCount, getPRCount, positionList } = usePRGameData();
 
   const togglePopup = () => {
     setIsOpen((prev) => {
@@ -35,9 +35,13 @@ const PRGamePage = () => {
           setPRGame={setPRGame} 
           game={game}
           setGame={setGame}
+          getCount={getCount}
+          users={users}
+          getPRCount={getPRCount}
+          positionList={positionList}
         />
       ) : (
-        <PRGame prGameId={prGameId} setUpdate={setUpdate} />
+        <PRGame prGameId={prGameId} users={users} setUpdate={setUpdate} getCount={getCount} getPRCount={getPRCount} positionList={positionList} />
       )}
       <PRGamePopUp
         isOpen={isOpen}

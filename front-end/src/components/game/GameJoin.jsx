@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import soccerFieldIcon from '../../img/field.png'; // 축구장 아이콘 이미지 경로
 
-const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition }) => {
+const GameJoin = ({ game, setGame, userMail, users, gameId, hasPermission, handleRemovePosition, positionList }) => {
   const isAlreadyJoined = users?.some((user) => user.userMail === userMail);
 
   const handleJoinGame = async () => {
@@ -23,19 +23,39 @@ const GameJoin = ({ userMail, users, gameId, hasPermission, handleRemovePosition
       alert('서버 오류가 발생했습니다.');
     }
   };
+      
 
   const handleLeaveGame = async () => {
     if (!isAlreadyJoined) return alert('참가 중이 아닙니다.');
+    const updatedGame = { ...game };
+
+    positionList.map(({ key }) => {
+      if (game[key]) {
+        const isJoining = game[key].userMail === userMail;
+        if (isJoining) {
+          updatedGame[key] = null;
+        }
+      }
+    })
+
     try {
       if (hasPermission) {
         await handleRemovePosition();
       }
+
+      const response = await fetch('http://52.78.12.127:8080/api/games/update-game', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedGame),
+      });
+
       const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/remove-from-game`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail }),
       });
-      if (res.ok) {
+
+      if (res.ok && response.ok) {
         alert('경기 참가 취소가 완료되었습니다.');
         window.location.reload();
       } else {

@@ -1,63 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import field from '../../img/field.png';
+import playerIcon from '../../img/player.png';
 
-const PRGameCreate = ({ game, setGame, setUsers, setIsOpen, setSelectedPositionKey }) => {
+const PRGameCreate = ({ game, setGame, users, setIsOpen, setSelectedPositionKey, positionList, getCount }) => {
   const { gameId } = useParams();
+  const count = getCount();
   const userMail = sessionStorage.getItem('userMail');
   const [title, setTitle] = useState('');
   const navigate = useNavigate();
-
-  const positionList = [
-    { key: 'stId', label: 'ST', top: '1vh', left: '22.3vh' },
-    { key: 'lsId', label: 'LS', top: '4vh', left: '11.6vh' },
-    { key: 'rsId', label: 'RS', top: '4vh', left: '29vh' },
-    { key: 'lwId', label: 'LW', top: '7vh', left: '3.6vh' },
-    { key: 'cfId', label: 'CF', top: '7vh', left: '22.3vh' },
-    { key: 'rwId', label: 'RW', top: '7vh', left: '37.6vh' },
-    { key: 'lamId', label: 'LAM', top: '13vh', left: '11.6vh' },
-    { key: 'camId', label: 'CAM', top: '13vh', left: '22.3vh' },
-    { key: 'ramId', label: 'RAM', top: '13vh', left: '29vh' },
-    { key: 'lmId', label: 'LM', top: '19vh', left: '3vh' },
-    { key: 'lcmId', label: 'LCM', top: '19vh', left: '11.6vh' },
-    { key: 'cmId', label: 'CM', top: '19vh', left: '22.3vh' },
-    { key: 'rcmId', label: 'RCM', top: '19vh', left: '29vh' },
-    { key: 'rmId', label: 'RM', top: '19vh', left: '37.6vh' },
-    { key: 'lwbId', label: 'LWB', top: '25vh', left: '3vh' },
-    { key: 'ldmId', label: 'LDM', top: '25vh', left: '11.6vh' },
-    { key: 'cdmId', label: 'CDM', top: '25vh', left: '22.3vh' },
-    { key: 'rdmId', label: 'RDM', top: '25vh', left: '29vh' },
-    { key: 'rwbId', label: 'RWB', top: '25vh', left: '37.6vh' },
-    { key: 'lbId', label: 'LB', top: '31vh', left: '3vh' },
-    { key: 'lcbId', label: 'LCB', top: '31vh', left: '11.6vh' },
-    { key: 'swId', label: 'SW', top: '31vh', left: '22.3vh' },
-    { key: 'rcbId', label: 'RCB', top: '31vh', left: '29vh' },
-    { key: 'rbId', label: 'RB', top: '31vh', left: '37.6vh' },
-    { key: 'gkId', label: 'GK', top: '37vh', left: '22.3vh' },
-  ];
 
   const handlePositionClick = (positionKey) => {
     setSelectedPositionKey(positionKey);
     setIsOpen(true);
   };
 
-  useEffect(() => {
-    const fetchGame = async () => {
-      const res = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
-      const data = await res.json();
-      setGame(data);
-      setUsers(data.playersMail);
-    };
-
-    fetchGame();
-  }, [gameId]);
 
   const handleResetFormation = () => {
     positionList.forEach(({ key }) => {
       setGame((prevGame) => ({ ...prevGame, [key]: null }));
     })
   }
-
 
   const handleRequestPRGame = async () => {
     if (!game) return;
@@ -107,23 +70,35 @@ const PRGameCreate = ({ game, setGame, setUsers, setIsOpen, setSelectedPositionK
           onChange={(e) => setTitle(e.target.value)}
           className="w-full h-[5.5vh] mb-[3vh] text-center text-[2.2vh] rounded-[1vh] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00b894]"
         />
+        <h2>참석인원 : {users.length} | 참가인원 : {count}</h2>
         <div
-          className="relative w-[49vh] h-[42vh] mb-[4vh]"
-          style={{ backgroundImage: `url(${field})`, backgroundSize: '100% 100%' }}
-        >
-          <div className="absolute w-full h-full">
-            {positionList.map(({ key, label, top, left }) => (
-              <button
-                key={key}
-                className="absolute flex items-center justify-center bg-yellow-200 text-black border border-black rounded-full w-[8.2vh] h-[4vh] text-[1.5vh] hover:scale-105 transition"
-                style={{ top: top, left: left }}
-                onClick={() => handlePositionClick(key)}
-              >
-                {game[key] ? game[key].userName : label}
+        className="relative w-[49vh] h-[42vh] mb-[4vh]"
+        style={{ backgroundImage: `url(${field})`, backgroundSize: '100% 100%' }}
+      >
+        <div className="absolute w-full h-full">
+          {positionList.map(({ key, label, top, left }) =>
+           (
+              <button key={key} onClick={() => handlePositionClick(key)}>
+                <div
+                  className="absolute flex items-center justify-center"
+                  style={{ top: top, left: left }}
+                >
+                  <img src={playerIcon} alt="player" className="w-[4.5vh] h-[4.5vh] object-contain" />
+                </div>
+                <span
+                  className="absolute text-white font-bold text-[1.8vh] whitespace-nowrap drop-shadow-[0_0_0.6vh_black]"
+                  style={{
+                    top: key === 'gkId' ? `calc(${top} + 2.5vh)` : `calc(${top} + 2.5vh)`,
+                    left: left,
+                  }}
+                >
+                 {game[key] ? game[key].userName : label}
+                </span>
               </button>
-            ))}
-          </div>
+            )
+          )}
         </div>
+      </div>
         <button
           onClick={handleRequestPRGame}
           className="w-full bg-[#00b894] text-white py-[1.4vh] text-[2vh] rounded-full hover:bg-[#00a57a] active:scale-95 transition"

@@ -1,5 +1,8 @@
 const CommentDelete = ({ comment }) => {
   const handleRemove = async () => {
+    const confirmDelete = window.confirm('정말로 댓글을 삭제할까요?');
+    if (!confirmDelete) return;
+
     try {
       const response = await fetch(`http://52.78.12.127:8080/api/comments/${comment.feedId}`, {
          method: "DELETE"

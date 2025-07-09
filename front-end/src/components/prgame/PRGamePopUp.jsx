@@ -200,7 +200,7 @@ const PRGamePopUp = ({ isOpen, selectedPositionKey, setSelectedPositionKey, user
   return (
       <PopupBox $open={isOpen}>
         <PopupButton onClick={togglePopup}>{isOpen ? '▼' : '▲'}</PopupButton>
-
+        <PopupTitle>참가자 명단</PopupTitle>
         {selectedPositionKey && (
           <>
             <PopupTitle>추천 선수</PopupTitle>
@@ -227,7 +227,18 @@ const PRGamePopUp = ({ isOpen, selectedPositionKey, setSelectedPositionKey, user
           </>
         )}
 
-        <PopupTitle>참가자 명단</PopupTitle>
+        {selectedPositionKey && (
+          <ChangeButton
+            onClick={handleRemovePlayer}
+            style={{
+              marginTop: '2vh',
+              width: '100%',
+              backgroundColor: '#c0392b',
+            }}
+          >
+            선수 제거
+          </ChangeButton>
+        )}
         {otherUsers.length > 0 ? (
           <UsersBox>
             {otherUsers.map((user) => (
@@ -247,18 +258,6 @@ const PRGamePopUp = ({ isOpen, selectedPositionKey, setSelectedPositionKey, user
           <p style={{ textAlign: 'center', marginBottom: '2vh' }}>
             참가자가 없습니다
           </p>
-        )}
-        {selectedPositionKey && (
-          <ChangeButton
-            onClick={handleRemovePlayer}
-            style={{
-              marginTop: '2vh',
-              width: '100%',
-              backgroundColor: '#c0392b',
-            }}
-          >
-            선수 제거
-          </ChangeButton>
         )}
       </PopupBox>
   );
