@@ -8,7 +8,7 @@ const GameDetailPage = () => {
   const [update, setUpdate] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPositionKey, setSelectedPositionKey] = useState(null);
-  const { game, users, loading, setGame, setUsers } = useGameData();
+  const { game, users, teamId, loading, setGame, setUsers, positionList, getCount } = useGameData();
 
   const togglePopup = () => {
     setIsOpen((prev) => {
@@ -23,9 +23,9 @@ const GameDetailPage = () => {
   return (
     <>
       {update ? (
-        <GameUpdate setUpdate={setUpdate} setSelectedPositionKey={setSelectedPositionKey} setUsers={setUsers} setIsOpen={setIsOpen} game={game} setGame={setGame} />
+        <GameUpdate setUpdate={setUpdate} setSelectedPositionKey={setSelectedPositionKey} setUsers={setUsers} setIsOpen={setIsOpen} game={game} setGame={setGame} positionList={positionList} getCount={getCount} users={users} />
       ) : (
-        <GameInfo setUpdate={setUpdate} />
+        <GameInfo setUpdate={setUpdate}  game={game} setGame={setGame} users={users} teamId={teamId} positionList={positionList} getCount={getCount} />
       )}
       <PopUp
         isOpen={isOpen}

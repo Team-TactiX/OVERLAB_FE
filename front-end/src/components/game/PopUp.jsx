@@ -225,6 +225,10 @@ const PopUp = ({
             </>
           )}
 
+          {selectedPositionKey && (
+            <ChangeButton onClick={handleRemovePlayer}>선수 제거</ChangeButton>
+          )}
+
           <PopupTitle>참가자 명단</PopupTitle>
           {otherUsers.length > 0 ? (
             <UsersBox>
@@ -234,10 +238,6 @@ const PopUp = ({
             <p style={{ textAlign: 'center', marginBottom: '2vh' }}>
               참가자가 없습니다
             </p>
-          )}
-
-          {selectedPositionKey && (
-            <ChangeButton onClick={handleRemovePlayer}>선수 제거</ChangeButton>
           )}
         </>
       )}

@@ -8,6 +8,42 @@ const useGameData = () => {
   const [teamId, setTeamId] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const positionList = [
+    { key: 'stId', label: 'ST', top: '1vh', left: '22.3vh' },
+    { key: 'lsId', label: 'LS', top: '3vh', left: '14.3vh' },
+    { key: 'rsId', label: 'RS', top: '3vh', left: '30.3vh' },
+    { key: 'lwId', label: 'LW', top: '6vh', left: '6.3vh' },
+    { key: 'cfId', label: 'CF', top: '6vh', left: '22.3vh' },
+    { key: 'rwId', label: 'RW', top: '6vh', left: '38.3vh' },
+    { key: 'lamId', label: 'LAM', top: '12vh', left: '14.3vh' },
+    { key: 'camId', label: 'CAM', top: '13vh', left: '22.3vh' },
+    { key: 'ramId', label: 'RAM', top: '12vh', left: '30.3vh' },
+    { key: 'lmId', label: 'LM', top: '18vh', left: '6.3vh' },
+    { key: 'lcmId', label: 'LCM', top: '18vh', left: '14.3vh' },
+    { key: 'cmId', label: 'CM', top: '18vh', left: '22.3vh' },
+    { key: 'rcmId', label: 'RCM', top: '18vh', left: '30.3vh' },
+    { key: 'rmId', label: 'RM', top: '18vh', left: '38.3vh' },
+    { key: 'lwbId', label: 'LWB', top: '24vh', left: '6.3vh' },
+    { key: 'ldmId', label: 'LDM', top: '24vh', left: '14.3vh' },
+    { key: 'cdmId', label: 'CDM', top: '24vh', left: '22.3vh' },
+    { key: 'rdmId', label: 'RDM', top: '24vh', left: '30.3vh' },
+    { key: 'rwbId', label: 'RWB', top: '24vh', left: '38.3vh' },
+    { key: 'lbId', label: 'LB', top: '30vh', left: '6.3vh' },
+    { key: 'lcbId', label: 'LCB', top: '30vh', left: '14.3vh' },
+    { key: 'swId', label: 'SW', top: '30vh', left: '22.3vh' },
+    { key: 'rcbId', label: 'RCB', top: '30vh', left: '30.3vh' },
+    { key: 'rbId', label: 'RB', top: '30vh', left: '38.3vh' },
+    { key: 'gkId', label: 'GK', top: '36vh', left: '22.3vh' },
+  ];
+
+  const getCount = () => {
+    if (!game) return 0;
+
+    return positionList.filter(
+      (pos) => game[pos.key] !== null && game[pos.key] !== undefined,
+    ).length;
+  };
+
   useEffect(() => {
     const fetchGame = async () => {
       try {
@@ -28,7 +64,17 @@ const useGameData = () => {
     if (gameId) fetchGame();
   }, [gameId]);
 
-  return { game, users, teamId, loading, setGame, setUsers };
+  return {
+    game,
+    users,
+    teamId,
+    loading,
+    setGame,
+    setUsers,
+    positionList,
+    getCount,
+    positionList,
+  };
 };
 
 export default useGameData;

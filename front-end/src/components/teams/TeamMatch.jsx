@@ -65,6 +65,9 @@ const TeamMatch = ({ games, teamManagerMail }) => {
               <div className="flex flex-col items-center w-1/2 text-center">
                 <span className="text-xs text-gray-500 mb-1">{dayjs(game.date).format('YYYY.MM.DD HH:mm')}</span>
                 <span className="text-2xl font-bold text-blue-800">VS</span>
+                {game.playersMail?.some((player) => player.userMail === userMail) && (
+                  <span className="text-xs mt-1 text-green-600 font-semibold">참가중</span>
+                )}
               </div>
 
               {/* 어웨이 팀 */}
