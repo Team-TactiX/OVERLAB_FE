@@ -100,7 +100,7 @@ const UserNameBox = styled.div`
 const UserPositionBox = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4vh;
+  gap: 0.5vh;
 `;
 
 const ChangeButton = styled.button`
@@ -192,12 +192,13 @@ const PopUp = ({
         <UserNameBox>
           <span role="img" aria-label="user">👤</span>
           {user.userName}
-        </UserNameBox>
-        <UserPositionBox>
+          <UserPositionBox>
           {[user.firstPosition, user.secondPosition, user.thirdPosition].filter(Boolean).map((pos, i) => (
             <Badge key={i} role={pos}>{pos}</Badge>
           ))}
         </UserPositionBox>
+        </UserNameBox>
+       
       </UserCard>
     );
   };
