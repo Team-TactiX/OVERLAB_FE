@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import field from '../../img/field.png';
 import { useEffect, useState } from 'react';
 import playerIcon from '../../img/player.png';
+import grayUniformIcon from '../../img/grayUniform.png'
+import uniformIcon from '../../img/uniform.png';
 
 const PRGameUpdatePageContainer = styled.div`
   display: flex;
@@ -120,7 +122,17 @@ const PRGameUpdate = ({prGameId, setUpdate, setSelectedPositionKey, setIsOpen, p
                   className="absolute flex items-center justify-center"
                   style={{ top: top, left: left }}
                 >
-                  <img src={playerIcon} alt="player" className="w-[4.5vh] h-[4.5vh] object-contain" />
+                  <img
+                    src={
+                      game[key]
+                        ? !game?.team?.users?.some(user => user.userMail === game[key].userMail)
+                          ? grayUniformIcon
+                          : uniformIcon
+                        : playerIcon
+                    }
+                    alt="player"
+                    className="w-[4.5vh] h-[4.5vh] object-contain"
+                  />
                 </div>
                 <span
                   className="absolute text-white font-bold text-[1.8vh] whitespace-nowrap drop-shadow-[0_0_0.6vh_black]"

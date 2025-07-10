@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import field from '../../img/field.png';
 import playerIcon from '../../img/player.png';
 import uniformIcon from '../../img/uniform.png';
+import grayUniformIcon from '../../img/grayUniform.png'
 import GameDelete from './GameDelete';
 
 const GameUpdate = ({
@@ -90,7 +91,13 @@ const GameUpdate = ({
         }}
       >
         <img
-          src={game[key] ? uniformIcon : playerIcon}
+          src={
+            game[key]
+              ? !game?.team?.users?.some(user => user.userMail === game[key].userMail)
+                ? grayUniformIcon
+                : uniformIcon
+              : playerIcon
+          }
           alt="player"
           className="w-[4.5vh] h-[4.5vh] object-contain"
         />

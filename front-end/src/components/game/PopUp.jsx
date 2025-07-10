@@ -187,11 +187,25 @@ const PopUp = ({
   };
 
   const renderUserCard = (user) => {
+    const isGuest = !game?.team?.users?.some(teamUser => teamUser.userMail === user.userMail);
+
     return (
       <UserCard key={user.userMail} onClick={() => handleUserSelect(user)}>
         <UserNameBox>
           <span role="img" aria-label="user">👤</span>
           {user.userName}
+          {isGuest && (
+          <span style={{
+            fontSize: '1.2vh',
+            color: '#e17055',
+            marginLeft: '0.6vh',
+            background: '#ffeaa7',
+            padding: '0.2vh 0.5vh',
+            borderRadius: '0.5vh'
+          }}>
+            용병
+          </span>
+        )}
           <UserPositionBox>
           {[user.firstPosition, user.secondPosition, user.thirdPosition].filter(Boolean).map((pos, i) => (
             <Badge key={i} role={pos}>{pos}</Badge>

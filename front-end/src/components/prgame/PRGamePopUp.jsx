@@ -207,10 +207,25 @@ const PRGamePopUp = ({
       !preferredUsers.includes(user)
   ) || [];
 
-  const renderUserCard = (user) => (
+  const renderUserCard = (user) => {
+    const isGuest = !game?.team?.users?.some(teamUser => teamUser.userMail === user.userMail);
+    
+    return (
     <UserCard key={user.userMail} onClick={() => handleUserSelect(user)}>
       <UserNameBox>
         <span role="img" aria-label="user">👤</span> {user.userName}
+        {isGuest && (
+          <span style={{
+            fontSize: '1.2vh',
+            color: '#e17055',
+            marginLeft: '0.6vh',
+            background: '#ffeaa7',
+            padding: '0.2vh 0.5vh',
+            borderRadius: '0.5vh'
+          }}>
+            용병
+          </span>
+        )}
       </UserNameBox>
       <UserPositionBox>
         {[user.firstPosition, user.secondPosition, user.thirdPosition]
@@ -220,7 +235,8 @@ const PRGamePopUp = ({
           ))}
       </UserPositionBox>
     </UserCard>
-  );
+    )
+  };
 
   return (
     <PopupBox $open={isOpen}>
@@ -252,7 +268,7 @@ const PRGamePopUp = ({
           <PopupTitle>참가자 명단</PopupTitle>
           {otherUsers.length > 0 ? (
             <UsersBox>
-              {otherUsers.map(renderUserCard)}
+              {otherUsers.map((user) => renderUserCard(user))}
             </UsersBox>
           ) : (
             <p style={{ textAlign: 'center', marginBottom: '2vh' }}>

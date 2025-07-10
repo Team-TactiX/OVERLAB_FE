@@ -13,11 +13,47 @@ const Container = styled.div`
 const FormationCarousel = () => {
   const formationsLength = formations.length;
   const loopedOnce = useRef(false);
-
   const [currentIndex, setCurrentIndex] = useState(
     Math.floor(Math.random() * formations.length)
   );
   const navigate = useNavigate();
+
+  const containerRef = useRef(null);
+  const startX = useRef(0);
+
+  const handleTouchStart = (e) => {
+    startX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const endX = e.changedTouches[0].clientX;
+    handleSwipe(endX);
+  };
+
+  const handleMouseDown = (e) => {
+    startX.current = e.clientX;
+  };
+
+  const handleMouseUp = (e) => {
+    const endX = e.clientX;
+    handleSwipe(endX);
+  };
+
+  const handleSwipe = (endX) => {
+    const diff = startX.current - endX;
+    const threshold = 50;
+
+    if (diff > threshold && currentIndex < formationsLength - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else if (diff > threshold && currentIndex === formationsLength - 1) {
+      setCurrentIndex(0);
+    } else if (diff < -threshold && currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else if (diff < -threshold && currentIndex === 0)  {
+      setCurrentIndex(formationsLength - 1);
+    }
+  };
+
 
   const handleMove = () => {
     navigate(`/lib/detail/formation/${formations[currentIndex].id}`);
@@ -43,7 +79,7 @@ const FormationCarousel = () => {
       setCurrentIndex((prev) =>
         prev === formationsLength - 1 ? 0 : prev + 1
       );
-    }, 5000); // 5초마다 자동 슬라이드
+    }, 10000); // 5초마다 자동 슬라이드
 
     return () => clearInterval(interval);
   }, [formationsLength]);
@@ -51,7 +87,13 @@ const FormationCarousel = () => {
   const currentFormation = formations[currentIndex];
 
   return (
-    <Container>
+    <Container 
+      className="carousel-container"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+    >
       <div className="w-full mb-[2vh] flex justify-center items-center pt-[1vh]">
         {/* 카드 */}
         <div
@@ -63,10 +105,13 @@ const FormationCarousel = () => {
             src={currentFormation.img}
             alt={currentFormation.title}
             className="w-full object-contain"
+            draggable={false}
           />
 
           {/* 텍스트 오버레이 */}
-          <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/60 to-transparent text-white text-center p-[1.5vh]">
+          <div
+            className="absolute bottom-0 w-full bg-gradient-to-t from-black/60 to-transparent text-white text-center p-[1.5vh] select-none"
+          >
             <div className="text-[2.5vh] font-bold truncate">
               {currentFormation.title}
             </div>
