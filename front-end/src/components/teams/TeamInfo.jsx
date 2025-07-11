@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import altImage from '../../img/alt_image.png';
 import setting from '../../img/setting.png';
 import TeamMatch from './TeamMatch';
@@ -14,6 +14,7 @@ const TeamInfo = ({ teamId }) => {
   const [teamManagerMail, setTeamManagerMail] = useState('');
   const [showMembers, setShowMembers] = useState(false);
   const userMail = sessionStorage.getItem('userMail');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +38,10 @@ const TeamInfo = ({ teamId }) => {
   const isInTeam = teamUser.some(
     (user) => user.userMail?.toLowerCase() === userMail?.toLowerCase()
   );
+
+  const moveProfile = (mail) => {
+    navigate(`/profile/${mail}`)
+  }
 
   const manager = teamUser.find((u) => u.userMail === teamManagerMail);
 
@@ -78,10 +83,10 @@ const TeamInfo = ({ teamId }) => {
         {showMembers && (
           <ul className="mt-3 flex flex-col gap-2 text-sm text-gray-700">
             {manager && (
-              <li>👑 {manager.userName} ({manager.firstPosition}, {manager.secondPosition}, {manager.thirdPosition})</li>
+              <li className="cursor-pointer hover:text-blue-500" onClick={() => moveProfile(manager.userMail)}>👑 {manager.userName} ({manager.firstPosition}, {manager.secondPosition}, {manager.thirdPosition})</li>
             )}
             {teamUser.filter(u => u.userMail !== teamManagerMail).map(u => (
-              <li key={u.userMail}>👤 {u.userName} ({u.firstPosition}, {u.secondPosition}, {u.thirdPosition})</li>
+              <li className="cursor-pointer hover:text-blue-500" key={u.userMail} onClick={() => moveProfile(u.userMail)}>👤 {u.userName} ({u.firstPosition}, {u.secondPosition}, {u.thirdPosition})</li>
             ))}
           </ul>
         )}

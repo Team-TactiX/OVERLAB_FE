@@ -66,7 +66,7 @@ function App() {
         <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
 
         {/* profile */}
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:userMail" element={<ProfilePage />} />
         <Route path='/profile/update' element={<ProfileUpdatePage />} />
 
         {/* myTeam */}

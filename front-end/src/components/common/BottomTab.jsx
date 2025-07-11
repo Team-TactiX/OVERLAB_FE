@@ -40,6 +40,7 @@ const Label = styled.span`
 
 const BottomTab = () => {
   const location = useLocation();
+  const userMail = sessionStorage.getItem('userMail')
 
   return (
     <TabBar>
@@ -59,7 +60,7 @@ const BottomTab = () => {
         <MdMap />
         <Label>전술</Label>
       </TabItem>
-      <TabItem to="/profile" $active={(location.pathname === '/profile').toString()}>
+      <TabItem to={`/profile/${userMail}`} $active={(location.pathname === `/profile/${userMail}`).toString()}>
         <MdAccountCircle />
         <Label>프로필</Label>
       </TabItem>

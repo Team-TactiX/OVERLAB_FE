@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const Profile = () => {
+const Profile = ({ setMyProfile }) => {
   const [userData, setUserData] = useState(null);
-  const userMail = sessionStorage.getItem('userMail');
+  const { userMail } = useParams();
+  const myMail = sessionStorage.getItem('userMail')
 
   useEffect(() => {
     fetch(`http://52.78.12.127:8080/api/users/check/${userMail}`)
@@ -10,6 +12,10 @@ const Profile = () => {
       .then(setUserData)
       .catch(err => console.error(err));
   }, [userMail]);
+
+  useEffect(() => {
+    setMyProfile(userMail === myMail);
+  }, [setMyProfile])
 
   if (!userData) return <div className="text-center py-8">Loading...</div>;
 

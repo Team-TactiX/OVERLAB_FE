@@ -72,7 +72,6 @@ const PRGameUpdate = ({prGameId, setUpdate, setSelectedPositionKey, setIsOpen, p
       },
     };
 
-    // 포지션 키에 따라 userMail이 할당된 경우만 포함
     positionList.forEach(({ key }) => {
       const user = game[key];
       if (user && user.userMail) {
