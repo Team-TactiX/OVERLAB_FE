@@ -1,124 +1,88 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-
-const PRGamesListBox = styled.div``;
-
-const PRGameBox = styled(Link)`
-  height: 6vh;
-  width: 90%;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2vh 5%;
-  background: #eee;
-  text-decoration: none;
-  border-radius: 6px;
-`;
-
-const PRGameTitle = styled.p`
-  display: flex;
-  align-items: center;
-  margin: 0;
-  margin-left: 1vh;
-  color: black;
-`;
-
-const StyledButton = styled.button`
-  width: 7vh;
-  height: 4vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: red;
-  border-radius: 6px;
-  border: 1px solid black;
-  &:hover {
-    background-color: pink;
-  }
-`;
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PRGameList = () => {
   const { gameId } = useParams();
-  const userMail = sessionStorage.getItem('userMail');
+  const navigate   = useNavigate();
+  const userMail   = sessionStorage.getItem('userMail');
   const [data, setData] = useState([]);
-  const [prGameData, setPRGameData] = useState([]);
-  const [teamManagerMail, setTeamManagerMail] = useState(null)
-  sessionStorage.setItem('gameId', gameId)
 
+  /* 데이터 로딩 */
   useEffect(() => {
-    const fetchGame = async () => {
-      try {
-        const res = await fetch(`http://52.78.12.127:8080/api/pr-games/findByGameId/${gameId}`);
-        const response = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
-        if (!res.ok || !response.ok) {
-          throw new Error('서버 응답 오류');
-        }
-        const prGameData = await res.json();
-        const gameData = await response.json();
+    (async () => {
+      const prRes = await fetch(`http://52.78.12.127:8080/api/pr-games/findByGameId/${gameId}`);
+      const gRes  = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
+      if (!prRes.ok || !gRes.ok) return;
+      const pr = await prRes.json();
+      const gm = await gRes.json();
+      const isManager = userMail === gm.team.teamManager.userMail;
+      setData(isManager ? pr : pr.filter(p => p.user.userMail === userMail));
+    })();
+  }, [gameId, userMail]);
 
-        setTeamManagerMail(gameData.team.teamManager.userMail)
-        setPRGameData(prGameData);
-
-      } catch (err) {
-        console.error('PRGame 불러오기 오류:', err);
-      }
-    };
-
-    if (gameId) fetchGame();
-  }, [gameId]);
-
-  useEffect(() => {
-    const filteredData = userMail !== teamManagerMail ? prGameData.filter((game) => game.user.userMail === userMail) : prGameData;
-    setData(filteredData)
-  }, [prGameData])
-  
-  
-  const handleDeleteGame = async (prGameId) => {
-    try {
-      const res = await fetch(`http://52.78.12.127:8080/api/pr-games/remove/${prGameId}`, {
-        method: 'DELETE',
-      });
-
-      if (res.ok) {
-        alert('삭제 성공!');
-        window.location.reload();
-      } else {
-        console.error(res);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  /* 삭제 */
+  const handleDelete = async (id) => {
+    if (!confirm('정말 삭제할까요?')) return;
+    const res = await fetch(`http://52.78.12.127:8080/api/pr-games/remove/${id}`,{method:'DELETE'});
+    if (res.ok) setData(p=>p.filter(g=>g.prGameId!==id));
+    else alert(await res.text());
   };
 
-  if (!data) return <p>... 로딩중 ...</p>;
-
   return (
-      <PRGamesListBox>
-        {data.map((game, index) => (
-          <PRGameBox
-            key={index}
-            to={{
-              pathname: `/pr/${game.prGameId}`,
-              state: { prGame: game },
-            }}
-          >
-            <PRGameTitle>{game.prGameName}</PRGameTitle>
-            <StyledButton
-              style={{ marginRight: '1vh' }}
-              onClick={(e) => {
-                e.preventDefault(); // 링크 이동 방지
-                handleDeleteGame(game.prGameId);
-              }}
-            >
-              🗑️
-            </StyledButton>
-          </PRGameBox>
-        ))}
-      </PRGamesListBox>
+    <div className="flex flex-col items-center gap-[2vh] px-[2vw] py-[4vh]">
+      {data.map(c => (
+        <div
+          key={c.prGameId}
+          className="relative w-full max-w-[760px] flex items-start justify-between
+                     px-[3vh] py-[2.2vh] rounded-[1.4vh]
+                     bg-white shadow-[0_6px_28px_rgba(0,0,0,0.08)]
+                     border border-white/60"
+        >
+          {/* 좌측 포인트 라인 */}
+          <div className="absolute left-0 top-0 h-full w-[4px] bg-gradient-to-b from-[#00dc6b] to-[#00c851] rounded-l-[1.4vh]" />
 
+          {/* ‘포메이션’ 라벨 */}
+          <span className="absolute -top-[1.3vh] left-[1.4vh] px-[1.2vh] py-[0.4vh]
+                           text-[1.2vh] font-semibold uppercase tracking-wide
+                           bg-emerald-500 text-white rounded-[0.8vh] shadow-md">
+            포메이션
+          </span>
+
+          {/* 카드 본문 */}
+          <div className="flex flex-col gap-[0.6vh] pr-[2vh] break-keep ">
+            <p className="text-[2.2vh] font-extrabold text-[#111827] leading-tight">
+              {c.prGameName || '제목 없음'}
+            </p>
+            <p className="text-[1.55vh] text-[#6b7280] leading-snug">
+              작성자: {c.user?.userName || '익명'}
+            </p>
+          </div>
+
+          {/* 액션 버튼들 */}
+          <div className="flex-shrink-0 flex gap-[0.2vh]">
+            <button
+              onClick={()=> navigate(`/pr/${c.prGameId}`)}
+              className="h-[3.8vh] px-[2.4vh] rounded-full border-2 border-emerald-500
+                         text-emerald-600 font-semibold text-[1.55vh]
+                         hover:bg-emerald-500 hover:text-white transition
+                         mr-[1vh]"
+                         
+            >
+              포메이션 보기
+            </button>
+            <button
+              onClick={()=> handleDelete(c.prGameId)}
+              className="h-[3.8vh] px-[2.4vh] rounded-full border-2 border-red-500
+                         text-red-600 font-semibold text-[1.55vh]
+                         hover:bg-red-500 hover:text-white transition
+                         "
+            >
+              삭제
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 

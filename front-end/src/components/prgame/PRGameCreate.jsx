@@ -64,8 +64,8 @@ const PRGameCreate = ({
   if (!game) return <div className="text-center pt-[10vh]">로딩 중...</div>;
 
   return (
-    <div className="min-h-[100vh] w-full bg-[#f9f9f9] flex justify-center py-[10vh]">
-      <div className="w-full max-w-[90vh] bg-white rounded-xl shadow-lg px-[3vw] pt-[3vh] pb-[4vh]">
+    <div className="min-h-[100vh] w-full bg-[#f9f9f9] flex flex-col items-center pt-[0vh]">
+      <div className="w-full max-w-[90vh] bg-f9f9f9 rounded-xl px-[3vw] pt-[3vh] pb-[4vh]">
         {/* 제목 입력 */}
         <input
           type="text"
