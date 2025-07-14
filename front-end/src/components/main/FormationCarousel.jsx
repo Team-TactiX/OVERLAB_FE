@@ -41,7 +41,7 @@ const FormationCarousel = () => {
 
   const handleSwipe = (endX) => {
     const diff = startX.current - endX;
-    const threshold = 50;
+    const threshold = 10;
 
     if (diff > threshold && currentIndex < formationsLength - 1) {
       setCurrentIndex(currentIndex + 1);
