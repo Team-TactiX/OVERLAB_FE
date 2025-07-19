@@ -3,6 +3,8 @@ import { useState } from 'react';
 import PopUp from '../../components/game/PopUp';
 import PRGameCreate from '../../components/prgame/PRGameCreate';
 import useGameData from '../../hooks/useGameData';
+import { useParams } from 'react-router-dom';
+import useData from '../../hooks/useData';
 
 const PRGameCreatePageContainer = styled.div`
   display: flex;
@@ -13,9 +15,22 @@ const PRGameCreatePageContainer = styled.div`
 `;
 
 const PRGameCreatePage = () => {
+  const { quarterId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPositionKey, setSelectedPositionKey] = useState(null);
-  const { game, users, setGame, setUsers, positionList, getCount } = useGameData();
+  const {
+    game,
+    users,
+    setGame,
+    setUsers,
+    positionList,
+    getCount,
+    currentQuarter,
+    setCurrentQuarter,
+    team,
+  } = useData({
+    quarterId,
+  });
 
   const togglePopup = () => {
     setIsOpen((prev) => {
@@ -27,7 +42,19 @@ const PRGameCreatePage = () => {
 
   return (
     <PRGameCreatePageContainer>
-      <PRGameCreate game={game} setGame={setGame} users={users} setUsers={setUsers} setIsOpen={setIsOpen} setSelectedPositionKey={setSelectedPositionKey} positionList={positionList} getCount={getCount} />
+      <PRGameCreate
+        game={game}
+        setGame={setGame}
+        users={users}
+        setUsers={setUsers}
+        setIsOpen={setIsOpen}
+        setSelectedPositionKey={setSelectedPositionKey}
+        positionList={positionList}
+        getCount={getCount}
+        currentQuarter={currentQuarter}
+        setCurrentQuarter={setCurrentQuarter}
+        team={team}
+      />
       <PopUp
         isOpen={isOpen}
         selectedPositionKey={selectedPositionKey}
@@ -37,9 +64,10 @@ const PRGameCreatePage = () => {
         setGame={setGame}
         setIsOpen={setIsOpen}
         togglePopup={togglePopup}
-        setUsers={setUsers}
+        currentQuarter={currentQuarter}
+        setCurrentQuarter={setCurrentQuarter}
+        team={team}
       />
-
     </PRGameCreatePageContainer>
   );
 };

@@ -11,22 +11,28 @@ const TeamInfo = ({ teamId }) => {
   const [team, setTeam] = useState(null);
   const [teamUser, setTeamUser] = useState([]);
   const [games, setGames] = useState([]);
-  const [teamManagerMail, setTeamManagerMail] = useState('');
+  const [teamManagerId, setTeamManagerId] = useState('');
   const [showMembers, setShowMembers] = useState(false);
-  const userMail = sessionStorage.getItem('userMail');
+  const userId = sessionStorage.getItem('userId');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      const teamRes = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}`);
+      const teamRes = await fetch(
+        `http://52.78.12.127:8080/api/teams/${teamId}`,
+      );
       const teamData = await teamRes.json();
       setTeam(teamData);
-      setTeamManagerMail(teamData.teamManager?.userMail || '');
+      setTeamManagerId(teamData.teamManagerId || '');
 
-      const userRes = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`);
+      const userRes = await fetch(
+        `http://52.78.12.127:8080/api/teams/${teamId}/users-in-team`,
+      );
       setTeamUser(await userRes.json());
 
-      const gamesRes = await fetch(`http://52.78.12.127:8080/api/games/team/${teamId}`);
+      const gamesRes = await fetch(
+        `http://52.78.12.127:8080/api/games/team/${teamId}`,
+      );
       const text = await gamesRes.text();
       setGames(text ? JSON.parse(text) : []);
     };
@@ -36,18 +42,17 @@ const TeamInfo = ({ teamId }) => {
   if (!team) return <div className="text-center py-10">로딩 중...</div>;
 
   const isInTeam = teamUser.some(
-    (user) => user.userMail?.toLowerCase() === userMail?.toLowerCase()
+    (user) => Number(user.userId) === Number(userId),
   );
 
-  const moveProfile = (mail) => {
-    navigate(`/profile/${mail}`)
-  }
+  const moveProfile = (userId) => {
+    navigate(`/profile/${userId}`);
+  };
 
-  const manager = teamUser.find((u) => u.userMail === teamManagerMail);
+  const manager = teamUser.find((u) => u.userId == teamManagerId);
 
   return (
     <div className="flex flex-col gap-8 p-4 max-w-lg mx-auto bg-white min-h-screen">
-
       {/* 팀 요약 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -66,7 +71,7 @@ const TeamInfo = ({ teamId }) => {
         <div className="flex items-center gap-3">
           <UniformIcon color={team.firstColor} size="28px" />
           <UniformIcon color={team.secondColor} size="28px" />
-          {userMail === teamManagerMail && (
+          {userId == teamManagerId && (
             <Link to={`/team/update/${teamId}`} className="ml-2">
               <img src={setting} alt="설정" className="w-5 h-5" />
             </Link>
@@ -76,18 +81,38 @@ const TeamInfo = ({ teamId }) => {
 
       {/* 팀원 명단 */}
       <div>
-        <div className="flex justify-between items-center cursor-pointer border-b pb-2" onClick={() => setShowMembers(!showMembers)}>
+        <div
+          className="flex justify-between items-center cursor-pointer border-b pb-2"
+          onClick={() => setShowMembers(!showMembers)}
+        >
           <h2 className="text-base font-semibold">👥 팀 명단</h2>
-          <span className="text-sm text-gray-500">{showMembers ? '숨기기 ▲' : '보기 ▼'}</span>
+          <span className="text-sm text-gray-500">
+            {showMembers ? '숨기기 ▲' : '보기 ▼'}
+          </span>
         </div>
         {showMembers && (
           <ul className="mt-3 flex flex-col gap-2 text-sm text-gray-700">
             {manager && (
-              <li className="cursor-pointer hover:text-blue-500" onClick={() => moveProfile(manager.userMail)}>👑 {manager.userName} ({manager.firstPosition}, {manager.secondPosition}, {manager.thirdPosition})</li>
+              <li
+                className="cursor-pointer hover:text-blue-500"
+                onClick={() => moveProfile(manager.userId)}
+              >
+                👑 {manager.userName} ({manager.firstPosition},{' '}
+                {manager.secondPosition}, {manager.thirdPosition})
+              </li>
             )}
-            {teamUser.filter(u => u.userMail !== teamManagerMail).map(u => (
-              <li className="cursor-pointer hover:text-blue-500" key={u.userMail} onClick={() => moveProfile(u.userMail)}>👤 {u.userName} ({u.firstPosition}, {u.secondPosition}, {u.thirdPosition})</li>
-            ))}
+            {teamUser
+              .filter((u) => u.userId !== teamManagerId)
+              .map((u) => (
+                <li
+                  className="cursor-pointer hover:text-blue-500"
+                  key={u.userId}
+                  onClick={() => moveProfile(u.userId)}
+                >
+                  👤 {u.userName} ({u.firstPosition}, {u.secondPosition},{' '}
+                  {u.thirdPosition})
+                </li>
+              ))}
           </ul>
         )}
       </div>
@@ -99,7 +124,7 @@ const TeamInfo = ({ teamId }) => {
       <div>
         <h2 className="text-base font-semibold mb-4">📅 경기 일정</h2>
         {isInTeam ? (
-          <TeamMatch games={games} teamManagerMail={teamManagerMail} />
+          <TeamMatch games={games} teamManagerId={teamManagerId} />
         ) : (
           <TeamJoin />
         )}

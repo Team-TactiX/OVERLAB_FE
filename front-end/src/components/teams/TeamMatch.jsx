@@ -1,18 +1,44 @@
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import altImage from '../../img/alt_image.png';
+import { useEffect, useState } from 'react';
 
-const TeamMatch = ({ games, teamManagerMail }) => {
-  const userMail = sessionStorage.getItem('userMail');
+const TeamMatch = ({ games, teamManagerId }) => {
+  const userId = sessionStorage.getItem('userId');
   const teamId = sessionStorage.getItem('teamId');
+  const [team, setTeam] = useState([]);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const response = await fetch(
+          `http://52.78.12.127:8080/api/teams/${teamId}`,
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setTeam(data);
+        } else {
+          console.log(await response.text());
+        }
+      } catch (err) {
+        console.error(err);
+        alert('서버와의 통신 중 오류가 발생했습니다.');
+      }
+    };
+
+    fetchTeam();
+  }, [teamId]);
 
   const handleLeave = async () => {
     try {
-      const res = await fetch(`http://52.78.12.127:8080/api/teams/${teamId}/remove-user`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userMail }),
-      });
+      const res = await fetch(
+        `http://52.78.12.127:8080/api/teams/${teamId}/remove-user/id`,
+        {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        },
+      );
       if (res.ok) {
         alert('팀 탈퇴 완료');
         sessionStorage.removeItem('teamId');
@@ -27,7 +53,7 @@ const TeamMatch = ({ games, teamManagerMail }) => {
   };
 
   const sortedGames = [...games].sort((a, b) =>
-    dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1
+    dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1,
   );
 
   return (
@@ -37,7 +63,9 @@ const TeamMatch = ({ games, teamManagerMail }) => {
       </h2>
 
       {games.length === 0 ? (
-        <div className="text-center text-gray-500 text-sm">예정된 경기가 없습니다.</div>
+        <div className="text-center text-gray-500 text-sm">
+          예정된 경기가 없습니다.
+        </div>
       ) : (
         sortedGames.map((game) => (
           <Link
@@ -53,20 +81,28 @@ const TeamMatch = ({ games, teamManagerMail }) => {
               {/* 홈 팀 */}
               <div className="flex flex-col items-center w-1/4">
                 <img
-                  src={`http://52.78.12.127:8080/logos/${game.team.logo}`}
+                  src={`http://52.78.12.127:8080/logos/${team.logo}`}
                   onError={(e) => (e.target.src = altImage)}
                   alt="home"
                   className="w-14 h-14 rounded-full object-cover mb-1 border border-gray-300"
                 />
-                <span className="text-xs font-medium text-gray-700 text-center">{game.team.teamName}</span>
+                <span className="text-xs font-medium text-gray-700 text-center">
+                  {team.teamName}
+                </span>
               </div>
 
               {/* 경기 정보 */}
               <div className="flex flex-col items-center w-1/2 text-center">
-                <span className="text-xs text-gray-500 mb-1">{dayjs(game.date).format('YYYY.MM.DD HH:mm')}</span>
+                <span className="text-xs text-gray-500 mb-1">
+                  {dayjs(game.date).format('YYYY.MM.DD HH:mm')}
+                </span>
                 <span className="text-2xl font-bold text-blue-800">VS</span>
-                {game.playersMail?.some((player) => player.userMail === userMail) && (
-                  <span className="text-xs mt-1 text-green-600 font-semibold">참가중</span>
+                {game.playersMail?.some(
+                  (player) => player.userMail === userMail,
+                ) && (
+                  <span className="text-xs mt-1 text-green-600 font-semibold">
+                    참가중
+                  </span>
                 )}
               </div>
 
@@ -78,7 +114,9 @@ const TeamMatch = ({ games, teamManagerMail }) => {
                   alt="away"
                   className="w-14 h-14 rounded-full object-cover mb-1 border border-gray-300"
                 />
-                <span className="text-xs font-medium text-gray-700 text-center">{game.versus}</span>
+                <span className="text-xs font-medium text-gray-700 text-center">
+                  {game.versus}
+                </span>
               </div>
             </div>
           </Link>
@@ -86,7 +124,7 @@ const TeamMatch = ({ games, teamManagerMail }) => {
       )}
 
       <div className="flex justify-center mt-4">
-        {userMail === teamManagerMail ? (
+        {userId == teamManagerId ? (
           <Link to="/game/create" className="w-full">
             <button className="w-full h-12 border border-blue-500 text-blue-500 rounded-full text-base font-semibold hover:bg-blue-50 transition">
               경기 추가

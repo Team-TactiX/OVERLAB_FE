@@ -9,15 +9,17 @@ const MyTeamSection = () => {
   const [teams, setTeams] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const userMail = sessionStorage.getItem('userMail');
+  const userId = sessionStorage.getItem('userId');
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
+        const response = await fetch(
+          `http://52.78.12.127:8080/api/teams/mail/${userMail}`,
+        );
         if (response.ok) {
           const data = await response.json();
           setTeams(data);
-          console.log(data)
         } else {
           console.log(await response.text());
         }
@@ -50,18 +52,25 @@ const MyTeamSection = () => {
       <div className="flex justify-between items-center mb-[1.5vh] mt-[1vh]">
         {/* 라벨 추가 */}
         <div>
-          <div className="text-[1.2vh] text-green-500 font-bold mb-[0.5vh]">TEAM</div>
+          <div className="text-[1.2vh] text-green-500 font-bold mb-[0.5vh]">
+            TEAM
+          </div>
           <h2 className="text-[2.2vh] font-bold pl-[1vh] border-l-4 border-green-500 pb-[0.7vh] flex items-center gap-[0.5vh]">
             🏆 My Team
           </h2>
         </div>
-        <Link to="/my-team" className="text-[1.5vh] text-blue-500 no-underline hover:underline">
+        <Link
+          to="/my-team"
+          className="text-[1.5vh] text-blue-500 no-underline hover:underline"
+        >
           더보기
         </Link>
       </div>
 
       {teams.length === 0 ? (
-        <div className="text-[1.8vh] text-gray-500 py-[1vh]">소속된 팀이 없습니다.</div>
+        <div className="text-[1.8vh] text-gray-500 py-[1vh]">
+          소속된 팀이 없습니다.
+        </div>
       ) : (
         <ScrollContainer
           className="flex gap-[0.5vh] overflow-x-auto pb-[1vh] cursor-grab active:cursor-grabbing scrollbar-hide"
@@ -74,22 +83,30 @@ const MyTeamSection = () => {
               className="flex-shrink-0 bg-white border border-gray-300 p-[0.6vh] no-underline text-black flex flex-col items-center hover:border-green-500 hover:shadow-lg transition box-border rounded-[1.2vh] w-[12vh] min-w-[12vh] relative"
             >
               {/* 미니 뱃지 추가 */}
-              <div className={`absolute top-[0.5vh] right-[0.5vh] flex items-center gap-[0.2vh] px-[0.5vh] py-[0.1vh] rounded-full shadow-sm
-  ${team.teamManager.userMail === userMail ? 'bg-yellow-300 text-black' : 'bg-green-400 text-white'}`}>
-  {team.teamManager.userMail === userMail ? (
-    <>
-      <FaCrown className="text-[1.1vh]" />
-      <span className="text-[1.1vh] font-medium leading-none">매니저</span>
-    </>
-  ) : (
-    <>
-      <FaUser className="text-[1.1vh]" />
-      <span className="text-[1.1vh] font-medium leading-none">팀원</span>
-    </>
-  )}
-</div>
-
-
+              <div
+                className={`absolute top-[0.5vh] right-[0.5vh] flex items-center gap-[0.2vh] px-[0.5vh] py-[0.1vh] rounded-full shadow-sm
+                  ${
+                    team.teamManagerId == userId
+                      ? 'bg-yellow-300 text-black'
+                      : 'bg-green-400 text-white'
+                  }`}
+              >
+                {team.teamManagerId == userId ? (
+                  <>
+                    <FaCrown className="text-[1.1vh]" />
+                    <span className="text-[1.1vh] font-medium leading-none">
+                      매니저
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <FaUser className="text-[1.1vh]" />
+                    <span className="text-[1.1vh] font-medium leading-none">
+                      팀원
+                    </span>
+                  </>
+                )}
+              </div>
 
               <img
                 src={`http://52.78.12.127:8080/logos/${team.logo}`}

@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PRGameList from '../../components/prgame/PRGameList';
-import { GiSoccerField } from 'react-icons/gi';            // ← 여기!
+import { GiSoccerField } from 'react-icons/gi'; // ← 여기!
 
 const PRGamesListPageContainer = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const PRGamesListPageContainer = styled.div`
 `;
 
 const PRGameListPage = () => {
-  const { gameId } = useParams();
+  const { quarterId } = useParams();
 
   return (
     <PRGamesListPageContainer>
@@ -18,7 +18,7 @@ const PRGameListPage = () => {
 
       {/* ───────── “포메이션 생성” Glass 버튼 ───────── */}
       <Link
-        to={`/pr/create/${gameId}`}
+        to={`/pr/create/${quarterId}`}
         className="
           relative mx-auto mt-[4vh] w-[78%] max-w-[500px]
           flex items-center justify-center

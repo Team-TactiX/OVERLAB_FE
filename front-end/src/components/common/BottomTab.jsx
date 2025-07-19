@@ -40,7 +40,8 @@ const Label = styled.span`
 
 const BottomTab = () => {
   const location = useLocation();
-  const userMail = sessionStorage.getItem('userMail')
+  const userMail = sessionStorage.getItem('userMail');
+  const userId = sessionStorage.getItem('userId');
 
   return (
     <TabBar>
@@ -48,7 +49,10 @@ const BottomTab = () => {
         <MdHome />
         <Label>홈</Label>
       </TabItem>
-      <TabItem to="/teams" $active={(location.pathname === '/teams').toString()}>
+      <TabItem
+        to="/teams"
+        $active={(location.pathname === '/teams').toString()}
+      >
         <MdGroup />
         <Label>팀 목록</Label>
       </TabItem>
@@ -60,7 +64,10 @@ const BottomTab = () => {
         <MdMap />
         <Label>전술</Label>
       </TabItem>
-      <TabItem to={`/profile/${userMail}`} $active={(location.pathname === `/profile/${userMail}`).toString()}>
+      <TabItem
+        to={`/profile/${userId}`}
+        $active={(location.pathname === `/profile/${userId}`).toString()}
+      >
         <MdAccountCircle />
         <Label>프로필</Label>
       </TabItem>

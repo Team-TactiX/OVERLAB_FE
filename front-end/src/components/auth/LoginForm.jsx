@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import useLogin from '../../hooks/api/post/useLogin';
 
 const LoginForm = () => {
   const [userMail, setUserMail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { isLoading, login } = useLogin();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -15,35 +14,19 @@ const LoginForm = () => {
       return;
     }
 
-    setLoading(true);
-
-    try {
-      const response = await fetch('http://52.78.12.127:8080/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userMail, password }),
-      });
-
-      if (response.ok) {
-        sessionStorage.setItem('userMail', userMail);
-        navigate('/main');
-      } else {
-        const errMsg = await response.text();
-        alert(errMsg || '로그인 실패: 아이디 또는 비밀번호를 확인하세요.');
-      }
-    } catch (err) {
-      console.error('로그인 오류:', err);
-      alert('서버와의 통신 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
-    }
+    login({ userMail, password });
   };
 
   return (
     <>
-      <h2 className="mt-[3vh] text-[26px] font-semibold text-black">계정에 로그인하세요</h2>
+      <h2 className="mt-[3vh] text-[26px] font-semibold text-black">
+        계정에 로그인하세요
+      </h2>
 
-      <form onSubmit={handleLogin} className="mx-auto w-full max-w-[288px] mt-[4vh] flex flex-col gap-[20px]">
+      <form
+        onSubmit={handleLogin}
+        className="mx-auto w-full max-w-[288px] mt-[4vh] flex flex-col gap-[20px]"
+      >
         <div className="relative flex flex-col">
           <label className="text-[16px] text-[#6F6F6F] mb-[5px]">이메일</label>
           <input
@@ -65,7 +48,9 @@ const LoginForm = () => {
         </div>
 
         <div className="relative flex flex-col">
-          <label className="text-[16px] text-[#6F6F6F] mb-[5px]">비밀번호</label>
+          <label className="text-[16px] text-[#6F6F6F] mb-[5px]">
+            비밀번호
+          </label>
           <input
             type="password"
             value={password}
@@ -89,7 +74,7 @@ const LoginForm = () => {
           disabled={isLoading}
           className="w-full h-[42px] bg-[#00B140] rounded-[10px] text-white font-semibold text-[15px] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "로그인 중..." : "로그인"}
+          {isLoading ? '로그인 중...' : '로그인'}
         </button>
       </form>
     </>

@@ -1,16 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PRGame from '../../components/prgame/PRGame';
 import PRGameUpdate from '../../components/prgame/PRGameUpdate';
 import PRGamePopUp from '../../components/prgame/PRGamePopUp';
 import usePRGameData from '../../hooks/usePRGameData';
+import PRGameDetail from '../../components/prgame/PRGameDetail';
 
 const PRGamePage = () => {
   const { prGameId } = useParams();
   const [update, setUpdate] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPositionKey, setSelectedPositionKey] = useState(null);
-  const { game, prGame, users, loading, setGame, setPRGame, setUsers, getCount, getPRCount, positionList } = usePRGameData();
+  const {
+    game,
+    prGame,
+    users,
+    loading,
+    setGame,
+    setPRGame,
+    setUsers,
+    getCount,
+    getPRCount,
+    positionList,
+  } = usePRGameData();
 
   const togglePopup = () => {
     setIsOpen((prev) => {
@@ -19,20 +30,18 @@ const PRGamePage = () => {
       return next;
     });
   };
-  
-  if (loading) return <div>로딩 중...</div>;
 
   return (
     <div>
       {update ? (
         <PRGameUpdate
           prGameId={prGameId}
-          setUpdate={setUpdate} 
-          setSelectedPositionKey={setSelectedPositionKey} 
+          setUpdate={setUpdate}
+          setSelectedPositionKey={setSelectedPositionKey}
           setUsers={setUsers}
           setIsOpen={setIsOpen}
           prGame={prGame}
-          setPRGame={setPRGame} 
+          setPRGame={setPRGame}
           game={game}
           setGame={setGame}
           getCount={getCount}
@@ -41,7 +50,21 @@ const PRGamePage = () => {
           positionList={positionList}
         />
       ) : (
-        <PRGame prGameId={prGameId} users={users} setUpdate={setUpdate} getCount={getCount} getPRCount={getPRCount} positionList={positionList} />
+        <PRGameDetail
+          prGameId={prGameId}
+          setUpdate={setUpdate}
+          setSelectedPositionKey={setSelectedPositionKey}
+          setUsers={setUsers}
+          setIsOpen={setIsOpen}
+          prGame={prGame}
+          setPRGame={setPRGame}
+          game={game}
+          setGame={setGame}
+          getCount={getCount}
+          users={users}
+          getPRCount={getPRCount}
+          positionList={positionList}
+        />
       )}
       <PRGamePopUp
         isOpen={isOpen}
@@ -56,6 +79,7 @@ const PRGamePage = () => {
         prGameId={prGameId}
         game={game}
         setGame={setGame}
+        quarterId={prGame?.quarter?.quarterId}
       />
     </div>
   );

@@ -75,11 +75,27 @@ const UserCard = styled.div`
 const Badge = styled.span`
   display: inline-block;
   background-color: ${({ role }) => {
-    if (["ST", "CF", "LS", "RS", "LW", "RW"].includes(role)) return "#ff7675";
-    if (["CAM", "CM", "CDM", "LAM", "RAM", "LCM", "RCM", "LDM", "RDM", "LM", "RM"].includes(role)) return "#55efc4";
-    if (["LB", "RB", "LCB", "RCB", "SW", "LWB", "RWB"].includes(role)) return "#74b9ff";
-    if (["GK"].includes(role)) return "#fdcb6e";
-    return "#b2bec3";
+    if (['ST', 'CF', 'LS', 'RS', 'LW', 'RW'].includes(role)) return '#ff7675';
+    if (
+      [
+        'CAM',
+        'CM',
+        'CDM',
+        'LAM',
+        'RAM',
+        'LCM',
+        'RCM',
+        'LDM',
+        'RDM',
+        'LM',
+        'RM',
+      ].includes(role)
+    )
+      return '#55efc4';
+    if (['LB', 'RB', 'LCB', 'RCB', 'SW', 'LWB', 'RWB'].includes(role))
+      return '#74b9ff';
+    if (['GK'].includes(role)) return '#fdcb6e';
+    return '#b2bec3';
   }};
   color: white;
   border-radius: 1vh;
@@ -138,43 +154,88 @@ const PRGamePopUp = ({
   prGameId,
   game,
   setGame,
+  quarterId,
 }) => {
   const gameId = sessionStorage.getItem('gameId');
+  const [team, setTeam] = useState();
 
-  const positionKeyToRole = useMemo(() => ({
-    stId: 'ST', lsId: 'LS', rsId: 'RS', lwId: 'LW', rwId: 'RW', cfId: 'CF',
-    camId: 'CAM', lamId: 'LAM', ramId: 'RAM', cmId: 'CM', lcmId: 'LCM', rcmId: 'RCM',
-    lmId: 'LM', rmId: 'RM', cdmId: 'CDM', ldmId: 'LDM', rdmId: 'RDM',
-    lwbId: 'LWB', rwbId: 'RWB', lbId: 'LB', rbId: 'RB', lcbId: 'LCB', rcbId: 'RCB',
-    swId: 'SW', gkId: 'GK',
-  }), []);
+  const positionKeyToRole = useMemo(
+    () => ({
+      stId: 'ST',
+      lsId: 'LS',
+      rsId: 'RS',
+      lwId: 'LW',
+      rwId: 'RW',
+      cfId: 'CF',
+      camId: 'CAM',
+      lamId: 'LAM',
+      ramId: 'RAM',
+      cmId: 'CM',
+      lcmId: 'LCM',
+      rcmId: 'RCM',
+      lmId: 'LM',
+      rmId: 'RM',
+      cdmId: 'CDM',
+      ldmId: 'LDM',
+      rdmId: 'RDM',
+      lwbId: 'LWB',
+      rwbId: 'RWB',
+      lbId: 'LB',
+      rbId: 'RB',
+      lcbId: 'LCB',
+      rcbId: 'RCB',
+      swId: 'SW',
+      gkId: 'GK',
+    }),
+    [],
+  );
 
   useEffect(() => {
+    if (!quarterId) return;
+
     const fetchGame = async () => {
-      const res = await fetch(`http://52.78.12.127:8080/api/pr-games/findByPRGameId/${prGameId}`);
+      const res = await fetch(
+        `http://52.78.12.127:8080/api/pr-games/findByPRGameId/${prGameId}`,
+      );
       const prData = await res.json();
       setPRGame(prData);
 
-      const response = await fetch(`http://52.78.12.127:8080/api/games/saved-formation/${gameId}`);
-      const gameData = await response.json();
+      const response = await fetch(
+        `http://52.78.12.127:8080/api/quarters/saved-formation/${quarterId}`,
+      );
+      const quarterData = await response.json();
 
       const positionKeys = Object.keys(positionKeyToRole);
       positionKeys.forEach((key) => {
         if (prData[key]) {
-          gameData[key] = prData[key];
+          quarterData[key] = prData[key];
         }
       });
 
-      setUsers(gameData.playersMail);
+      const gameRes = await fetch(
+        `http://52.78.12.127:8080/api/games/game/${quarterData.gameId}`,
+      );
+      const gameData = await gameRes.json();
+
+      const teamRes = await fetch(
+        `http://52.78.12.127:8080/api/teams/${gameData.teamId}`,
+      );
+      const teamData = await teamRes.json();
+      setTeam(teamData);
+      setUsers(quarterData.playersMail);
     };
 
     fetchGame();
-  }, [prGameId, gameId, positionKeyToRole]);
+  }, [prGameId, quarterId, gameId, positionKeyToRole]);
 
+  // 포메이션에 들어간 선수 목록
   const assignedUserMails = new Set(
-    Object.values(prGame || {}).map((user) => user?.userMail).filter(Boolean)
+    Object.values(prGame || {})
+      .map((user) => user?.userMail)
+      .filter(Boolean),
   );
 
+  // 선수 선택 시
   const handleUserSelect = (user) => {
     if (!selectedPositionKey) return;
 
@@ -187,55 +248,69 @@ const PRGamePopUp = ({
 
   const handleRemovePlayer = () => {
     if (!selectedPositionKey) return;
+
     setGame((prev) => ({ ...prev, [selectedPositionKey]: null }));
     setPRGame((prev) => ({ ...prev, [selectedPositionKey]: null }));
+
     setSelectedPositionKey(null);
     setIsOpen(false);
   };
 
-  const preferredUsers = users?.filter(
-    (user) =>
-      !assignedUserMails.has(user.userMail) &&
-      [user.firstPosition, user.secondPosition, user.thirdPosition].includes(
-        positionKeyToRole[selectedPositionKey]
-      )
-  ) || [];
+  // 추천 선수
+  const preferredUsers =
+    users?.filter(
+      (user) =>
+        !assignedUserMails.has(user.userMail) &&
+        [user.firstPosition, user.secondPosition, user.thirdPosition].includes(
+          positionKeyToRole[selectedPositionKey],
+        ),
+    ) || [];
 
-  const otherUsers = users?.filter(
-    (user) =>
-      !assignedUserMails.has(user.userMail) &&
-      !preferredUsers.includes(user)
-  ) || [];
+  // 추천 아닌 선수
+  const otherUsers =
+    users?.filter(
+      (user) =>
+        !assignedUserMails.has(user.userMail) && !preferredUsers.includes(user),
+    ) || [];
 
   const renderUserCard = (user) => {
-    const isGuest = !game?.team?.users?.some(teamUser => teamUser.userMail === user.userMail);
-    
+    const isGuest = !team?.users?.some(
+      (teamUser) => teamUser.userMail === user.userMail,
+    );
+
     return (
-    <UserCard key={user.userMail} onClick={() => handleUserSelect(user)}>
-      <UserNameBox>
-        <span role="img" aria-label="user">👤</span> {user.userName}
-        {isGuest && (
-          <span style={{
-            fontSize: '1.2vh',
-            color: '#e17055',
-            marginLeft: '0.6vh',
-            background: '#ffeaa7',
-            padding: '0.2vh 0.5vh',
-            borderRadius: '0.5vh'
-          }}>
-            용병
-          </span>
-        )}
-      </UserNameBox>
-      <UserPositionBox>
-        {[user.firstPosition, user.secondPosition, user.thirdPosition]
-          .filter(Boolean)
-          .map((pos, i) => (
-            <Badge key={i} role={pos}>{pos}</Badge>
-          ))}
-      </UserPositionBox>
-    </UserCard>
-    )
+      <UserCard key={user.userMail} onClick={() => handleUserSelect(user)}>
+        <UserNameBox>
+          <span role="img" aria-label="user">
+            👤
+          </span>{' '}
+          {user.userName}
+          {isGuest && (
+            <span
+              style={{
+                fontSize: '1.2vh',
+                color: '#e17055',
+                marginLeft: '0.6vh',
+                background: '#ffeaa7',
+                padding: '0.2vh 0.5vh',
+                borderRadius: '0.5vh',
+              }}
+            >
+              용병
+            </span>
+          )}
+        </UserNameBox>
+        <UserPositionBox>
+          {[user.firstPosition, user.secondPosition, user.thirdPosition]
+            .filter(Boolean)
+            .map((pos, i) => (
+              <Badge key={i} role={pos}>
+                {pos}
+              </Badge>
+            ))}
+        </UserPositionBox>
+      </UserCard>
+    );
   };
 
   return (
@@ -250,9 +325,7 @@ const PRGamePopUp = ({
             <>
               <PopupTitle>추천 선수</PopupTitle>
               {preferredUsers.length > 0 ? (
-                <UsersBox>
-                  {preferredUsers.map(renderUserCard)}
-                </UsersBox>
+                <UsersBox>{preferredUsers.map(renderUserCard)}</UsersBox>
               ) : (
                 <p style={{ textAlign: 'center', marginBottom: '6vh' }}>
                   추천 선수가 없습니다

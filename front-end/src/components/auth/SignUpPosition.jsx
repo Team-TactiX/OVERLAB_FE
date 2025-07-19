@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import field from '../../img/field.png';
+import { positionList } from '../../constants/positionList';
+import playerIcon from '../../img/player.png';
+import uniformIcon from '../../img/uniform.png';
 
 const Container = styled.div`
   display: flex;
@@ -11,7 +14,7 @@ const SelectedPositionText = styled.p`
   margin-bottom: 2vh;
   font-size: 1.7vh;
   font-weight: bold;
-  color: #00B140;
+  color: #00b140;
 `;
 
 const FieldWrapper = styled.div`
@@ -31,34 +34,12 @@ const ButtonBox = styled.div`
   height: 100%;
 `;
 
-const StyledButton = styled.button`
-  position: absolute;
-  top: ${(props) => props.$top};
-  left: ${(props) => props.$left};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => (props.$selected ? '#00B140' : 'rgba(240, 228, 57, 0.7)')};
-  color: ${(props) => (props.$selected ? 'white' : 'black')};
-  border: 2px solid black;
-  border-radius: 20vh;
-  cursor: pointer;
-  width: 8.2vh;
-  height: 4vh;
-  font-size: 1.5vh;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
 const CheckBadge = styled.span`
   position: absolute;
-  top: -1vh;
-  right: -1vh;
+  top: -2.3vh;
+  right: -1.3vh;
   background-color: white;
-  color: #00B140;
+  color: #00b140;
   font-size: 1.4vh;
   border-radius: 50%;
   width: 2vh;
@@ -66,7 +47,7 @@ const CheckBadge = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #00B140;
+  border: 1px solid #00b140;
 `;
 
 const SubmitButton = styled.button`
@@ -98,58 +79,52 @@ const SignUpPosition = ({ value, onChange, onSubmit }) => {
     }
   };
 
-  const renderButton = (top, left, position) => (
-    <StyledButton
-      $top={top}
-      $left={left}
-      $selected={value.includes(position)}
-      onClick={() => togglePosition(position)}
-    >
-      {value.includes(position) && (
-        <CheckBadge>✔</CheckBadge>
-      )}
-      {position}
-    </StyledButton>
-  );
-
   return (
     <Container>
-      <SelectedPositionText>선택한 포지션: {value.join(', ')}</SelectedPositionText>
+      <SelectedPositionText>
+        선택한 포지션: {value.join(', ')}
+      </SelectedPositionText>
 
       <FieldWrapper>
         <ButtonBox>
-          {renderButton('1vh', '20.3vh', 'ST')}
-          {renderButton('4vh', '11.6vh', 'LS')}
-          {renderButton('4vh', '29vh', 'RS')}
-          {renderButton('7vh', '3.6vh', 'LW')}
-          {renderButton('7vh', '20.3vh', 'CF')}
-          {renderButton('7vh', '37.6vh', 'RW')}
-          {renderButton('13vh', '11.6vh', 'LAM')}
-          {renderButton('13vh', '20.3vh', 'CAM')}
-          {renderButton('13vh', '29vh', 'RAM')}
-          {renderButton('19vh', '3vh', 'LM')}
-          {renderButton('19vh', '11.6vh', 'LCM')}
-          {renderButton('19vh', '20.3vh', 'CM')}
-          {renderButton('19vh', '29vh', 'RCM')}
-          {renderButton('19vh', '37.6vh', 'RM')}
-          {renderButton('25vh', '3vh', 'LWB')}
-          {renderButton('25vh', '11.6vh', 'LDM')}
-          {renderButton('25vh', '20.3vh', 'CDM')}
-          {renderButton('25vh', '29vh', 'RDM')}
-          {renderButton('25vh', '37.6vh', 'RWB')}
-          {renderButton('31vh', '3vh', 'LB')}
-          {renderButton('31vh', '11.6vh', 'LCB')}
-          {renderButton('31vh', '20.3vh', 'SW')}
-          {renderButton('31vh', '29vh', 'RCB')}
-          {renderButton('31vh', '37.6vh', 'RB')}
-          {renderButton('37vh', '20.3vh', 'GK')}
+          {positionList.map(({ key, label, top, left }) => (
+            <button
+              key={key}
+              $selected={value.includes(label)}
+              onClick={() => togglePosition(label)}
+            >
+              <div
+                className="absolute flex flex-col items-center"
+                style={{
+                  top,
+                  left,
+                  transform: 'translate(-0%, -0%)',
+                }}
+              >
+                <img
+                  src={value.includes(label) ? uniformIcon : playerIcon}
+                  alt="player"
+                  className="w-[4.5vh] h-[4.5vh] object-contain"
+                />
+                <span className="text-white font-bold text-[1.8vh] whitespace-nowrap drop-shadow-[0_0_0.6vh_black] mt-[-2vh]">
+                  {value.includes(label) && <CheckBadge>✔</CheckBadge>}
+                  {label}
+                </span>
+              </div>
+            </button>
+            // <StyledButton
+            //   key={position.key}
+            //   $top={position.top}
+            //   $left={position.left}
+            // >
+            //   {value.includes(position.label) && <CheckBadge>✔</CheckBadge>}
+            //   {position.label}
+            // </StyledButton>
+          ))}
         </ButtonBox>
       </FieldWrapper>
 
-      <SubmitButton
-        onClick={onSubmit}
-        disabled={value.length !== 3}
-      >
+      <SubmitButton onClick={onSubmit} disabled={value.length !== 3}>
         회원가입 완료
       </SubmitButton>
     </Container>

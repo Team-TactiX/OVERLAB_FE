@@ -1,17 +1,31 @@
 import { Link } from 'react-router-dom';
 import soccerFieldIcon from '../../img/field.png'; // 축구장 아이콘 이미지 경로
 
-const GameJoin = ({ game, setGame, userMail, users, gameId, hasPermission, handleRemovePosition, positionList }) => {
+const GameJoin = ({
+  game,
+  setGame,
+  userMail,
+  users,
+  gameId,
+  hasPermission,
+  handleRemovePosition,
+  positionList,
+  currentQuarter,
+  quarters,
+}) => {
   const isAlreadyJoined = users?.some((user) => user.userMail === userMail);
 
   const handleJoinGame = async () => {
     if (isAlreadyJoined) return alert('이미 참가 중입니다.');
     try {
-      const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/insert-to-game`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userMail }),
-      });
+      const res = await fetch(
+        `http://52.78.12.127:8080/api/quarters/${currentQuarter.quarterId}/insert-to-quarter`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userMail }),
+        },
+      );
       if (res.ok) {
         alert('경기 참가가 완료되었습니다.');
         window.location.reload();
@@ -23,37 +37,42 @@ const GameJoin = ({ game, setGame, userMail, users, gameId, hasPermission, handl
       alert('서버 오류가 발생했습니다.');
     }
   };
-      
 
   const handleLeaveGame = async () => {
     if (!isAlreadyJoined) return alert('참가 중이 아닙니다.');
-    const updatedGame = { ...game };
+    const updatedGame = { ...currentQuarter };
 
     positionList.map(({ key }) => {
-      if (game[key]) {
-        const isJoining = game[key].userMail === userMail;
+      if (currentQuarter[key]) {
+        const isJoining = currentQuarter[key].userMail === userMail;
         if (isJoining) {
           updatedGame[key] = null;
         }
       }
-    })
+    });
 
     try {
       if (hasPermission) {
         await handleRemovePosition();
       }
 
-      const response = await fetch('http://52.78.12.127:8080/api/games/update-game', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedGame),
-      });
+      const response = await fetch(
+        'http://52.78.12.127:8080/api/quarters/update-quarter',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedGame),
+        },
+      );
 
-      const res = await fetch(`http://52.78.12.127:8080/api/games/${gameId}/remove-from-game`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userMail }),
-      });
+      const res = await fetch(
+        `http://52.78.12.127:8080/api/quarters/${currentQuarter.quarterId}/remove-from-quarter`,
+        {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userMail }),
+        },
+      );
 
       if (res.ok && response.ok) {
         alert('경기 참가 취소가 완료되었습니다.');
@@ -66,6 +85,8 @@ const GameJoin = ({ game, setGame, userMail, users, gameId, hasPermission, handl
       alert('경기 취소 중 서버 오류가 발생했습니다.');
     }
   };
+
+  if (!currentQuarter) return;
 
   return (
     <div className="w-full">
@@ -91,11 +112,16 @@ const GameJoin = ({ game, setGame, userMail, users, gameId, hasPermission, handl
 
       {/* 포메이션 요청 버튼 */}
       {!hasPermission && (
-        <Link to={`/pr/list/${gameId}`} className="w-full block">
-          <button
-            className="flex items-center justify-center gap-2 bg-white text-[#00C851] font-semibold text-[1.8vh] rounded-[3vh] h-[5.5vh] w-full shadow-md border-2 border-[#00C851] hover:text-green hover:-translate-y-[0.3vh] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200"
-          >
-            <img src={soccerFieldIcon} alt="축구장" className="w-[2.4vh] h-[2.4vh]" />
+        <Link
+          to={`/pr/list/${currentQuarter.quarterId}`}
+          className="w-full block"
+        >
+          <button className="flex items-center justify-center gap-2 bg-white text-[#00C851] font-semibold text-[1.8vh] rounded-[3vh] h-[5.5vh] w-full shadow-md border-2 border-[#00C851] hover:text-green hover:-translate-y-[0.3vh] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200">
+            <img
+              src={soccerFieldIcon}
+              alt="축구장"
+              className="w-[2.4vh] h-[2.4vh]"
+            />
             <span className="tracking-wide">포메이션 요청</span>
           </button>
         </Link>

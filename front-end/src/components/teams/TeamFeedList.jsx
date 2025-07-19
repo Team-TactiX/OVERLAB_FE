@@ -23,16 +23,16 @@ const TeamFeedList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`http://52.78.12.127:8080/api/files/team/${teamId}`);
+      const res = await fetch(
+        `http://52.78.12.127:8080/api/files/team/${teamId}`,
+      );
       const data = await res.json();
       setTeamFeedList(data);
-      console.log(data)
     };
     fetchData();
-
   }, [teamId]);
 
-  if(!teamFeedList) return <>로딩중</>
+  if (!teamFeedList) return <>로딩중</>;
 
   return (
     <div className="flex flex-col gap-2">
@@ -55,14 +55,22 @@ const TeamFeedList = () => {
           >
             <div className="w-[7vh] h-[7vh] rounded-lg overflow-hidden mb-[0.5vh]">
               {teamFeed.fileType.startsWith('image/') ? (
-                <StyledImg src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`} alt={teamFeed.fileType} />
+                <StyledImg
+                  src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`}
+                  alt={teamFeed.fileType}
+                />
               ) : teamFeed.fileType.startsWith('video/') ? (
-                <StyledVideo src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`} controls />
+                <StyledVideo
+                  src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`}
+                  controls
+                />
               ) : (
                 <span>지원되지 않는 파일</span>
               )}
             </div>
-            <div className="text-[1.4vh] text-center truncate max-w-[9vh]">{teamFeed.title}</div>
+            <div className="text-[1.4vh] text-center truncate max-w-[9vh]">
+              {teamFeed.title}
+            </div>
           </Link>
         ))}
       </ScrollContainer>

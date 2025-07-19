@@ -9,7 +9,11 @@ const FeedList = ({ category }) => {
   useEffect(() => {
     const fetchCommunity = async () => {
       try {
-        const res = await fetch(`http://52.78.12.127:8080/api/community/category/${category}`);
+        const res = await fetch(
+          `http://52.78.12.127:8080/api/community/category?category=${encodeURIComponent(
+            category,
+          )}`,
+        );
         const data = await res.json();
         setPosts(data);
       } catch (err) {
@@ -22,8 +26,12 @@ const FeedList = ({ category }) => {
 
   return (
     <>
-      {posts.map(post => (
-        <FeedCard key={post.contentId} post={post} onClick={() => navigate(`/feed/${post.contentId}`)} />
+      {posts.map((post) => (
+        <FeedCard
+          key={post.contentId}
+          post={post}
+          onClick={() => navigate(`/feed/${post.contentId}`)}
+        />
       ))}
     </>
   );

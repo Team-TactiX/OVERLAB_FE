@@ -10,7 +10,9 @@ const MyScheduleList = ({ filter }) => {
 
   useEffect(() => {
     const fetchTeams = async () => {
-      const res = await fetch(`http://52.78.12.127:8080/api/teams/mail/${userMail}`);
+      const res = await fetch(
+        `http://52.78.12.127:8080/api/teams/mail/${userMail}`,
+      );
       if (res.ok) {
         const data = await res.json();
         setTeams(data);
@@ -20,25 +22,41 @@ const MyScheduleList = ({ filter }) => {
   }, [userMail]);
 
   useEffect(() => {
-    const fetchGames = async () => {
+    const fetchGamesForAllTeams = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`http://52.78.12.127:8080/api/games/user/${userMail}`);
-        if (res.ok) {
-          const data = await res.json();
-          setGames(data);
-        }
-      } catch (e) {
-        console.error(e);
+        const promises = teams.map(async (team) => {
+          const res = await fetch(
+            `http://52.78.12.127:8080/api/games/team/${team.teamId}`,
+          );
+          if (res.ok) {
+            return res.json(); // 응답 JSON 반환
+          } else {
+            throw new Error(`팀 ${team.teamId} 데이터 가져오기 실패`);
+          }
+        });
+
+        const results = await Promise.all(promises);
+
+        setGames(results.flat());
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (teams.length > 0) fetchGames();
+    if (teams.length > 0) {
+      fetchGamesForAllTeams();
+    }
   }, [teams]);
 
-  if (loading) return <div className="text-center text-[1.8vh]">불러오는 중...</div>;
-  if (games.length === 0) return <div className="text-center text-[1.8vh]">예정된 경기가 없습니다.</div>;
+  if (loading)
+    return <div className="text-center text-[1.8vh]">불러오는 중...</div>;
+  if (games.length === 0)
+    return (
+      <div className="text-center text-[1.8vh]">예정된 경기가 없습니다.</div>
+    );
 
   const getGameStatus = (gameDate) => {
     const now = dayjs();
@@ -51,11 +69,13 @@ const MyScheduleList = ({ filter }) => {
   };
 
   const sortedGames = [...games].sort((a, b) =>
-    dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1
+    dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1,
   );
 
   const filteredGames =
-    filter === '전체' ? sortedGames : sortedGames.filter((g) => getGameStatus(g.date) === filter);
+    filter === '전체'
+      ? sortedGames
+      : sortedGames.filter((g) => getGameStatus(g.date) === filter);
 
   return (
     <div className="flex flex-col gap-[2vh]">
@@ -64,7 +84,9 @@ const MyScheduleList = ({ filter }) => {
           <MySchedule key={game.gameId} game={game} />
         ))
       ) : (
-        <div className="text-center text-[1.8vh] text-gray-500">해당 경기가 없습니다.</div>
+        <div className="text-center text-[1.8vh] text-gray-500">
+          해당 경기가 없습니다.
+        </div>
       )}
     </div>
   );

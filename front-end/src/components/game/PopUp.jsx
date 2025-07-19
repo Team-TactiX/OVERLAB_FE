@@ -74,11 +74,27 @@ const UserCard = styled.div`
 const Badge = styled.span`
   display: inline-block;
   background-color: ${({ role }) => {
-    if (["ST", "CF", "LS", "RS", "LW", "RW"].includes(role)) return "#ff7675"; // FW
-    if (["CAM", "CM", "CDM", "LAM", "RAM", "LCM", "RCM", "LDM", "RDM", "LM", "RM"].includes(role)) return "#55efc4"; // MF
-    if (["LB", "RB", "LCB", "RCB", "SW", "LWB", "RWB"].includes(role)) return "#74b9ff"; // DF
-    if (["GK"].includes(role)) return "#fdcb6e"; // GK
-    return "#b2bec3"; // fallback
+    if (['ST', 'CF', 'LS', 'RS', 'LW', 'RW'].includes(role)) return '#ff7675'; // FW
+    if (
+      [
+        'CAM',
+        'CM',
+        'CDM',
+        'LAM',
+        'RAM',
+        'LCM',
+        'RCM',
+        'LDM',
+        'RDM',
+        'LM',
+        'RM',
+      ].includes(role)
+    )
+      return '#55efc4'; // MF
+    if (['LB', 'RB', 'LCB', 'RCB', 'SW', 'LWB', 'RWB'].includes(role))
+      return '#74b9ff'; // DF
+    if (['GK'].includes(role)) return '#fdcb6e'; // GK
+    return '#b2bec3'; // fallback
   }};
   color: white;
   border-radius: 1vh;
@@ -133,86 +149,134 @@ const PopUp = ({
   setGame,
   setIsOpen,
   togglePopup,
+  currentQuarter,
+  setCurrentQuarter,
+  team,
 }) => {
   const positionKeyToRole = {
-    stId: 'ST', lsId: 'LS', rsId: 'RS', lwId: 'LW', rwId: 'RW', cfId: 'CF',
-    camId: 'CAM', lamId: 'LAM', ramId: 'RAM', cmId: 'CM', lcmId: 'LCM', rcmId: 'RCM',
-    lmId: 'LM', rmId: 'RM', cdmId: 'CDM', ldmId: 'LDM', rdmId: 'RDM',
-    lwbId: 'LWB', rwbId: 'RWB', lbId: 'LB', rbId: 'RB', lcbId: 'LCB', rcbId: 'RCB',
-    swId: 'SW', gkId: 'GK',
+    stId: 'ST',
+    lsId: 'LS',
+    rsId: 'RS',
+    lwId: 'LW',
+    rwId: 'RW',
+    cfId: 'CF',
+    camId: 'CAM',
+    lamId: 'LAM',
+    ramId: 'RAM',
+    cmId: 'CM',
+    lcmId: 'LCM',
+    rcmId: 'RCM',
+    lmId: 'LM',
+    rmId: 'RM',
+    cdmId: 'CDM',
+    ldmId: 'LDM',
+    rdmId: 'RDM',
+    lwbId: 'LWB',
+    rwbId: 'RWB',
+    lbId: 'LB',
+    rbId: 'RB',
+    lcbId: 'LCB',
+    rcbId: 'RCB',
+    swId: 'SW',
+    gkId: 'GK',
   };
 
   const handleUserSelect = (user) => {
     let targetPositionKey = selectedPositionKey;
     if (!targetPositionKey) {
-      const emptyPosition = Object.entries(game || {}).find(([, value]) => !value);
+      const emptyPosition = Object.entries(game || {}).find(
+        ([, value]) => !value,
+      );
       if (!emptyPosition) {
         alert('모든 포지션이 이미 배정되었습니다.');
         return;
       }
       targetPositionKey = emptyPosition[0];
     }
-    setGame((prevGame) => ({ ...prevGame, [targetPositionKey]: user }));
+    setCurrentQuarter((prevCurrentQuarter) => ({
+      ...prevCurrentQuarter,
+      [targetPositionKey]: user,
+    }));
     setSelectedPositionKey(null);
     setIsOpen(false);
   };
 
   const assignedUserMails = new Set(
-    game ? Object.values(game).map((user) => user?.userMail).filter(Boolean) : []
+    currentQuarter
+      ? Object.values(currentQuarter)
+          .map((user) => user?.userMail)
+          .filter(Boolean)
+      : [],
   );
 
-  const preferredUsers = users && selectedPositionKey
-    ? users.filter(
-        (user) =>
-          !assignedUserMails.has(user.userMail) &&
-          [user.firstPosition, user.secondPosition, user.thirdPosition].includes(
-            positionKeyToRole[selectedPositionKey]
-          )
-      )
-    : [];
+  const preferredUsers =
+    users && selectedPositionKey
+      ? users.filter(
+          (user) =>
+            !assignedUserMails.has(user.userMail) &&
+            [
+              user.firstPosition,
+              user.secondPosition,
+              user.thirdPosition,
+            ].includes(positionKeyToRole[selectedPositionKey]),
+        )
+      : [];
 
   const otherUsers = users
     ? users.filter((user) =>
         selectedPositionKey
-          ? !assignedUserMails.has(user.userMail) && !preferredUsers.includes(user)
-          : !assignedUserMails.has(user.userMail)
+          ? !assignedUserMails.has(user.userMail) &&
+            !preferredUsers.includes(user)
+          : !assignedUserMails.has(user.userMail),
       )
     : [];
 
   const handleRemovePlayer = () => {
     if (!selectedPositionKey) return;
-    setGame((prevGame) => ({ ...prevGame, [selectedPositionKey]: null }));
+    setCurrentQuarter((prevCurrentQuarter) => ({
+      ...prevCurrentQuarter,
+      [selectedPositionKey]: null,
+    }));
     setSelectedPositionKey(null);
     setIsOpen(false);
   };
 
   const renderUserCard = (user) => {
-    const isGuest = !game?.team?.users?.some(teamUser => teamUser.userMail === user.userMail);
+    const isGuest = !team?.users?.some(
+      (teamUser) => teamUser.userMail === user.userMail,
+    );
 
     return (
       <UserCard key={user.userMail} onClick={() => handleUserSelect(user)}>
         <UserNameBox>
-          <span role="img" aria-label="user">👤</span>
+          <span role="img" aria-label="user">
+            👤
+          </span>
           {user.userName}
           {isGuest && (
-          <span style={{
-            fontSize: '1.2vh',
-            color: '#e17055',
-            marginLeft: '0.6vh',
-            background: '#ffeaa7',
-            padding: '0.2vh 0.5vh',
-            borderRadius: '0.5vh'
-          }}>
-            용병
-          </span>
-        )}
+            <span
+              style={{
+                fontSize: '1.2vh',
+                color: '#e17055',
+                marginLeft: '0.6vh',
+                background: '#ffeaa7',
+                padding: '0.2vh 0.5vh',
+                borderRadius: '0.5vh',
+              }}
+            >
+              용병
+            </span>
+          )}
           <UserPositionBox>
-          {[user.firstPosition, user.secondPosition, user.thirdPosition].filter(Boolean).map((pos, i) => (
-            <Badge key={i} role={pos}>{pos}</Badge>
-          ))}
-        </UserPositionBox>
+            {[user.firstPosition, user.secondPosition, user.thirdPosition]
+              .filter(Boolean)
+              .map((pos, i) => (
+                <Badge key={i} role={pos}>
+                  {pos}
+                </Badge>
+              ))}
+          </UserPositionBox>
         </UserNameBox>
-       
       </UserCard>
     );
   };

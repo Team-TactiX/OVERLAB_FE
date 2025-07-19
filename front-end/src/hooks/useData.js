@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import useFetchQuarters from './api/get/useFetchQuarters';
 import { positionList } from '../constants/positionList';
 
-const useGameData = ({ gameId }) => {
+const useData = ({ quarterId }) => {
+  const [gameId, setGameId] = useState('');
+  const [quarter, setQuarter] = useState([]);
+  const [quarters, setQuarters] = useState([]);
   const [game, setGame] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,10 +12,55 @@ const useGameData = ({ gameId }) => {
   const currentQuarterIndex = Number(selectedQuarter) - 1;
   const [currentQuarter, setCurrentQuarter] = useState(null);
   const [team, setTeam] = useState('');
-  const { quarters, setQuarters, fetchQuarters } = useFetchQuarters({
-    gameId,
-  });
 
+  useEffect(() => {
+    const fetchQuarter = async () => {
+      try {
+        const response = await fetch(
+          `http://52.78.12.127:8080/api/quarters/saved-formation/${quarterId}`,
+        );
+        const data = await response.json();
+        if (response.ok) {
+          setQuarter(data);
+        } else {
+          alert('쿼터 패치 중 오류 발생');
+          console.error(data);
+        }
+      } catch (err) {
+        alert('서버 오류 발생');
+        console.error(err);
+      }
+    };
+
+    fetchQuarter();
+  }, [quarterId]);
+
+  useEffect(() => {
+    setGameId(quarter.gameId);
+  }, [quarter]);
+
+  useEffect(() => {
+    const fetchQuarters = async () => {
+      if (!gameId) return;
+
+      try {
+        const response = await fetch(
+          `http://52.78.12.127:8080/api/quarters/getQuarterList/${gameId}`,
+        );
+        const data = await response.json();
+        if (response.ok) {
+          setQuarters(data);
+        } else {
+          alert('쿼터 목록 패치 중 오류 발생');
+          console.error(data);
+        }
+      } catch (err) {
+        alert('서버 오류 발생');
+        console.error(err);
+      }
+    };
+    fetchQuarters();
+  }, [gameId]);
   const getCount = () => {
     if (!currentQuarter) return 0;
 
@@ -40,8 +87,6 @@ const useGameData = ({ gameId }) => {
         setLoading(false);
       }
     };
-
-    fetchQuarters({ gameId });
 
     fetchGame();
   }, [gameId]);
@@ -88,20 +133,14 @@ const useGameData = ({ gameId }) => {
   return {
     game,
     users,
-    loading,
     setGame,
     setUsers,
     positionList,
     getCount,
-    quarters,
-    setQuarters,
-    selectedQuarter,
-    setSelectedQuarter,
     currentQuarter,
     setCurrentQuarter,
-    currentQuarterIndex,
     team,
   };
 };
 
-export default useGameData;
+export default useData;

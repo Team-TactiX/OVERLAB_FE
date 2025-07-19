@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 import Header from './components/common/Header';
 import BottomTab from './components/common/BottomTab';
 import LoginPage from './pages/auth/LoginPage';
@@ -47,10 +47,10 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
 
         {/* main */}
-        <Route path='/main' element={<MainPage />} />
+        <Route path="/main" element={<MainPage />} />
 
         {/* teams */}
-        <Route path='/teams' element={<TeamListPage />} />
+        <Route path="/teams" element={<TeamListPage />} />
         <Route path="/team/:teamId" element={<TeamDetailPage />} />
         <Route path="/team/update/:teamId" element={<TeamUpdatePage />} />
 
@@ -66,24 +66,24 @@ function App() {
         <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
 
         {/* profile */}
-        <Route path="/profile/:userMail" element={<ProfilePage />} />
-        <Route path='/profile/update' element={<ProfileUpdatePage />} />
+        <Route path="/profile/:userId" element={<ProfilePage />} />
+        <Route path="/profile/update" element={<ProfileUpdatePage />} />
 
         {/* myTeam */}
-        <Route path='/my-team' element={<MyTeamListPage />} />
+        <Route path="/my-team" element={<MyTeamListPage />} />
 
         {/* schedule */}
-        <Route path='/my-schedule' element={<MyScheduleListPage />} />
-        <Route path='/calender' element={<CalenderPage />} />
+        <Route path="/my-schedule" element={<MyScheduleListPage />} />
+        <Route path="/calender" element={<CalenderPage />} />
 
         {/* game */}
-        <Route path='/game/create' element={<CreateGamePage />} />
+        <Route path="/game/create" element={<CreateGamePage />} />
         <Route path="/game/:gameId" element={<GameDetailPage />} />
 
         {/* prgame */}
         <Route path="/pr/:prGameId" element={<PRGamePage />} />
-        <Route path="/pr/list/:gameId" element={<PRGameListPage />} />
-        <Route path="/pr/create/:gameId" element={<PRGameCreatePage />} />
+        <Route path="/pr/list/:quarterId" element={<PRGameListPage />} />
+        <Route path="/pr/create/:quarterId" element={<PRGameCreatePage />} />
 
         {/* teamfeed */}
         <Route path="/teamfeed/list/:teamId" element={<TeamFeedListPage />} />
@@ -91,7 +91,7 @@ function App() {
       </Routes>
       {shouldShowBottomTab && <BottomTab />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

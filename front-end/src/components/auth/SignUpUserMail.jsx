@@ -9,7 +9,9 @@ const SignUpUserMail = ({ value, onChange, onNext }) => {
       return;
     }
     try {
-      const response = await fetch(`http://52.78.12.127:8080/api/users/userMail-check?userMail=${encodeURIComponent(value)}`, { method: 'GET' });
+      const response = await fetch(
+        `http://52.78.12.127:8080/api/users/userMail-check?userMail=${value}`,
+      );
 
       if (response.ok) {
         alert('이미 존재하는 이메일입니다.');

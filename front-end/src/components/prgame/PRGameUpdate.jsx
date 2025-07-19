@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import playerIcon from '../../img/player.png';
 import grayUniformIcon from '../../img/grayUniform.png';
 import uniformIcon from '../../img/uniform.png';
+import { useParams } from 'react-router-dom';
 
 const PRGameUpdatePageContainer = styled.div`
   display: flex;
@@ -67,18 +68,37 @@ const PRGameUpdate = ({
 }) => {
   const gameId = sessionStorage.getItem('gameId');
   const userMail = sessionStorage.getItem('userMail');
+  const [team, setTeam] = useState('');
   const count = getPRCount();
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(prGame.prGameName);
+  console.log(prGame);
 
   /* 초기 포메이션 세팅 */
   useEffect(() => {
     const resetFormation = () => {
       positionList.forEach(({ key }) =>
-        setGame((prev) => ({ ...prev, [key]: prGame[key] }))
+        setGame((prev) => ({ ...prev, [key]: prGame[key] })),
       );
     };
     resetFormation();
   }, [prGame]);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      const gameRes = await fetch(
+        `http://52.78.12.127:8080/api/games/game/${gameId}`,
+      );
+      const gameData = await gameRes.json();
+
+      const teamRes = await fetch(
+        `http://52.78.12.127:8080/api/teams/${gameData.teamId}`,
+      );
+      const teamData = await teamRes.json();
+      setTeam(teamData);
+    };
+
+    fetchTeam();
+  }, [gameId]);
 
   const handlePositionClick = (posKey) => {
     setSelectedPositionKey(posKey);
@@ -86,20 +106,21 @@ const PRGameUpdate = ({
   };
 
   const handleRequestPRGame = async () => {
-    if (!game) return;
+    if (!prGame) return;
 
     const payload = {
       prGameId,
       prGameName: title,
-      game: { gameId: Number(gameId) },
-      user: { userMail },
+      quarter: { quarterId: Number(prGame.quarter.quarterId) },
+      userMail,
     };
 
     positionList.forEach(({ key }) => {
-      const u = game[key];
+      const u = prGame[key];
       if (u?.userMail) payload[key] = { userMail: u.userMail };
     });
 
+    console.log(payload);
     try {
       const res = await fetch('http://52.78.12.127:8080/api/pr-games/update', {
         method: 'PUT',
@@ -121,7 +142,6 @@ const PRGameUpdate = ({
 
   if (!game) return <div>로딩 중...</div>;
 
-
   return (
     <PRGameUpdatePageContainer>
       <TitleInput
@@ -136,34 +156,39 @@ const PRGameUpdate = ({
 
       <div
         className="relative w-[49vh] h-[42vh] mb-[4vh]"
-        style={{ backgroundImage: `url(${field})`, backgroundSize: '100% 100%' }}
+        style={{
+          backgroundImage: `url(${field})`,
+          backgroundSize: '100% 100%',
+        }}
       >
         <div className="absolute w-full h-full">
-  {positionList.map(({ key, label, top, left }) => (
-    <button key={key} onClick={() => handlePositionClick(key)}>
-      {/* 아이콘+이름 래퍼 하나만 absolute */}
-      <div
-        className="absolute flex flex-col items-center"
-        style={{ top, left, transform: 'translateX(-0%)' }}
-      >
-        <img
-          src={
-            game[key]
-              ? !game?.team?.users?.some(u => u.userMail === game[key].userMail)
-                ? grayUniformIcon
-                : uniformIcon
-              : playerIcon
-          }
-          alt="player"
-          className="w-[4.5vh] h-[4.5vh] object-contain"
-        />
-        <span className="text-white font-bold text-[1.8vh] whitespace-nowrap drop-shadow-[0_0_0.6vh_black] mt-[-2vh] max-w-[7vh] overflow-hidden text-ellipsis">
-          {game[key] ? game[key].userName : label}
-        </span>
-      </div>
-    </button>
-  ))}
-</div>
+          {positionList.map(({ key, label, top, left }) => (
+            <button key={key} onClick={() => handlePositionClick(key)}>
+              {/* 아이콘+이름 래퍼 하나만 absolute */}
+              <div
+                className="absolute flex flex-col items-center"
+                style={{ top, left, transform: 'translateX(-0%)' }}
+              >
+                <img
+                  src={
+                    game[key]
+                      ? !team?.users?.some(
+                          (u) => u.userMail === game[key].userMail,
+                        )
+                        ? grayUniformIcon
+                        : uniformIcon
+                      : playerIcon
+                  }
+                  alt="player"
+                  className="w-[4.5vh] h-[4.5vh] object-contain"
+                />
+                <span className="text-white font-bold text-[1.8vh] whitespace-nowrap drop-shadow-[0_0_0.6vh_black] mt-[-2vh] max-w-[7vh] overflow-hidden text-ellipsis">
+                  {game[key] ? game[key].userName : label}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
 
       <ChangeButton variant="primary" onClick={handleRequestPRGame}>
