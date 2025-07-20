@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const CommentCreate = ({ teamFeedId }) => {
   const [content, setContent] = useState('');
   const userMail = sessionStorage.getItem('userMail');
+  const userId = sessionStorage.getItem('userId');
 
   const handleSubmit = async () => {
     if (!content.trim()) {
-      alert("댓글을 입력해주세요.");
+      alert('댓글을 입력해주세요.');
       return;
     }
 
@@ -14,7 +15,10 @@ const CommentCreate = ({ teamFeedId }) => {
       userMail: userMail,
       content: content,
       fileId: Number(teamFeedId),
+      userId: Number(userId),
     };
+
+    console.log(body);
 
     try {
       const res = await fetch('http://52.78.12.127:8080/api/comments/create', {

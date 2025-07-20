@@ -1,11 +1,12 @@
-import { useState } from "react";
-import CommentDelete from "./CommentDelete";
-import CommentUpdate from "./CommentUpdate";
+import { useEffect, useState } from 'react';
+import CommentDelete from './CommentDelete';
+import CommentUpdate from './CommentUpdate';
 
 const Comment = ({ comment, videoRef }) => {
   const [isEditing, setIsEditing] = useState(false);
   const userMail = sessionStorage.getItem('userMail');
-  const isAuthor = userMail === comment.user.userMail;
+  const [user, setUser] = useState('');
+  const isAuthor = userMail == comment.userMail;
 
   const handleTimeClick = (timeStr) => {
     const [min, sec] = timeStr.split(':').map(Number);
@@ -30,25 +31,46 @@ const Comment = ({ comment, videoRef }) => {
         </button>
       ) : (
         <span key={index}>{part}</span>
-      )
+      ),
     );
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          `http://52.78.12.127:8080/api/users/check/${comment.userMail}`,
+        );
+        const data = await response.json();
+        setUser(data);
+      } catch (err) {
+        alert('서버 오류 발생');
+        console.error(err);
+      }
+    };
+
+    fetchUser();
+  }, [comment]);
 
   return (
     <li className="p-4 border border-gray-200 rounded-xl bg-white shadow-sm">
       <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-semibold text-gray-800">{comment.user.userName}</span>
-        {isAuthor && (<div className="flex items-center gap-2">
-          {!isEditing && (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="text-xs text-blue-500 hover:underline hover:text-blue-600"
-            >
-              댓글 수정
-            </button>
-          )}
-          <CommentDelete comment={comment} />
-        </div>)}
+        <span className="text-sm font-semibold text-gray-800">
+          {user.userName}
+        </span>
+        {isAuthor && (
+          <div className="flex items-center gap-2">
+            {!isEditing && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="text-xs text-blue-500 hover:underline hover:text-blue-600"
+              >
+                댓글 수정
+              </button>
+            )}
+            <CommentDelete comment={comment} />
+          </div>
+        )}
       </div>
 
       {!isEditing ? (
@@ -56,10 +78,7 @@ const Comment = ({ comment, videoRef }) => {
           {parseContentWithTimeLinks(comment.content)}
         </div>
       ) : (
-        <CommentUpdate
-          comment={comment}
-          onCancel={() => setIsEditing(false)}
-        />
+        <CommentUpdate comment={comment} onCancel={() => setIsEditing(false)} />
       )}
 
       <div className="text-xs text-gray-400">
