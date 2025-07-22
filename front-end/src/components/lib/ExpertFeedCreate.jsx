@@ -140,7 +140,7 @@ const HiddenFile = styled.input`
 `;
 
 /* ── Main Component ───────────────────────────────────── */
-const ProfileFeedCreate = ({ setShowModal }) => {
+const ExpertFeedCreate = ({ setShowModal }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
@@ -197,8 +197,10 @@ const ProfileFeedCreate = ({ setShowModal }) => {
       fd.append('title', title);
       fd.append('content', content);
 
+      console.log(fd);
+
       const res = await fetch(
-        'http://52.78.12.127:8080/api/users/files/player/upload',
+        'http://52.78.12.127:8080/api/users/files/expert/upload',
         {
           method: 'POST',
           body: fd,
@@ -290,4 +292,4 @@ const ProfileFeedCreate = ({ setShowModal }) => {
   );
 };
 
-export default ProfileFeedCreate;
+export default ExpertFeedCreate;
