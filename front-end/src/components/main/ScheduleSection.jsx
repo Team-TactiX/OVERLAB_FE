@@ -180,19 +180,13 @@ const ScheduleSection = () => {
                   className="w-[7vh] h-[7vh] rounded-full object-cover mb-[1vh] border border-white"
                   alt="match logo"
                 />
-                <div className="text-[1.6vh] truncate w-full min-w-0 whitespace-nowrap hover:text-green-500">
+               <div className="text-[1.6vh] truncate w-full min-w-0 whitespace-nowrap hover:text-green-500">
                   {(() => {
                     const matchedTeam = teams.find(
                       (team) => team.teamId === game.teamId,
                     );
-                    return matchedTeam
-                      ? `${matchedTeam.teamName} `
-                      : '알 수 없음';
-                  })()}
-                  <br />
-                  VS
-                  <br />
-                  {game.versus}
+                    return matchedTeam ? matchedTeam.teamName : '알 수 없음';
+                  })()} VS {game.versus}
                 </div>
               </div>
             </Link>

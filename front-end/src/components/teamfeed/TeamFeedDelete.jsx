@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const TeamFeedDelete = ({ teamFeedId, teamFeed }) => {
+const TeamFeedDelete = ({ teamFeedId, teamFeed, renderButton }) => {
   const navigate = useNavigate();
   const teamId = teamFeed.teamId;
 
@@ -26,11 +26,15 @@ const TeamFeedDelete = ({ teamFeedId, teamFeed }) => {
     }
   };
 
+  // 🔥 여기서 renderButton로 넘겨받았으면 외부 커스텀 버튼 사용
+  if (renderButton) {
+    return renderButton({ onClick: handleDelete });
+  }
+
+  // 기본 버튼
   return (
-    <>
-      <button onClick={handleDelete} >삭제하기</button>
-    </>
-  )
-}
+    <button onClick={handleDelete}>삭제</button>
+  );
+};
 
 export default TeamFeedDelete;

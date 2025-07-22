@@ -25,10 +25,10 @@ const CommentList = ({ videoRef }) => {
   }, [teamFeedId]);
 
   return (
-    <div className="mt-4">
+    <div className="mt-2">
       <CommentCreate teamFeedId={teamFeedId} />
-      <h3 className="text-md font-semibold mb-2">댓글 리스트</h3>
-      <ul className="space-y-2">
+      <h3 className="text-md font-semibold mb-5 mt-12">댓글 리스트</h3>
+      <ul className="space-y-1">
         {comments.map((comment) => (
           <Comment key={comment.feedId} comment={comment} videoRef={videoRef} />
         ))}
