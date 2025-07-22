@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 12vh;
+  width: 100%;
   height: 20vh;
-  background-color: #f9f9f9;
+  background-color: white;
   text-align: center;
   flex-shrink: 0;
   border-radius: 0.8vh;
@@ -42,19 +42,19 @@ const StyledLink = styled(Link)`
   align-items: center;
 `;
 
-const TeamFeedDetail = ({ teamFeed }) => {
+const UserFeed = ({ userFeed }) => {
   return (
     <Container>
-      <StyledLink to={`/teamfeed/${teamFeed.fileId}`}>
-        <Title>{teamFeed.title}</Title>
-        {teamFeed.fileType.startsWith('image/') ? (
+      <StyledLink to={`/userfeed/${userFeed.fileId}`}>
+        <Title>{userFeed.title}</Title>
+        {userFeed.fileType.startsWith('image/') ? (
           <StyledImg
-            src={`http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`}
-            alt={teamFeed.fileType}
+            src={`http://52.78.12.127:8080/media/user/${userFeed.realFileName}`}
+            alt={userFeed.fileType}
           />
-        ) : teamFeed.fileType.startsWith('video/') ? (
+        ) : userFeed.fileType.startsWith('video/') ? (
           <StyledVideo
-            src={`http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`}
+            src={`http://52.78.12.127:8080/media/user/${userFeed.realFileName}`}
             controls
           />
         ) : (
@@ -65,4 +65,4 @@ const TeamFeedDetail = ({ teamFeed }) => {
   );
 };
 
-export default TeamFeedDetail;
+export default UserFeed;

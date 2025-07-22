@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 
-const TeamFeedDelete = ({ teamFeedId, teamFeed, renderButton }) => {
+const ExpertFeedDelete = ({ expertFeedId, expertFeed, renderButton }) => {
   const navigate = useNavigate();
-  const teamId = teamFeed.teamId;
+  const expertId = expertFeed.expertId;
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm('정말로 팀 게시글을 삭제할까요?');
+    const confirmDelete = window.confirm('정말로 게시글을 삭제할까요?');
     if (!confirmDelete) return;
 
     try {
       const res = await fetch(
-        `http://52.78.12.127:8080/api/files/${teamFeedId}`,
+        `http://52.78.12.127:8080/api/users/files/${expertFeedId}`,
         {
           method: 'DELETE',
         },
@@ -18,7 +18,7 @@ const TeamFeedDelete = ({ teamFeedId, teamFeed, renderButton }) => {
 
       if (res.ok) {
         alert('삭제 완료');
-        navigate(`/teamfeed/list/${teamId}`);
+        navigate(`/profile/${expertId}`);
       } else {
         const error = await res.text();
         alert('삭제 실패: ' + error);
@@ -38,4 +38,4 @@ const TeamFeedDelete = ({ teamFeedId, teamFeed, renderButton }) => {
   return <button onClick={handleDelete}>삭제</button>;
 };
 
-export default TeamFeedDelete;
+export default ExpertFeedDelete;

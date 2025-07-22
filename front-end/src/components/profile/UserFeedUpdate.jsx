@@ -17,14 +17,14 @@ const StyledVideo = styled.video`
   border-radius: 1vh;
 `;
 
-const TeamFeedUpdate = ({ setUpdate, teamFeedId, teamFeed }) => {
-  const teamId = teamFeed.teamId;
-  const [title, setTitle] = useState(teamFeed.title);
-  const [content, setContent] = useState(teamFeed.content);
+const UserFeedUpdate = ({ setUpdate, userFeedId, userFeed }) => {
+  const userId = userFeed.userId;
+  const [title, setTitle] = useState(userFeed.title);
+  const [content, setContent] = useState(userFeed.content);
   const [file, setFile] = useState(''); // 파일 객체 (image or video)
-  const [fileType, setFileType] = useState(teamFeed.fileType);
+  const [fileType, setFileType] = useState(userFeed.fileType);
   const [fileUrl, setFileUrl] = useState(
-    `http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`,
+    `http://52.78.12.127:8080/media/user/${userFeed.realFileName}`,
   ); // 미리보기 URL
   const fileInputRef = useRef(null);
 
@@ -49,12 +49,12 @@ const TeamFeedUpdate = ({ setUpdate, teamFeedId, teamFeed }) => {
 
     try {
       const formData = new FormData();
-      formData.append('teamId', teamId);
+      formData.append('userId', userId);
       formData.append('title', title);
       formData.append('content', content);
 
       const response = await fetch(
-        `http://52.78.12.127:8080/api/files/fileInfo/${teamFeed.fileId}`,
+        `http://52.78.12.127:8080/api/users/files/fileInfo/${userFeed.fileId}`,
         {
           method: 'PUT',
           body: formData,
@@ -65,7 +65,7 @@ const TeamFeedUpdate = ({ setUpdate, teamFeedId, teamFeed }) => {
         const formData = new FormData();
         formData.append('file', file);
         const res = await fetch(
-          `http://52.78.12.127:8080/api/files/fileData/${teamFeed.fileId}`,
+          `http://52.78.12.127:8080/api/users/files/fileData/${userFeed.fileId}`,
           {
             method: 'PUT',
             body: formData,
@@ -178,4 +178,4 @@ const TeamFeedUpdate = ({ setUpdate, teamFeedId, teamFeed }) => {
   );
 };
 
-export default TeamFeedUpdate;
+export default UserFeedUpdate;

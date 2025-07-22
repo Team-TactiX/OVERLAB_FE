@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import formations from '../../data/formation.json';
 import tactics from '../../data/tactic.json';
 import ExpertFeedCreate from '../../components/lib/ExpertFeedCreate';
+import useUser from '../../hooks/api/get/useUser';
+import ExpertFeedList from '../../components/lib/ExpertFeedList';
 
 const TAB_LIST = [
   { key: 'feedback', label: 'Feedback.' },
@@ -23,6 +25,9 @@ const LibPage = () => {
   const [activeLib, setActiveLib] = useState(initialLib);
   const [isLib, setIsLib] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const userId = sessionStorage.getItem('userId');
+  const { user } = useUser({ userId });
+  const isExpert = user.userCode == 'EXPERT';
 
   const handleTabChange = (key) => {
     setActiveTab(key);
@@ -126,48 +131,52 @@ const LibPage = () => {
         )}
       </div>
 
+      {activeTab === 'feedback' && <ExpertFeedList />}
+
       {/* 게시글 작성 버튼 */}
-      <div className="fixed bottom-[10vh] right-4 z-50 group">
-        <button
-          onClick={() => setShowModal(true)}
-          className="w-16 h-16 rounded-full bg-white border-2 border-green-500
+      {!isLib && isExpert && (
+        <div className="fixed bottom-[10vh] right-4 z-50 group">
+          <button
+            onClick={() => setShowModal(true)}
+            className="w-16 h-16 rounded-full bg-white border-2 border-green-500
           text-green-500 shadow-lg flex items-center justify-center
           transition-transform duration-150
           group-hover:scale-110 group-hover:shadow-xl active:scale-95"
-          aria-label="게시글 작성"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="w-8 h-8"
+            aria-label="게시글 작성"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M16.862 3.487a2.32 2.32 0 113.281 3.281L7.5 19.41l-4.245 1.06 1.06-4.244L16.862 3.487z"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="w-8 h-8"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.862 3.487a2.32 2.32 0 113.281 3.281L7.5 19.41l-4.245 1.06 1.06-4.244L16.862 3.487z"
+              />
+            </svg>
+          </button>
 
-        {/* 툴팁 */}
-        <div
-          className="absolute right-full top-1/2 -translate-y-1/2
+          {/* 툴팁 */}
+          <div
+            className="absolute right-full top-1/2 -translate-y-1/2
             bg-gray-700 text-white text-sm px-3 py-1.5
             rounded shadow whitespace-nowrap
             opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        >
-          게시글 작성
-          <div
-            className="absolute top-1/2 left-full -translate-y-1/2
+          >
+            게시글 작성
+            <div
+              className="absolute top-1/2 left-full -translate-y-1/2
               w-0 h-0 border-t-[8px] border-t-transparent
               border-b-[8px] border-b-transparent
               border-l-[8px] border-l-gray-700"
-          />
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 모달 */}
       {showModal && !isLib && <ExpertFeedCreate setShowModal={setShowModal} />}

@@ -25,6 +25,8 @@ import PRGamePage from './pages/prgame/PRGamePage';
 import PRGameCreatePage from './pages/prgame/PRGameCreatePage';
 import TeamFeedDetailPage from './pages/teamfeed/TeamFeedDetailPage';
 import TeamFeedListPage from './pages/teamfeed/TeamFeedListPage';
+import UserFeedPage from './pages/profile/UserFeedPage';
+import ExpertFeedPage from './pages/lib/ExpertFeedPage';
 
 function App() {
   const location = useLocation();
@@ -64,10 +66,12 @@ function App() {
         {/* lib */}
         <Route path="/lib" element={<LibPage />} />
         <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
+        <Route path="/expertfeed/:expertFeedId" element={<ExpertFeedPage />} />
 
         {/* profile */}
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/profile/update" element={<ProfileUpdatePage />} />
+        <Route path="/userfeed/:userFeedId" element={<UserFeedPage />} />
 
         {/* myTeam */}
         <Route path="/my-team" element={<MyTeamListPage />} />

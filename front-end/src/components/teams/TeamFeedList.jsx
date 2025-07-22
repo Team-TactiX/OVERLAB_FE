@@ -56,12 +56,12 @@ const TeamFeedList = () => {
             <div className="w-[7vh] h-[7vh] rounded-lg overflow-hidden mb-[0.5vh]">
               {teamFeed.fileType.startsWith('image/') ? (
                 <StyledImg
-                  src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`}
+                  src={`http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`}
                   alt={teamFeed.fileType}
                 />
               ) : teamFeed.fileType.startsWith('video/') ? (
                 <StyledVideo
-                  src={`http://52.78.12.127:8080/media/${teamFeed.realFileName}`}
+                  src={`http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`}
                   controls
                 />
               ) : (
