@@ -35,7 +35,7 @@ const TeamFeedDetailList = ({ teamId }) => {
 
   return (
     <>
-      <Title>팀 상세 리스트</Title>
+      <Title>팀 게시글 리스트</Title>
       <GridContainer>
         {teamFeedList.map((teamFeed) => (
           <TeamFeedDetail key={teamFeed.fileId} teamFeed={teamFeed} />

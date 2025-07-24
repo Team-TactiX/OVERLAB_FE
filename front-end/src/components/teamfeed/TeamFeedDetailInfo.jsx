@@ -36,7 +36,7 @@ const TeamFeedDetailInfo = ({ teamFeedId }) => {
   return (
     <div className="relative max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6">
       {/* 드롭다운 버튼 */}
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-6 right-4">
         <button
           onClick={() => setShowMenu((prev) => !prev)}
           className="text-gray-500 hover:text-gray-800 text-xl"

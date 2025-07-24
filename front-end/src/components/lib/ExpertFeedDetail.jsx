@@ -1,24 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ExpertFeedUpdate from './ExpertFeedUpdate';
 import ExpertFeedDelete from './ExpertFeedDelete';
-import { useNavigate } from 'react-router-dom';
 import FeedCommentList from '../common/feedcomment/FeedCommentList';
+import { FaUserTie } from 'react-icons/fa';
 
 const ExpertFeedDetail = ({ feedId }) => {
   const [update, setUpdate] = useState(false);
   const [expertFeed, setExpertFeed] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
-  const videoRef = useRef(null);
   const [isAuthor, setIsAuthor] = useState(false);
+
+  const videoRef = useRef(null);
   const userId = sessionStorage.getItem('userId');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const expertRes = await fetch(
-          `http://52.78.12.127:8080/api/users/files/file/${feedId}`,
-        );
+        const expertRes = await fetch(`http://52.78.12.127:8080/api/users/files/file/${feedId}`);
         if (!expertRes.ok) throw new Error('네트워크 에러');
         const expertData = await expertRes.json();
         setExpertFeed(expertData);
@@ -44,13 +44,13 @@ const ExpertFeedDetail = ({ feedId }) => {
   }
 
   return (
-    <div className="relative max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6">
-      {/* 드롭다운 버튼 */}
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6 relative space-y-6">
+      {/* 드롭다운 메뉴 */}
       {isAuthor && (
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-15 right-4">
           <button
             onClick={() => setShowMenu((prev) => !prev)}
-            className="text-gray-500 hover:text-gray-800 text-xl"
+            className="text-gray-400 hover:text-gray-700 text-xl"
           >
             ⋯
           </button>
@@ -61,9 +61,9 @@ const ExpertFeedDetail = ({ feedId }) => {
                   setUpdate(true);
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-800 hover:bg-gray-100"
+                className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-gray-100"
               >
-                ✏️ <span>수정</span>
+                ✏️ 수정
               </button>
               <ExpertFeedDelete
                 feedId={feedId}
@@ -74,9 +74,9 @@ const ExpertFeedDetail = ({ feedId }) => {
                       onClick();
                       setShowMenu(false);
                     }}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   >
-                    🗑️ <span>삭제</span>
+                    🗑️ 삭제
                   </button>
                 )}
               />
@@ -85,12 +85,20 @@ const ExpertFeedDetail = ({ feedId }) => {
         </div>
       )}
 
-      {/* 본문 콘텐츠 */}
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        {expertFeed.title}
-      </h2>
+      {/* 제목과 버튼 */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-800">{expertFeed.title}</h2>
+        <button
+          onClick={toExpert}
+          className="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-emerald-600 shadow-sm"
+        >
+          <FaUserTie className="text-base" />
+          전문가 프로필 보기
+        </button>
+      </div>
 
-      <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96 rounded-xl overflow-hidden mb-4">
+      {/* 미디어 */}
+      <div className="rounded-lg overflow-hidden bg-gray-100 aspect-video">
         {expertFeed.fileType.startsWith('image/') ? (
           <img
             src={`http://52.78.12.127:8080/media/user/${expertFeed.realFileName}`}
@@ -105,30 +113,25 @@ const ExpertFeedDetail = ({ feedId }) => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="text-sm text-red-500">지원되지 않는 파일입니다.</div>
+          <div className="p-8 text-center text-sm text-red-500">📁 지원되지 않는 파일입니다.</div>
         )}
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 max-h-[400px] overflow-y-auto">
-        <p className="whitespace-pre-wrap text-gray-800">
+      {/* 본문 */}
+      <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
+        <p className="whitespace-pre-wrap text-gray-800 text-[0.95rem] leading-relaxed">
           {expertFeed.content}
         </p>
       </div>
 
-      <button
-        className="mt-[1vh] bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200 shadow-md"
-        onClick={toExpert}
-      >
-        전문가 프로필로 이동
-      </button>
+      {/* 댓글 */}
+      <div className="pt-1 border-t border-gray-200">
+        <FeedCommentList videoRef={videoRef} />
+      </div>
 
-      {update && (
-        <ExpertFeedUpdate setUpdate={setUpdate} expertFeed={expertFeed} />
-      )}
-
-      <FeedCommentList videoRef={videoRef} />
+      {update && <ExpertFeedUpdate setUpdate={setUpdate} expertFeed={expertFeed} />}
     </div>
   );
 };
 
-export default ExpertFeedDetail;
+export default ExpertFeedDetail; 

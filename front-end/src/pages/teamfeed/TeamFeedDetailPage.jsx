@@ -4,7 +4,8 @@ import TeamFeedDetailInfo from "../../components/teamfeed/TeamFeedDetailInfo";
 
 const Container = styled.div`
   margin-top: 9vh;
-  padding: 0 2vh;
+  padding: 0 1vh;
+  margin-bottom: 5vh;
 `;
 
 const Section = styled.div`
@@ -17,6 +18,7 @@ font-size: 2rem;
 font-weight: 700;
 color: #222;
 margin-bottom: 0.5rem;
+text-align:center;
 `;
 
 const Divider = styled.hr`

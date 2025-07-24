@@ -3,30 +3,36 @@ import styled from 'styled-components';
 import ExpertFeed from './ExpertFeed';
 
 const GridContainer = styled.div`
+  max-width: 1100px;
+  margin: 2rem auto;
   display: grid;
-  gap: 2vh;
-  justify-items: center;
-  width: 100%;
+  grid-template-columns: repeat(auto-fill,minmax(320px,1fr));
+  gap: 1.8rem;
+  padding: 0 1rem;
 `;
 
 const ExpertFeedList = () => {
   const [expertFeedList, setExpertFeedList] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(
-        `http://52.78.12.127:8080/api/users/files/expert`,
-      );
-      const data = await res.json();
-      setExpertFeedList(data);
-    };
+    async function fetchData() {
+      try {
+        const res = await fetch('http://52.78.12.127:8080/api/users/files/expert');
+        if (!res.ok) throw new Error('Fetch error');
+        const data = await res.json();
+        setExpertFeedList(data);
+      } catch (e) {
+        console.error(e);
+        setExpertFeedList([]);
+      }
+    }
     fetchData();
   }, []);
 
   return (
     <GridContainer>
-      {expertFeedList.map((expertFeed) => (
-        <ExpertFeed key={expertFeed.fileId} expertFeed={expertFeed} />
+      {expertFeedList.map(feed => (
+        <ExpertFeed key={feed.fileId} expertFeed={feed} />
       ))}
     </GridContainer>
   );

@@ -170,7 +170,7 @@ const LibPage = () => {
             게시글 작성
             <div
               className="absolute top-1/2 left-full -translate-y-1/2
-              w-0 h-0 border-t-[8px] border-t-transparent
+              w-0 h-0 border-t-[8px] border-t-transpar  ent
               border-b-[8px] border-b-transparent
               border-l-[8px] border-l-gray-700"
             />
