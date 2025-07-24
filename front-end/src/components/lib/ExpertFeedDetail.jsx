@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import ExpertFeedUpdate from './ExpertFeedUpdate';
 import ExpertFeedDelete from './ExpertFeedDelete';
-import ExpertFeedCommentList from './ExpertFeedCommentList';
 import { useNavigate } from 'react-router-dom';
+import FeedCommentList from '../common/feedcomment/FeedCommentList';
 
-const ExpertFeedDetail = ({ expertFeedId }) => {
+const ExpertFeedDetail = ({ feedId }) => {
   const [update, setUpdate] = useState(false);
   const [expertFeed, setExpertFeed] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
@@ -17,7 +17,7 @@ const ExpertFeedDetail = ({ expertFeedId }) => {
     const fetchData = async () => {
       try {
         const expertRes = await fetch(
-          `http://52.78.12.127:8080/api/users/files/file/${expertFeedId}`,
+          `http://52.78.12.127:8080/api/users/files/file/${feedId}`,
         );
         if (!expertRes.ok) throw new Error('네트워크 에러');
         const expertData = await expertRes.json();
@@ -29,7 +29,7 @@ const ExpertFeedDetail = ({ expertFeedId }) => {
     };
 
     fetchData();
-  }, [expertFeedId]);
+  }, [feedId]);
 
   const toExpert = () => {
     navigate(`/profile/${expertFeed.userId}`);
@@ -66,7 +66,7 @@ const ExpertFeedDetail = ({ expertFeedId }) => {
                 ✏️ <span>수정</span>
               </button>
               <ExpertFeedDelete
-                expertFeedId={expertFeedId}
+                feedId={feedId}
                 expertFeed={expertFeed}
                 renderButton={({ onClick }) => (
                   <button
@@ -123,14 +123,10 @@ const ExpertFeedDetail = ({ expertFeedId }) => {
       </button>
 
       {update && (
-        <ExpertFeedUpdate
-          setUpdate={setUpdate}
-          expertFeedId={expertFeedId}
-          expertFeed={expertFeed}
-        />
+        <ExpertFeedUpdate setUpdate={setUpdate} expertFeed={expertFeed} />
       )}
 
-      <ExpertFeedCommentList videoRef={videoRef} />
+      <FeedCommentList videoRef={videoRef} />
     </div>
   );
 };

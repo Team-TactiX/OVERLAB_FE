@@ -66,12 +66,12 @@ function App() {
         {/* lib */}
         <Route path="/lib" element={<LibPage />} />
         <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
-        <Route path="/expertfeed/:expertFeedId" element={<ExpertFeedPage />} />
+        <Route path="/expertfeed/:feedId" element={<ExpertFeedPage />} />
 
         {/* profile */}
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/profile/update" element={<ProfileUpdatePage />} />
-        <Route path="/userfeed/:userFeedId" element={<UserFeedPage />} />
+        <Route path="/userfeed/:feedId" element={<UserFeedPage />} />
 
         {/* myTeam */}
         <Route path="/my-team" element={<MyTeamListPage />} />

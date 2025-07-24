@@ -2,12 +2,12 @@ import { useParams } from 'react-router-dom';
 import UserFeedDetail from '../../components/profile/UserFeedDetail';
 
 const UserFeedPage = () => {
-  const { userFeedId } = useParams();
+  const { feedId } = useParams();
 
   return (
     <>
       <p>게시글</p>
-      <UserFeedDetail userFeedId={userFeedId} />
+      <UserFeedDetail feedId={feedId} />
     </>
   );
 };

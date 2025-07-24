@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import UserFeedUpdate from './UserFeedUpdate';
 import UserFeedDelete from './UserFeedDelete';
-import UserFeedCommentList from './UserFeedCommentList';
+import FeedCommentList from '../common/feedcomment/FeedCommentList';
 
-const UserFeedDetail = ({ userFeedId }) => {
+const UserFeedDetail = ({ feedId }) => {
   const [update, setUpdate] = useState(false);
   const [userFeed, setUserFeed] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
@@ -15,7 +15,7 @@ const UserFeedDetail = ({ userFeedId }) => {
     const fetchData = async () => {
       try {
         const userRes = await fetch(
-          `http://52.78.12.127:8080/api/users/files/file/${userFeedId}`,
+          `http://52.78.12.127:8080/api/users/files/file/${feedId}`,
         );
         if (!userRes.ok) throw new Error('네트워크 에러');
         const userData = await userRes.json();
@@ -27,7 +27,7 @@ const UserFeedDetail = ({ userFeedId }) => {
     };
 
     fetchData();
-  }, [userFeedId]);
+  }, [feedId]);
 
   if (!userFeed) {
     return (
@@ -60,7 +60,7 @@ const UserFeedDetail = ({ userFeedId }) => {
                 ✏️ <span>수정</span>
               </button>
               <UserFeedDelete
-                userFeedId={userFeedId}
+                feedId={feedId}
                 userFeed={userFeed}
                 renderButton={({ onClick }) => (
                   <button
@@ -107,15 +107,9 @@ const UserFeedDetail = ({ userFeedId }) => {
         <p className="whitespace-pre-wrap text-gray-800">{userFeed.content}</p>
       </div>
 
-      {update && (
-        <UserFeedUpdate
-          setUpdate={setUpdate}
-          userFeedId={userFeedId}
-          userFeed={userFeed}
-        />
-      )}
+      {update && <UserFeedUpdate setUpdate={setUpdate} userFeed={userFeed} />}
 
-      <UserFeedCommentList videoRef={videoRef} />
+      <FeedCommentList videoRef={videoRef} />
     </div>
   );
 };

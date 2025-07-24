@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-const ExpertFeedDelete = ({ expertFeedId, expertFeed, renderButton }) => {
+const ExpertFeedDelete = ({ feedId, expertFeed, renderButton }) => {
   const navigate = useNavigate();
-  const expertId = expertFeed.expertId;
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm('정말로 게시글을 삭제할까요?');
@@ -10,7 +9,7 @@ const ExpertFeedDelete = ({ expertFeedId, expertFeed, renderButton }) => {
 
     try {
       const res = await fetch(
-        `http://52.78.12.127:8080/api/users/files/${expertFeedId}`,
+        `http://52.78.12.127:8080/api/users/files/${feedId}`,
         {
           method: 'DELETE',
         },
@@ -18,7 +17,7 @@ const ExpertFeedDelete = ({ expertFeedId, expertFeed, renderButton }) => {
 
       if (res.ok) {
         alert('삭제 완료');
-        navigate(`/profile/${expertId}`);
+        navigate(`/lib`);
       } else {
         const error = await res.text();
         alert('삭제 실패: ' + error);

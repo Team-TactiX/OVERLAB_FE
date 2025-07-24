@@ -2,12 +2,12 @@ import { useParams } from 'react-router-dom';
 import ExpertFeedDetail from '../../components/lib/ExpertFeedDetail';
 
 const ExpertFeedPage = () => {
-  const { expertFeedId } = useParams();
+  const { feedId } = useParams();
 
   return (
     <>
       <p>게시글</p>
-      <ExpertFeedDetail expertFeedId={expertFeedId} />
+      <ExpertFeedDetail feedId={feedId} />
     </>
   );
 };

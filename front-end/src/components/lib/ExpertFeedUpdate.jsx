@@ -17,8 +17,8 @@ const StyledVideo = styled.video`
   border-radius: 1vh;
 `;
 
-const ExpertFeedUpdate = ({ setUpdate, expertFeedId, expertFeed }) => {
-  const expertId = expertFeed.expertId;
+const ExpertFeedUpdate = ({ setUpdate, expertFeed }) => {
+  const userId = expertFeed.userId;
   const [title, setTitle] = useState(expertFeed.title);
   const [content, setContent] = useState(expertFeed.content);
   const [file, setFile] = useState(''); // 파일 객체 (image or video)
@@ -49,7 +49,7 @@ const ExpertFeedUpdate = ({ setUpdate, expertFeedId, expertFeed }) => {
 
     try {
       const formData = new FormData();
-      formData.append('expertId', expertId);
+      formData.append('userId', userId);
       formData.append('title', title);
       formData.append('content', content);
 
@@ -73,18 +73,18 @@ const ExpertFeedUpdate = ({ setUpdate, expertFeedId, expertFeed }) => {
         );
 
         if (!res.ok) {
-          alert((await res.text()) || '팀 게시글 파일 수정 실패');
+          alert((await res.text()) || '게시글 파일 수정 실패');
         }
       }
 
       if (response.ok) {
-        alert('팀 게시글 수정 완료!');
+        alert('게시글 수정 완료!');
         window.location.reload();
       } else {
-        alert((await response.text()) || '팀 게시글 수정 실패');
+        alert((await response.text()) || '게시글 수정 실패');
       }
     } catch (error) {
-      console.error('팀 게시글 수정 중 오류:', error);
+      console.error('게시글 수정 중 오류:', error);
       alert('서버 요청 중 문제가 발생했습니다.');
     }
   };

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-const UserFeedDelete = ({ userFeedId, userFeed, renderButton }) => {
+const UserFeedDelete = ({ feedId, userFeed, renderButton }) => {
   const navigate = useNavigate();
   const userId = userFeed.userId;
 
@@ -10,7 +10,7 @@ const UserFeedDelete = ({ userFeedId, userFeed, renderButton }) => {
 
     try {
       const res = await fetch(
-        `http://52.78.12.127:8080/api/users/files/${userFeedId}`,
+        `http://52.78.12.127:8080/api/users/files/${feedId}`,
         {
           method: 'DELETE',
         },
