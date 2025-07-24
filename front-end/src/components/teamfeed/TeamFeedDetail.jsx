@@ -1,67 +1,89 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  width: 12vh;
-  height: 20vh;
-  background-color: #f9f9f9;
-  text-align: center;
-  flex-shrink: 0;
-  border-radius: 0.8vh;
-  box-shadow: 0 0.2vh 0.4vh rgba(0, 0, 0, 0.1);
+const Card = styled.div`
+  width: 100%;
+  max-width: 240px;
+  background-color: #fdfdfd;
+  border-radius: 1rem;
   overflow: hidden;
-`;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
 
-const Title = styled.h1`
-  font-size: 1.4vh;
-  margin: 1vh 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const StyledImg = styled.img`
-  width: 10vh;
-  height: 10vh;
-  object-fit: cover;
-  border-radius: 0.4vh;
-`;
-
-const StyledVideo = styled.video`
-  width: 10vh;
-  height: 10vh;
-  object-fit: cover;
-  border-radius: 0.4vh;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  }
 `;
 
 const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  color: inherit;
+  text-decoration: none;
+`;
+
+const MediaWrapper = styled.div`
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  position: relative;
+
+  img,
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  ${Card}:hover & img,
+  ${Card}:hover & video {
+    transform: scale(1.05);
+  }
+`;
+
+const TitleBox = styled.div`
+  padding: 1rem;
+  background-color: #fff;
+`;
+
+const Title = styled.h2`
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+  text-align: center;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2줄까지 표시 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const TeamFeedDetail = ({ teamFeed }) => {
+  const mediaUrl = `http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`;
+
   return (
-    <Container>
+    <Card>
       <StyledLink to={`/teamfeed/${teamFeed.fileId}`}>
-        <Title>{teamFeed.title}</Title>
-        {teamFeed.fileType.startsWith('image/') ? (
-          <StyledImg
-            src={`http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`}
-            alt={teamFeed.fileType}
-          />
-        ) : teamFeed.fileType.startsWith('video/') ? (
-          <StyledVideo
-            src={`http://52.78.12.127:8080/media/team/${teamFeed.realFileName}`}
-            controls
-          />
-        ) : (
-          <span>지원되지 않는 파일</span>
-        )}
+        <MediaWrapper>
+          {teamFeed.fileType.startsWith('image/') ? (
+            <img src={mediaUrl} alt={teamFeed.title} />
+          ) : teamFeed.fileType.startsWith('video/') ? (
+            <video src={mediaUrl} muted playsInline loop />
+          ) : (
+            <div style={{ padding: '2rem', fontSize: '0.9rem', color: '#888' }}>
+              지원되지 않는 형식
+            </div>
+          )}
+        </MediaWrapper>
+        <TitleBox>
+          <Title>{teamFeed.title}</Title>
+        </TitleBox>
       </StyledLink>
-    </Container>
+    </Card>
   );
 };
 

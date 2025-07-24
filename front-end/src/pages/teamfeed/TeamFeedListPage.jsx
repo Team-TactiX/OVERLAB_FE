@@ -3,31 +3,66 @@ import styled from "styled-components";
 import TeamInfo from "../../components/teamfeed/TeamInfo";
 import TeamFeedDetailList from "../../components/teamfeed/TeamFeedDetailList";
 
-const Container = styled.div`
+const PageWrapper = styled.div`
   margin-top: 9vh;
+  padding: 0 2vh;
+  min-height: 100vh;
   display: flex;
-  gap: 2vh;
   flex-direction: column;
-`
+  align-items: center;
+`;
 
-const Section = styled.div`
-  background-color: white;
-`
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.5rem;
+`;
+
+const Divider = styled.hr`
+  width: 100%;
+  border: none;
+  height: 2px;
+  background-color: #e0e0e0;
+  margin-bottom: 1rem;
+`;
+
+const CardSection = styled.section`
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+`;
 
 const TeamFeedListPage = () => {
-  const {teamId} = useParams()
+  const { teamId } = useParams();
 
   return (
-    <Container>
-      <h2>팀 게시글 리스트 페이지</h2>
-      <Section>
-        <TeamInfo teamId={teamId} />
-      </Section>
-      <Section>
-        <TeamFeedDetailList teamId={teamId} />
-      </Section>
-    </Container>
-  )
-}
+    <PageWrapper>
+      <ContentWrapper>
+        <div>
+          <Title>팀 게시글</Title>
+          <Divider />
+        </div>
+
+        <CardSection>
+          <TeamInfo teamId={teamId} />
+        </CardSection>
+
+        <CardSection>
+          <TeamFeedDetailList teamId={teamId} />
+        </CardSection>
+      </ContentWrapper>
+    </PageWrapper>
+  );
+};
 
 export default TeamFeedListPage;
