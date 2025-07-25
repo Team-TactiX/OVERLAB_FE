@@ -4,7 +4,6 @@ import altImage from '../../img/alt_image.png';
 import setting from '../../img/setting.png';
 import TeamMatch from './TeamMatch';
 import TeamJoin from './TeamJoin';
-import TeamFeedList from './TeamFeedList';
 import UniformIcon from '../common/UniformIcon';
 
 const TeamInfo = ({ teamId }) => {
@@ -116,9 +115,6 @@ const TeamInfo = ({ teamId }) => {
           </ul>
         )}
       </div>
-
-      {/* 팀 게시글 */}
-      <TeamFeedList />
 
       {/* 경기 일정 */}
       <div>

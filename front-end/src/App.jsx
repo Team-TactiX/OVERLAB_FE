@@ -23,11 +23,6 @@ import GameDetailPage from './pages/game/GameDetailPage';
 import PRGameListPage from './pages/prgame/PRGameListPage';
 import PRGamePage from './pages/prgame/PRGamePage';
 import PRGameCreatePage from './pages/prgame/PRGameCreatePage';
-import TeamFeedDetailPage from './pages/teamfeed/TeamFeedDetailPage';
-import TeamFeedListPage from './pages/teamfeed/TeamFeedListPage';
-import UserFeedPage from './pages/profile/UserFeedPage';
-import ExpertFeedPage from './pages/lib/ExpertFeedPage';
-
 function App() {
   const location = useLocation();
 
@@ -66,12 +61,10 @@ function App() {
         {/* lib */}
         <Route path="/lib" element={<LibPage />} />
         <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
-        <Route path="/expertfeed/:feedId" element={<ExpertFeedPage />} />
 
         {/* profile */}
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/profile/update" element={<ProfileUpdatePage />} />
-        <Route path="/userfeed/:feedId" element={<UserFeedPage />} />
 
         {/* myTeam */}
         <Route path="/my-team" element={<MyTeamListPage />} />
@@ -88,10 +81,6 @@ function App() {
         <Route path="/pr/:prGameId" element={<PRGamePage />} />
         <Route path="/pr/list/:quarterId" element={<PRGameListPage />} />
         <Route path="/pr/create/:quarterId" element={<PRGameCreatePage />} />
-
-        {/* teamfeed */}
-        <Route path="/teamfeed/list/:teamId" element={<TeamFeedListPage />} />
-        <Route path="/teamfeed/:teamFeedId" element={<TeamFeedDetailPage />} />
       </Routes>
       {shouldShowBottomTab && <BottomTab />}
     </>

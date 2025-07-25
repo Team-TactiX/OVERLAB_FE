@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Profile from '../../components/profile/Profile';
-import ProfileFeedCreate from '../../components/profile/ProfileFeedCreate';
-import UserFeedList from '../../components/profile/UserFeedList';
 
 const ProfilePage = () => {
   const [myProfile, setMyProfile] = useState(false);
@@ -118,63 +116,6 @@ const ProfilePage = () => {
           </ul>
         )}
       </div>
-
-      <div className="w-full max-w-5xl mt-8">
-        <UserFeedList />
-      </div>
-
-      {/* ── 글쓰기 FAB + 툴팁 ─────────────────────────────── */}
-      {myProfile && (
-        <div className="fixed bottom-[10vh] right-[calc(clamp(1vh,(100vw-50vh)/2+1vh,100vw))] z-[1000] group">
-          <button
-            onClick={() => setShowModal(true)}
-            className="
-              w-[6.5vh] h-[6.5vh] rounded-full bg-white border-2 border-green-500
-              text-green-500 shadow-lg flex items-center justify-center
-              transition-transform duration-150
-              group-hover:scale-110 group-hover:shadow-xl active:scale-95
-            "
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="w-[3vh] h-[3vh]"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.862 3.487a2.32 2.32 0 113.281 3.281L7.5 19.41l-4.245 1.06 1.06-4.244L16.862 3.487z"
-              />
-            </svg>
-          </button>
-
-          {/* 툴팁 */}
-          <div
-            className="
-              absolute right-[calc(100%+1.5vh)] top-1/2 -translate-y-1/2
-              bg-gray-700 text-white text-[1.6vh] px-[1.2vh] py-[0.7vh]
-              rounded-[1vh] shadow whitespace-nowrap
-              opacity-0 group-hover:opacity-100 transition-opacity duration-200
-            "
-          >
-            게시글 작성
-            <div
-              className="
-                absolute top-1/2 left-full -translate-y-1/2
-                w-0 h-0 border-t-[8px] border-t-transparent
-                border-b-[8px] border-b-transparent
-                border-l-[8px] border-l-gray-700
-              "
-            />
-          </div>
-        </div>
-      )}
-
-      {/* ── 글쓰기 모달 ─────────────────────────────────── */}
-      {showModal && <ProfileFeedCreate setShowModal={setShowModal} />}
     </div>
   );
 };
