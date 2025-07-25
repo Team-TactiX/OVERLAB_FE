@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 const CommentCreate = ({ teamFeedId }) => {
   const [content, setContent] = useState('');
   const userMail = sessionStorage.getItem('userMail');
@@ -43,24 +42,22 @@ const CommentCreate = ({ teamFeedId }) => {
   };
 
   return (
-    <div className="mt-4 p-4 border rounded-lg bg-white shadow-sm">
-      <textarea
+    <div className="flex items-center gap-2">
+      <input
+        type="text"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="댓글을 입력하세요..."
-        className="w-full border border-gray-300 rounded p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-400"
-        rows={3}
+        placeholder="댓글을 입력해 주세요."
+        className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
       />
-      <div className="flex justify-end mt-2">
-        <button
-          onClick={handleSubmit}
-          className="bg-green-500 text-white text-sm px-4 py-1.5 rounded hover:bg-green-600 transition"
-        >
-          등록
-        </button>
-      </div>
+      <button
+        onClick={handleSubmit}
+        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition"
+      >
+        ✔️
+      </button>
     </div>
   );
 };
 
-export default CommentCreate;
+export default CommentCreate; 

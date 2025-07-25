@@ -1,46 +1,76 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TeamFeedDetailInfo from "../../components/teamfeed/TeamFeedDetailInfo";
 
+// 전체 페이지 래퍼
 const Container = styled.div`
   margin-top: 9vh;
-  padding: 0 1vh;
-  margin-bottom: 5vh;
+  background-color: #fafafa;
+  min-height: 100vh;
 `;
 
-const Section = styled.div`
-  padding: 0  rem;
+// 상단 헤더
+const HeaderBar = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #e8f5e9; // 연초록
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #d0e0d0;
 `;
 
-// 여기에 글자 스타일만 추가
-const PageTitle = styled.h2`
-font-size: 2rem;
-font-weight: 700;
-color: #222;
-margin-bottom: 0.5rem;
-text-align:center;
-`;
-
-const Divider = styled.hr`
-  width: 100%;
+// 왼쪽 ← 버튼
+const BackButton = styled.button`
+  position: absolute;
+  left: 16px;
+  background: none;
   border: none;
-  height: 2px;
-  background-color: #e0e0e0;
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #388e3c;
+  cursor: pointer;
+  font-weight: 600;
+`;
+
+// 중앙 제목
+const Title = styled.h1`
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+`;
+
+const Section = styled.section`
+  padding: rem 0.5rem;
+`;
+
+const Separator = styled.div`
+  height: 8px;
+  background-color: #f5f5f5;
+  margin: 2rem 0;
+  border-radius: 1px;
 `;
 
 const TeamFeedDetailPage = () => {
   const { teamFeedId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <Container>
-      <div>
-      <PageTitle>팀 게시글 상세 페이지</PageTitle>
-      <Divider/>
-      </div>
+      <HeaderBar>
+        <BackButton onClick={() => navigate(-1)}>←</BackButton>
+        <Title>게시글 보기</Title>
+      </HeaderBar>
+
       <Section>
         <TeamFeedDetailInfo teamFeedId={teamFeedId} />
       </Section>
+
+      <Separator />
     </Container>
   );
 };

@@ -1,3 +1,4 @@
+// FeedComment.jsx
 import { useEffect, useState } from 'react';
 import FeedCommentDelete from './FeedCommentDelete';
 import FeedCommentUpdate from './FeedCommentUpdate';
@@ -8,15 +9,17 @@ const FeedComment = ({ comment, videoRef }) => {
   const [user, setUser] = useState('');
   const isAuthor = userId == comment.userId;
 
+  // 영상 시간 클릭시 해당 위치 이동
   const handleTimeClick = (timeStr) => {
     const [min, sec] = timeStr.split(':').map(Number);
     const timeInSeconds = min * 60 + sec;
     if (videoRef?.current) {
       videoRef.current.currentTime = timeInSeconds;
-      videoRef.current.play(); // 자동 재생도 가능
+      videoRef.current.play();
     }
   };
 
+  // 댓글 내용에서 시간 형식 텍스트 링크로 변환
   const parseContentWithTimeLinks = (text) => {
     const regex = /(\d{1,2}:\d{2})/g;
     const parts = text.split(regex);
@@ -26,12 +29,13 @@ const FeedComment = ({ comment, videoRef }) => {
           key={index}
           onClick={() => handleTimeClick(part)}
           className="text-blue-500 underline hover:text-blue-700 text-xs ml-1"
+          type="button"
         >
           {part}
         </button>
       ) : (
         <span key={index}>{part}</span>
-      ),
+      )
     );
   };
 
@@ -39,7 +43,7 @@ const FeedComment = ({ comment, videoRef }) => {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          `http://52.78.12.127:8080/api/users/check/id/${comment.userId}`,
+          `http://52.78.12.127:8080/api/users/check/id/${comment.userId}`
         );
         const data = await response.json();
         setUser(data);
@@ -53,10 +57,13 @@ const FeedComment = ({ comment, videoRef }) => {
   }, [comment]);
 
   return (
-    <li className="p-4 border border-gray-200 rounded-xl bg-white shadow-sm">
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-semibold text-gray-800">
-          {user.userName}
+    <li
+      className="text-sm leading-relaxed p-3 border border-gray-300 rounded-md bg-white"
+      style={{ wordBreak: 'break-word' }}
+    >
+      <div className="flex justify-between items-center mb-1">
+        <span className="font-semibold text-gray-800">
+          {user.userName || '익명'}
         </span>
         {isAuthor && (
           <div className="flex items-center gap-2">
@@ -64,6 +71,7 @@ const FeedComment = ({ comment, videoRef }) => {
               <button
                 onClick={() => setIsEditing(true)}
                 className="text-xs text-blue-500 hover:underline hover:text-blue-600"
+                type="button"
               >
                 댓글 수정
               </button>
@@ -74,7 +82,7 @@ const FeedComment = ({ comment, videoRef }) => {
       </div>
 
       {!isEditing ? (
-        <div className="text-sm text-gray-700 mb-1">
+        <div className="mb-1 text-gray-700">
           {parseContentWithTimeLinks(comment.content)}
         </div>
       ) : (

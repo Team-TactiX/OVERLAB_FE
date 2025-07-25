@@ -4,7 +4,7 @@ import CommentCreate from './CommentCreate';
 import { useEffect, useState } from 'react';
 
 const CommentList = ({ videoRef }) => {
-  const { teamFeedId } = useParams('teamFeedId');
+  const { teamFeedId } = useParams();
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -25,14 +25,21 @@ const CommentList = ({ videoRef }) => {
   }, [teamFeedId]);
 
   return (
-    <div className="mt-2">
-      <CommentCreate teamFeedId={teamFeedId} />
-      <h3 className="text-md font-semibold mb-5 mt-12">댓글 리스트</h3>
-      <ul className="space-y-1">
+    <div className="pt-2">
+      {/* 댓글 제목 */}
+      <h3 className="text-lg font-semibold text-gray-800 mb-3">
+        댓글 {comments.length}
+      </h3>
+
+      {/* 댓글 리스트 */}
+      <ul className="space-y-4 mb-4">
         {comments.map((comment) => (
           <Comment key={comment.feedId} comment={comment} videoRef={videoRef} />
         ))}
       </ul>
+
+      {/* 댓글 입력창 */}
+      <CommentCreate teamFeedId={teamFeedId} />
     </div>
   );
 };

@@ -11,7 +11,7 @@ const TAB_LIST = [
   { key: 'lib', label: 'Lib.' },
 ];
 
-const Lib_LIST = [
+const LIB_LIST = [
   { key: 'formation', label: 'Formation Lib.' },
   { key: 'tactics', label: 'Tactics Lib.' },
 ];
@@ -27,7 +27,7 @@ const LibPage = () => {
   const [showModal, setShowModal] = useState(false);
   const userId = sessionStorage.getItem('userId');
   const { user } = useUser({ userId });
-  const isExpert = user.userCode == 'EXPERT';
+  const isExpert = user.userCode === 'EXPERT';
 
   const handleTabChange = (key) => {
     setActiveTab(key);
@@ -61,12 +61,11 @@ const LibPage = () => {
           <button
             key={tab.key}
             onClick={() => handleTabChange(tab.key)}
-            className={`min-w-[6rem] text-center whitespace-nowrap text-xl font-extrabold focus:outline-none
-              ${
-                activeTab === tab.key
-                  ? 'text-green-700 border-b-4 border-green-600 pb-2'
-                  : 'text-gray-400 hover:text-green-600'
-              }`}
+            className={`min-w-[6rem] text-center whitespace-nowrap text-xl font-extrabold focus:outline-none ${
+              activeTab === tab.key
+                ? 'text-green-700 border-b-4 border-green-600 pb-2'
+                : 'text-gray-400 hover:text-green-600'
+            }`}
           >
             {tab.label}
           </button>
@@ -76,16 +75,15 @@ const LibPage = () => {
       {/* 하위 탭 (Lib 선택 시) */}
       {isLib && (
         <div className="flex justify-center gap-8 mb-8 overflow-x-auto no-scrollbar">
-          {Lib_LIST.map((lib) => (
+          {LIB_LIST.map((lib) => (
             <button
               key={lib.key}
               onClick={() => handleLibChange(lib.key)}
-              className={`min-w-[5rem] text-center whitespace-nowrap text-base font-medium focus:outline-none
-                ${
-                  activeLib === lib.key
-                    ? 'text-green-600 border-b-2 border-green-500 pb-1'
-                    : 'text-gray-400 hover:text-green-500'
-                }`}
+              className={`min-w-[5rem] text-center whitespace-nowrap text-base font-medium focus:outline-none ${
+                activeLib === lib.key
+                  ? 'text-green-600 border-b-2 border-green-500 pb-1'
+                  : 'text-gray-400 hover:text-green-500'
+              }`}
             >
               {lib.label}
             </button>
@@ -135,22 +133,19 @@ const LibPage = () => {
 
       {/* 게시글 작성 버튼 */}
       {!isLib && isExpert && (
-        <div className="fixed bottom-[10vh] right-4 z-50 group">
+        <div className="fixed bottom-[10vh] right-[calc(clamp(1vh,(100vw-50vh)/2+1vh,100vw))] z-[1000] group">
           <button
             onClick={() => setShowModal(true)}
-            className="w-16 h-16 rounded-full bg-white border-2 border-green-500
-          text-green-500 shadow-lg flex items-center justify-center
-          transition-transform duration-150
-          group-hover:scale-110 group-hover:shadow-xl active:scale-95"
+            className="w-[6.5vh] h-[6.5vh] border-2 border-green-500 text-green-500 bg-white rounded-full cursor-pointer shadow-lg flex items-center justify-center hover:bg-green-50 active:scale-95 transition-transform"
             aria-label="게시글 작성"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              viewBox="0 0 24 24"
               strokeWidth="2"
-              className="w-8 h-8"
+              stroke="currentColor"
+              className="w-[3vh] h-[3vh]"
             >
               <path
                 strokeLinecap="round"
@@ -161,19 +156,9 @@ const LibPage = () => {
           </button>
 
           {/* 툴팁 */}
-          <div
-            className="absolute right-full top-1/2 -translate-y-1/2
-            bg-gray-700 text-white text-sm px-3 py-1.5
-            rounded shadow whitespace-nowrap
-            opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-          >
+          <div className="absolute right-[calc(100%+1.5vh)] top-1/2 -translate-y-1/2 bg-gray-200 text-gray-800 text-[1.6vh] px-[1.2vh] py-[0.7vh] rounded-[1vh] shadow group-hover:opacity-100 opacity-0 transition-opacity duration-300 whitespace-nowrap">
             게시글 작성
-            <div
-              className="absolute top-1/2 left-full -translate-y-1/2
-              w-0 h-0 border-t-[8px] border-t-transpar  ent
-              border-b-[8px] border-b-transparent
-              border-l-[8px] border-l-gray-700"
-            />
+            <div className="absolute top-1/2 left-full -translate-y-1/2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-gray-200"></div>
           </div>
         </div>
       )}

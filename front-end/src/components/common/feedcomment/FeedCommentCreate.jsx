@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
 
 const FeedCommentCreate = ({ feedId }) => {
   const [content, setContent] = useState('');
   const userMail = sessionStorage.getItem('userMail');
   const userId = sessionStorage.getItem('userId');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     if (!content.trim()) {
       alert('댓글을 입력해주세요.');
       return;
@@ -18,18 +21,14 @@ const FeedCommentCreate = ({ feedId }) => {
       userId: Number(userId),
     };
 
-    console.log(body);
-
     try {
       const res = await fetch(
         'http://52.78.12.127:8080/api/users/comments/create',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
-        },
+        }
       );
 
       if (!res.ok) {
@@ -46,23 +45,23 @@ const FeedCommentCreate = ({ feedId }) => {
   };
 
   return (
-    <div className="mt-4 p-4 border rounded-lg bg-white shadow-sm">
-      <textarea
+    <form onSubmit={handleSubmit} className="flex items-center gap-3">
+      <input
+        type="text"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="댓글을 입력하세요..."
-        className="w-full border border-gray-300 rounded p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-400"
-        rows={3}
+        placeholder="댓글을 입력하세요"
+        className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+        aria-label="댓글 입력창"
       />
-      <div className="flex justify-end mt-2">
-        <button
-          onClick={handleSubmit}
-          className="bg-green-500 text-white text-sm px-4 py-1.5 rounded hover:bg-green-600 transition"
-        >
-          등록
-        </button>
-      </div>
-    </div>
+      <button
+        type="submit"
+        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition"
+        aria-label="댓글 등록"
+      >
+        <FaCheck />
+      </button>
+    </form>
   );
 };
 

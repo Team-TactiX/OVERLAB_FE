@@ -4,15 +4,12 @@ import useUser from '../../hooks/api/get/useUser';
 
 const Card = styled.div`
   background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border-radius: 0;
+  border: 1px solid #e5e5e5;
   overflow: hidden;
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
+  transition: box-shadow 0.2s;
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   }
 `;
 
@@ -22,8 +19,6 @@ const Thumbnail = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: #888;
   overflow: hidden;
 `;
 
@@ -40,7 +35,7 @@ const ThumbVideo = styled.video`
 `;
 
 const Content = styled.div`
-  padding: 1rem 1.2rem;
+  padding: 16px;
   display: flex;
   flex-direction: column;
 `;
@@ -49,17 +44,18 @@ const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 `;
 
 const Title = styled.h3`
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #222;
   margin: 0;
   flex: 1;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ProfileButton = styled.button`
@@ -67,9 +63,8 @@ const ProfileButton = styled.button`
   color: #fff;
   border: none;
   font-size: 0.75rem;
-  padding: 6px 10px;
-  border-radius: 0.5rem;
-  margin-left: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
   white-space: nowrap;
   cursor: pointer;
   &:hover {
@@ -78,7 +73,7 @@ const ProfileButton = styled.button`
 `;
 
 const AuthorInfo = styled.div`
-  margin: 0.6rem 0;
+  margin: 12px 0 8px;
   font-size: 0.85rem;
   color: #666;
   display: flex;
@@ -90,9 +85,9 @@ const AuthorInfo = styled.div`
 `;
 
 const Description = styled.p`
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #444;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -125,11 +120,13 @@ const ExpertFeed = ({ expertFeed }) => {
         <Content>
           <TitleRow>
             <Title>{expertFeed.title}</Title>
-            <ProfileButton onClick={(e) => {
-              e.preventDefault();
-              window.location.href = `/profile/${expertFeed.userId}`;
-            }}>
-              프로필
+            <ProfileButton
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `/profile/${expertFeed.userId}`;
+              }}
+            >
+              전문가 프로필 보기
             </ProfileButton>
           </TitleRow>
           <AuthorInfo>{user?.userName || '익명 전문가'}</AuthorInfo>
