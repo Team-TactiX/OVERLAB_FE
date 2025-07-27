@@ -53,7 +53,7 @@ const Profile = ({ setMyProfile }) => {
       <Box>
         <BoxBox>
           {/* 닉네임 */}
-          <h2 className="text-[2.6vh] font-bold text-gray-800 tracking-tight mb-1 text-center">
+          <h2 className="text-[2.5vh] font-bold text-gray-800 tracking-tight mb-1 text-center">
             {userData.userName}
           </h2>
 
@@ -68,7 +68,7 @@ const Profile = ({ setMyProfile }) => {
               .map((pos) => (
                 <span
                   key={pos}
-                  className="bg-gray-100 px-3 py-1 rounded-full text-sm border border-gray-300"
+                  className="bg-gray-100 px-2 py-1 rounded-full text-sm border border-gray-300"
                 >
                   {pos}
                 </span>

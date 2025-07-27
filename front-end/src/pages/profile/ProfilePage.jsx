@@ -4,7 +4,6 @@ import Profile from '../../components/profile/Profile';
 
 const ProfilePage = () => {
   const [myProfile, setMyProfile] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
