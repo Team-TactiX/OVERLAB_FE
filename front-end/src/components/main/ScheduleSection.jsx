@@ -14,6 +14,7 @@ const ScheduleSection = () => {
   const [games, setGames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const userMail = sessionStorage.getItem('userMail');
+  const today = dayjs();
 
   const getDaysInMonth = () => {
     const start = currentDate.startOf('month').day();
@@ -109,9 +110,9 @@ const ScheduleSection = () => {
     );
   }
 
-  const sortedGames = [...games].sort((a, b) =>
-    dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1,
-  );
+  const sortedGames = [...games]
+    .filter((game) => dayjs(game.date).isAfter(today))
+    .sort((a, b) => (dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1));
 
   return (
     <div className="py-[1.5vh]">
@@ -180,13 +181,14 @@ const ScheduleSection = () => {
                   className="w-[7vh] h-[7vh] rounded-full object-cover mb-[1vh] border border-white"
                   alt="match logo"
                 />
-               <div className="text-[1.6vh] truncate w-full min-w-0 whitespace-nowrap hover:text-green-500">
+                <div className="text-[1.6vh] truncate w-full min-w-0 whitespace-nowrap hover:text-green-500">
                   {(() => {
                     const matchedTeam = teams.find(
                       (team) => team.teamId === game.teamId,
                     );
                     return matchedTeam ? matchedTeam.teamName : '알 수 없음';
-                  })()} VS {game.versus}
+                  })()}{' '}
+                  VS {game.versus}
                 </div>
               </div>
             </Link>

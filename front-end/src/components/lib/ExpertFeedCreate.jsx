@@ -165,7 +165,8 @@ const ExpertFeedCreate = ({ setShowModal }) => {
   const handleFile = (e) => onSelect(e.target.files?.[0]);
 
   const submit = async () => {
-    if (!title.trim() || !content.trim()) return alert('제목과 내용을 입력하세요');
+    if (!title.trim() || !content.trim())
+      return alert('제목과 내용을 입력하세요');
 
     try {
       const formData = new FormData();
@@ -208,9 +209,15 @@ const ExpertFeedCreate = ({ setShowModal }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="file-upload">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              viewBox="0 0 24 24">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
@@ -243,10 +250,7 @@ const ExpertFeedCreate = ({ setShowModal }) => {
         />
 
         <Footer>
-          <Save
-            disabled={!title.trim() || !content.trim()}
-            onClick={submit}
-          >
+          <Save disabled={!title.trim() || !content.trim()} onClick={submit}>
             등록
           </Save>
         </Footer>

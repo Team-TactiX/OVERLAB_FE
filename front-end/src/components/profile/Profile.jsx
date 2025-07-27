@@ -68,7 +68,7 @@ const Profile = ({ setMyProfile }) => {
               .map((pos) => (
                 <span
                   key={pos}
-                  className="bg-gray-100 px-3 py-1 rounded-full text-sm border border-gray-300"
+                  className="bg-gray-100 px-2 py-1 rounded-full text-sm border border-gray-300"
                 >
                   {pos}
                 </span>
