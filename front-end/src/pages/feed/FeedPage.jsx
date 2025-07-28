@@ -5,7 +5,7 @@ import FeedCreate from '../../components/feed/FeedCreate';
 const FeedPage = () => {
   const [category, setCategory] = useState('매칭');
   const [showModal, setShowModal] = useState(false);
-  const userMail = 'SYS@dankook.ac.kr'; // 나중에 ID로 변경 예정
+  const userMail = sessionStorage.getItem('userMail');
 
   return (
     <div className="p-[8vh_2vw_10vh] max-w-[768px] mx-auto bg-[#f9f9f9]">

@@ -3,12 +3,17 @@ import { useState } from 'react';
 import Profile from '../../components/profile/Profile';
 import ProfileFeedCreate from '../../components/profile/ProfileFeedCreate';
 import UserFeedList from '../../components/profile/UserFeedList';
+import useCareer from '../../hooks/api/get/useCareer';
+import CreateCareer from '../../components/profile/CreateCareer';
+import Career from '../../components/profile/Career';
 
 const ProfilePage = () => {
   const [myProfile, setMyProfile] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showCreateCareer, setShowCreateCareer] = useState(false);
   const navigate = useNavigate();
+  const { careerList } = useCareer();
 
   const handleMenu = () => {
     setShowMenu(!showMenu);
@@ -119,13 +124,37 @@ const ProfilePage = () => {
         )}
       </div>
 
+      {/* 경력 카드 */}
+      <div className="mt-4 bg-white w-full max-w-lg rounded-2xl shadow-lg p-6">
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-xl font-bold">경력</p>
+          <p
+            className="text-sm text-blue-600 hover:underline cursor-pointer"
+            onClick={() => setShowCreateCareer(true)}
+          >
+            경력 추가
+          </p>
+        </div>
+        {careerList.length != 0 ? (
+          careerList.map((career) => {
+            return <Career career={career} />;
+          })
+        ) : (
+          <p>경력이 없습니다.</p>
+        )}
+      </div>
+
+      {showCreateCareer && (
+        <CreateCareer setShowCreateCareer={setShowCreateCareer} />
+      )}
+      {/* 유저 피드 */}
       <div className="w-full max-w-5xl mt-8">
         <UserFeedList />
       </div>
 
       {/* ── 글쓰기 FAB + 툴팁 ─────────────────────────────── */}
       {myProfile && (
-        <div className="fixed bottom-[10vh] right-[calc(clamp(1vh,(100vw-50vh)/2+1vh,100vw))] z-[1000] group">
+        <div className="fixed bottom-[10vh] right-[calc(clamp(1vh,(100vw-50vh)/2+1vh,100vw))] z-40 group">
           <button
             onClick={() => setShowModal(true)}
             className="

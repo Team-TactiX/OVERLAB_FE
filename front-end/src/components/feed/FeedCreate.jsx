@@ -11,6 +11,7 @@ const FeedCreate = ({ userMail, onClose }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [gameId, setGameId] = useState('');
+  const userId = sessionStorage.getItem('userId');
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -44,12 +45,9 @@ const FeedCreate = ({ userMail, onClose }) => {
       if (response.ok) {
         const games = await response.json();
         setMatchData(games);
-        const filtered = games.filter(
-          (match) => match.team.teamManagerMail === userMail,
-        );
-        if (filtered.length > 0) {
-          setSelectedMatch(filtered[0]);
-          setGameId(filtered[0].gameId);
+        if (games.length > 0) {
+          setSelectedMatch(games[0]);
+          setGameId(games[0].gameId);
         }
       } else {
         throw new Error('게임을 찾을 수 없습니다.');
@@ -63,8 +61,7 @@ const FeedCreate = ({ userMail, onClose }) => {
   const handleSubmit = async () => {
     if (!teamId || !title.trim() || !content.trim()) return alert('입력 누락');
 
-    if ((category === '매칭' || category === '용병') && !startDate)
-      return alert('날짜 필요');
+    if (category === '매칭' && !startDate) return alert('날짜 필요');
 
     const date = new Date();
     const formattedDate = date.toISOString().slice(0, 19);
@@ -73,12 +70,14 @@ const FeedCreate = ({ userMail, onClose }) => {
       title,
       content,
       teamId: Number(teamId),
-      gameId: category == '용병' || category == '매칭' ? Number(gameId) : null,
+      gameId: category == '용병' ? Number(gameId) : null,
       userMail,
       category,
-      matchDay:
-        category === '매칭' || category === '용병' ? startDate : formattedDate,
+      matchDay: category === '매칭' ? startDate : formattedDate,
+      userId,
     };
+
+    console.log(body);
 
     try {
       const res = await fetch('http://52.78.12.127:8080/api/community', {
@@ -152,7 +151,7 @@ const FeedCreate = ({ userMail, onClose }) => {
               value={selectedMatch?.gameName || ''}
               onChange={(e) => {
                 const match = matchData.find(
-                  (m) => m.gameName === e.target.value,
+                  (m) => m.versus === e.target.value,
                 );
                 setSelectedMatch(match);
                 setGameId(match.gameId);
@@ -161,7 +160,7 @@ const FeedCreate = ({ userMail, onClose }) => {
             >
               {matchData.map((match) => (
                 <option key={match.gameId} value={match.gameName}>
-                  {match.gameName}
+                  {match.versus}
                 </option>
               ))}
             </select>
@@ -208,7 +207,7 @@ const FeedCreate = ({ userMail, onClose }) => {
         </div>
 
         {/* 날짜 선택 */}
-        {(category === '매칭' || category === '용병') && (
+        {category === '매칭' && (
           <div className="mb-[3vh]">
             <div className="text-[1.7vh] font-semibold mb-[1vh]">
               경기 날짜 <span className="text-green-500 ml-[0.3vh]">⚽</span>

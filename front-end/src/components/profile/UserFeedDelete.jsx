@@ -19,6 +19,7 @@ const UserFeedDelete = ({ feedId, userFeed, renderButton }) => {
       if (res.ok) {
         alert('삭제 완료');
         navigate(`/profile/${userId}`);
+        window.location.reload();
       } else {
         const error = await res.text();
         alert('삭제 실패: ' + error);
