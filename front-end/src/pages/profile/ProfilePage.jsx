@@ -20,7 +20,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="pt-[12vh] px-4 pb-[10vh] flex flex-col items-center">
+    <div className="pt-[10vh] px-6 md:px-10 pb-[3vh] bg-gray-50 min-h-screen">         
       {/* ── 프로필 카드 ─────────────────────────────────── */}
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6">
         {/* 프로필 정보 */}

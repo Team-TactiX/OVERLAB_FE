@@ -5,10 +5,10 @@ const MyScheduleListPage = () => {
   const [filter, setFilter] = useState('전체');
 
   return (
-    <div className="w-full max-w-[768px] mx-auto min-h-[calc(100vh-12vh)] bg-[#f9f9f9] p-[8vh_2vw_6vh]">
+    <div className="pt-[10vh] px-6 md:px-10 pb-[3vh] bg-gray-50 min-h-screen max-w-[768px] mx-auto">
       <h1 className="text-[2.4vh] font-bold text-center mb-[2vh]">경기 일정</h1>
 
-      {/* 카테고리 탭 (업그레이드) */}
+      {/* 카테고리 탭 */}
       <div className="flex justify-center gap-[1.5vh] mb-[3vh]">
         {['전체', '예정', '진행중', '완료'].map((cat) => (
           <button
