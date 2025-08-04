@@ -7,8 +7,6 @@ const FeedMatch = ({ post, userMail, onClose }) => {
   const [team, setTeam] = useState('');
   const navigate = useNavigate();
 
-  console.log(post);
-
   useEffect(() => {
     const fetchTeams = async () => {
       const res = await fetch(
@@ -34,8 +32,7 @@ const FeedMatch = ({ post, userMail, onClose }) => {
     const requesterTeam = myTeams.find(
       (t) => t.teamId === Number(selectedTeamId),
     );
-    const postTeam = post.team;
-    const startDate = new Date(post.matchDay);
+    const startDate = new Date(post.matchDay).toISOString().replace('Z', '');
     const fetchLogo = async () => {
       const res = await fetch('/img/alt_image.png');
       const blob = await res.blob();
@@ -49,7 +46,7 @@ const FeedMatch = ({ post, userMail, onClose }) => {
         gameName: `${post.matchDay.slice(0, 10)} ${team.teamName} 매칭 신청`,
       },
       {
-        teamId: postTeam.teamId,
+        teamId: post.teamId,
         versus: requesterTeam.teamName,
         gameName: `${post.matchDay.slice(0, 10)} ${
           requesterTeam.teamName
@@ -66,14 +63,17 @@ const FeedMatch = ({ post, userMail, onClose }) => {
       formData.append('startDate', startDate);
       formData.append('oppoLogo', logoFile);
 
-      const res = await fetch('/api/games/create-game', {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(
+        'http://52.78.12.127:8080/api/games/create-game',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
 
       if (!res.ok) {
         const errText = await res.text();
-        alert(`매치 실패: ${errText}`);
+        alert(`매치 실패 : ${errText}`);
         return;
       }
     }

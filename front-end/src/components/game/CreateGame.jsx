@@ -1,6 +1,12 @@
 import altImage from '../../img/alt_image.png';
 
-const CreateGame = async ({ versus, gameName, startDate, oppoLogo, teamId }) => {
+const CreateGame = async ({
+  versus,
+  gameName,
+  startDate,
+  oppoLogo,
+  teamId,
+}) => {
   try {
     let finalLogoFile = oppoLogo;
 
@@ -17,10 +23,13 @@ const CreateGame = async ({ versus, gameName, startDate, oppoLogo, teamId }) => 
     formData.append('teamId', teamId);
     formData.append('oppoLogo', finalLogoFile);
 
-    const response = await fetch('/api/games/create-game', {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(
+      'http://52.78.12.127:8080/api/games/create-game',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
 
     if (!response.ok) {
       const errText = await response.text();

@@ -74,7 +74,8 @@ const FeedCreate = ({ userMail, onClose }) => {
       userMail,
       category,
       matchDay: category === '매칭' ? startDate : formattedDate,
-      userId,
+      userId: Number(userId),
+      quarterId: 2,
     };
 
     console.log(body);

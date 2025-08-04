@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const useLogin = () => {
   const [isLoading, setLoading] = useState(false);
@@ -9,7 +10,7 @@ const useLogin = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://52.78.12.127:8080/api/users/login', {
+      const response = await fetch(`${baseURL}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail, password }),

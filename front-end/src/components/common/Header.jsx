@@ -13,15 +13,9 @@ const HeaderWrapper = styled.header`
   background-color: #f9f9f9;
 `;
 
-const LogoWrapper = styled.div`
-  position: relative;
+const LogoImage = styled.img`
   height: 4.5vh;
   width: auto;
-  background-image: url(${logo});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left;
-  z-index: 40;
   &:hover {
     cursor: pointer;
   }
@@ -30,14 +24,14 @@ const LogoWrapper = styled.div`
 const Header = () => {
   const navigate = useNavigate();
 
-  const hanbleMove = () => {
+  const handleMove = () => {
     navigate('/main');
   };
 
   return (
-    <HeaderWrapper>
-      <LogoWrapper onClick={hanbleMove} />
-    </HeaderWrapper>
+    <header className="fixed left-auto top-0 text-left text-[3vh] font-[MarinesBold] px-[1vw] py-[2vh] w-app-width z-40 bg-[#f9f9f9]">
+      <LogoImage src={logo} alt="logo" onClick={handleMove} />
+    </header>
   );
 };
 
