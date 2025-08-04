@@ -1,3 +1,5 @@
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const SignUpUserMail = ({ value, onChange, onNext }) => {
   const handleContinue = async () => {
     if (!value) {
@@ -10,7 +12,7 @@ const SignUpUserMail = ({ value, onChange, onNext }) => {
     }
     try {
       const response = await fetch(
-        `http://52.78.12.127:8080/api/users/userMail-check?userMail=${value}`,
+        `${baseURL}/api/users/userMail-check?userMail=${value}`,
       );
 
       if (response.ok) {
