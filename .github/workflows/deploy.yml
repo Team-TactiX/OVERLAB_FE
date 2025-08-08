@@ -3,7 +3,6 @@ name: Deploy React App to EC2 via Docker Compose
 on:
   push:
     branches:
-      - main
       - feature/build
   workflow_dispatch:
 
