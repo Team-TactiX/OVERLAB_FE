@@ -20,7 +20,7 @@ const LoginForm = () => {
   return (
     <>
       <h2 className="mt-[3vh] text-[26px] font-semibold text-black">
-        계정에 로그인하세요!!!
+        계정에 로그인하세요!!
       </h2>
 
       <form
