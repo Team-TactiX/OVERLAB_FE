@@ -44,6 +44,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/ground-hub/docker
-            docker compose down frontend || true
-            docker compose build frontend
-            docker compose up -d frontend
+            docker-compose -f docker-compose.yml down frontend || true
+            docker-compose -f docker-compose.yml build frontend
+            docker-compose -f docker-compose.yml up frontend
