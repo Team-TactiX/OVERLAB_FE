@@ -8,7 +8,7 @@ const FeedPage = () => {
   const userMail = sessionStorage.getItem('userMail');
 
   return (
-    <div className="pt-[10vh] px-6 md:px-10 pb-[3vh] max-w-[768px] bg-[#f9f9f9] min-h-screen">
+    <div className="pt-[10vh] px-6 md:px-10 pb-[3vh] max-w-[768px] bg-[#f9f9f9]">
       {/* 카테고리 탭 */}
       <div className="flex justify-around mb-[2vh] border-b border-gray-300">
         {['매칭', '팀원 모집', '용병'].map((tab) => (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { positionList } from '../constants/positionList';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const usePRGameData = () => {
   const { prGameId } = useParams();
@@ -30,14 +31,14 @@ const usePRGameData = () => {
     const fetchGame = async () => {
       try {
         const res = await fetch(
-          `http://52.78.12.127:8080/api/pr-games/findByPRGameId/${prGameId}`,
+          `${baseURL}/api/pr-games/findByPRGameId/${prGameId}`,
         );
         if (!res.ok) throw new Error('PR 게임 API 실패');
         const data = await res.json();
         setPRGame(data);
 
         const response = await fetch(
-          `http://52.78.12.127:8080/api/quarters/saved-formation/${gameId}`,
+          `${baseURL}/api/quarters/saved-formation/${gameId}`,
         );
         const quarterData = await response.json();
         setGame(quarterData);

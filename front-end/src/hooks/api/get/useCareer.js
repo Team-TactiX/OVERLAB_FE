@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const useCareer = () => {
   const { userId } = useParams();
@@ -8,7 +9,7 @@ const useCareer = () => {
   useEffect(() => {
     const fetchCareerList = async () => {
       const careerListResponse = await fetch(
-        `http://52.78.12.127:8080/api/users/files/career/user/${userId}`,
+        `${baseURL}/api/users/files/career/user/${userId}`,
       );
       const careerListData = await careerListResponse.json();
       setCareerList(careerListData);

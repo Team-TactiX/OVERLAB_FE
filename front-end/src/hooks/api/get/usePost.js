@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const usePost = ({ contentId }) => {
   const [post, setPost] = useState(null);
@@ -15,7 +16,7 @@ const usePost = ({ contentId }) => {
       try {
         // 1. 게시물 데이터 가져오기
         const postResponse = await fetch(
-          `http://52.78.12.127:8080/api/community/${contentId}`,
+          `${baseURL}/api/community/${contentId}`,
         );
         if (!postResponse.ok) throw new Error(await postResponse.text());
         const postData = await postResponse.json();
@@ -24,7 +25,7 @@ const usePost = ({ contentId }) => {
         // 2. 경기 날짜 가져오기
         if (postData.gameId) {
           const gameResponse = await fetch(
-            `http://52.78.12.127:8080/api/games/game/${postData.gameId}`,
+            `${baseURL}/api/games/game/${postData.gameId}`,
           );
           if (!gameResponse.ok) throw new Error(await gameResponse.text());
           const gameData = await gameResponse.json();
@@ -34,7 +35,7 @@ const usePost = ({ contentId }) => {
         // 3. 팀 정보 가져오기
         if (postData.teamId) {
           const teamResponse = await fetch(
-            `http://52.78.12.127:8080/api/teams/${postData.teamId}`,
+            `${baseURL}/api/teams/${postData.teamId}`,
           );
           if (!teamResponse.ok) throw new Error(await teamResponse.text());
           const teamData = await teamResponse.json();

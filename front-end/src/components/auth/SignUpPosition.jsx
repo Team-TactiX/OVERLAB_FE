@@ -112,14 +112,6 @@ const SignUpPosition = ({ value, onChange, onSubmit }) => {
                 </span>
               </div>
             </button>
-            // <StyledButton
-            //   key={position.key}
-            //   $top={position.top}
-            //   $left={position.left}
-            // >
-            //   {value.includes(position.label) && <CheckBadge>✔</CheckBadge>}
-            //   {position.label}
-            // </StyledButton>
           ))}
         </ButtonBox>
       </FieldWrapper>

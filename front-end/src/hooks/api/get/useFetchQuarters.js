@@ -1,4 +1,5 @@
 import { useState } from 'react';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const useFetchQuarters = () => {
   const [quarters, setQuarters] = useState([]);
@@ -8,7 +9,7 @@ const useFetchQuarters = () => {
 
     try {
       const response = await fetch(
-        `http://52.78.12.127:8080/api/quarters/getQuarterList/${gameId}`,
+        `${baseURL}/api/quarters/getQuarterList/${gameId}`,
       );
       const data = await response.json();
       if (response.ok) {

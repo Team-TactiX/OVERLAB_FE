@@ -1,13 +1,14 @@
-// FeedComment.jsx
 import { useEffect, useState } from 'react';
 import FeedCommentDelete from './FeedCommentDelete';
 import FeedCommentUpdate from './FeedCommentUpdate';
+import useUser from '../../../hooks/api/get/useUser';
 
 const FeedComment = ({ comment, videoRef }) => {
   const [isEditing, setIsEditing] = useState(false);
   const userId = sessionStorage.getItem('userId');
-  const [user, setUser] = useState('');
   const isAuthor = userId == comment.userId;
+
+  const { user, fetchUser } = useUser();
 
   // 영상 시간 클릭시 해당 위치 이동
   const handleTimeClick = (timeStr) => {
@@ -35,25 +36,12 @@ const FeedComment = ({ comment, videoRef }) => {
         </button>
       ) : (
         <span key={index}>{part}</span>
-      )
+      ),
     );
   };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(
-          `http://52.78.12.127:8080/api/users/check/id/${comment.userId}`
-        );
-        const data = await response.json();
-        setUser(data);
-      } catch (err) {
-        alert('서버 오류 발생');
-        console.error(err);
-      }
-    };
-
-    fetchUser();
+    fetchUser(comment.userId);
   }, [comment]);
 
   return (

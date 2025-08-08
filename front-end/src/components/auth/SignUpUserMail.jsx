@@ -1,29 +1,7 @@
-const SignUpUserMail = ({ value, onChange, onNext }) => {
-  const handleContinue = async () => {
-    if (!value) {
-      alert('이메일을 입력하세요.');
-      return;
-    }
-    if (!value.includes('@')) {
-      alert('이메일 형식이 올바르지 않습니다.');
-      return;
-    }
-    try {
-      const response = await fetch(
-        `http://52.78.12.127:8080/api/users/userMail-check?userMail=${value}`,
-      );
+import useCheckUserMail from '../../hooks/api/get/useCheckUserMail';
 
-      if (response.ok) {
-        alert('이미 존재하는 이메일입니다.');
-        return;
-      } else {
-        onNext();
-      }
-    } catch (error) {
-      console.error('서버 요청 중 오류:', error);
-      alert('서버 요청 중 문제가 발생했습니다.');
-    }
-  };
+const SignUpUserMail = ({ value, onChange, onNext }) => {
+  const { checkUserMail } = useCheckUserMail({ onNext });
 
   return (
     <form className="mx-auto w-full max-w-[288px] mt-[4vh] flex flex-col gap-[20px]">
@@ -49,7 +27,7 @@ const SignUpUserMail = ({ value, onChange, onNext }) => {
 
       <button
         type="button"
-        onClick={handleContinue}
+        onClick={() => checkUserMail(value)}
         className="w-full h-[42px] bg-[#00B140] rounded-[10px] text-white font-semibold text-[15px] hover:opacity-90"
       >
         계속

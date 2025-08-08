@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { positionList } from '../constants/positionList';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const useData = ({ quarterId }) => {
   const [gameId, setGameId] = useState('');
@@ -17,7 +18,7 @@ const useData = ({ quarterId }) => {
     const fetchQuarter = async () => {
       try {
         const response = await fetch(
-          `http://52.78.12.127:8080/api/quarters/saved-formation/${quarterId}`,
+          `${baseURL}/api/quarters/saved-formation/${quarterId}`,
         );
         const data = await response.json();
         if (response.ok) {
@@ -45,7 +46,7 @@ const useData = ({ quarterId }) => {
 
       try {
         const response = await fetch(
-          `http://52.78.12.127:8080/api/quarters/getQuarterList/${gameId}`,
+          `${baseURL}/api/quarters/getQuarterList/${gameId}`,
         );
         const data = await response.json();
         if (response.ok) {
@@ -76,9 +77,7 @@ const useData = ({ quarterId }) => {
 
     const fetchGame = async () => {
       try {
-        const res = await fetch(
-          `http://52.78.12.127:8080/api/games/game/${gameId}`,
-        );
+        const res = await fetch(`${baseURL}/api/games/game/${gameId}`);
         const data = await res.json();
         setGame(data);
       } catch (err) {
@@ -116,9 +115,7 @@ const useData = ({ quarterId }) => {
     if (!game) return;
     const fetchTeam = async () => {
       try {
-        const response = await fetch(
-          `http://52.78.12.127:8080/api/teams/${game.teamId}`,
-        );
+        const response = await fetch(`${baseURL}/api/teams/${game.teamId}`);
         const data = await response.json();
         setTeam(data);
       } catch (err) {

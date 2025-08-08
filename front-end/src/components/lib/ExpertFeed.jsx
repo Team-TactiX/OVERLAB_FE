@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useUser from '../../hooks/api/get/useUser';
+import { useEffect } from 'react';
 
 const Card = styled.div`
   background: #fff;
@@ -9,7 +10,7 @@ const Card = styled.div`
   overflow: hidden;
   transition: box-shadow 0.2s;
   &:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 `;
 
@@ -96,10 +97,17 @@ const Description = styled.p`
 `;
 
 const ExpertFeed = ({ expertFeed }) => {
-  const { user } = useUser({ userId: expertFeed.userId });
+  const { user, fetchUser } = useUser();
+
+  useEffect(() => {
+    fetchUser(expertFeed.userId);
+  }, [expertFeed]);
 
   return (
-    <Link to={`/expertfeed/${expertFeed.fileId}`} style={{ textDecoration: 'none' }}>
+    <Link
+      to={`/expertfeed/${expertFeed.fileId}`}
+      style={{ textDecoration: 'none' }}
+    >
       <Card>
         <Thumbnail>
           {expertFeed.fileType.startsWith('image/') ? (

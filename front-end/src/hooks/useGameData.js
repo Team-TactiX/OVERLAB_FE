@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import useFetchQuarters from './api/get/useFetchQuarters';
 import { positionList } from '../constants/positionList';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const useGameData = ({ gameId }) => {
   const [game, setGame] = useState(null);
@@ -29,9 +30,7 @@ const useGameData = ({ gameId }) => {
 
     const fetchGame = async () => {
       try {
-        const res = await fetch(
-          `http://52.78.12.127:8080/api/games/game/${gameId}`,
-        );
+        const res = await fetch(`${baseURL}/api/games/game/${gameId}`);
         const data = await res.json();
         setGame(data);
       } catch (err) {
@@ -71,9 +70,7 @@ const useGameData = ({ gameId }) => {
     if (!game) return;
     const fetchTeam = async () => {
       try {
-        const response = await fetch(
-          `http://52.78.12.127:8080/api/teams/${game.teamId}`,
-        );
+        const response = await fetch(`${baseURL}/api/teams/${game.teamId}`);
         const data = await response.json();
         setTeam(data);
       } catch (err) {

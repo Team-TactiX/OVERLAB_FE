@@ -80,3 +80,8 @@ code {
   transform: rotate(45deg);
   border-bottom-left-radius: 0.3vh;
 }
+
+/* 스크롤바 항상 보이게 하기 */
+html {
+  overflow-y: scroll;
+}
