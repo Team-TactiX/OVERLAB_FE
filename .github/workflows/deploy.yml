@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "front-end/dist"
-          target: "~/ground-hub/frontend/frontend_build/OVERLAB_FE-feature-build/front-end/dist"  # 배포 위치 (원하는 경로로 변경 가능)
+          target: "~/ground-hub/frontend/front-end/dist"  # 배포 위치 (원하는 경로로 변경 가능)
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v1.0.3
