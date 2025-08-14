@@ -22,11 +22,10 @@ body {
   overflow-x: hidden;
   width: 75vh;
   max-width: 100vw;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: #f9f9f9;
   box-sizing: border-box;
   position: relative;
-  padding-bottom: 5vh; /* 하단 탭 여백 확보 */
 }
 
 /* 코드 글꼴 */
