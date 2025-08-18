@@ -19,13 +19,13 @@ const LoginForm = () => {
 
   return (
     <>
-      <h2 className="mt-[3vh] text-[26px] font-semibold text-black">
+      <h2 className="text-[26px] mb-[3vh] font-semibold text-black">
         계정에 로그인하세요
       </h2>
 
       <form
         onSubmit={handleLogin}
-        className="mx-auto w-full max-w-[288px] mt-[4vh] flex flex-col gap-[20px]"
+        className="mx-auto w-full max-w-[clamp(300px,45%,400px)] flex flex-col gap-[2vh]"
       >
         <div className="relative flex flex-col">
           <label className="text-[16px] text-[#6F6F6F] mb-[5px]">이메일</label>
@@ -56,7 +56,7 @@ const LoginForm = () => {
             value={password}
             placeholder="비밀번호를 입력하세요"
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-[42px] bg-[#FAFAFA] rounded-[10px] px-4 text-[15px] focus:outline-green-500"
+            className="w-full h-[42px] bg-[#FAFAFA] rounded-[10px] px-4 text-[16px] focus:outline-green-500"
           />
           {password && (
             <button
@@ -72,7 +72,7 @@ const LoginForm = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-[42px] bg-[#00B140] rounded-[10px] text-white font-semibold text-[15px] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="h-[42px] mt-[2vh] mb-[3vh] bg-[#00B140] rounded-[10px] text-white font-semibold text-[15px] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? '로그인 중...' : '로그인'}
         </button>

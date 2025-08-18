@@ -52,8 +52,8 @@ const Profile = ({ setMyProfile }) => {
       </div>
       <Box>
         <BoxBox>
-          {/* 닉네임 */}
-          <h2 className="text-[2.5vh] font-bold text-gray-800 tracking-tight mb-1 text-center">
+          {/* 이름 */}
+          <h2 className="text-[1.3rem] font-bold text-gray-800 tracking-tight mb-1 text-center">
             {userData.userName}
           </h2>
 

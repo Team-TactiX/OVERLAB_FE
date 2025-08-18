@@ -33,19 +33,6 @@ code {
     monospace;
 }
 
-/* (선택) Marines 폰트도 사용 가능하도록 유지 */
-@font-face {
-  font-family: 'MarinesRegular';
-  src: url('./fonts/MarinesRegular.woff2') format('woff2'),
-    url('./fonts/MarinesRegular.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'MarinesBold';
-  src: url('./fonts/MarinesBold.woff2') format('woff2'),
-    url('./fonts/MarinesBold.woff') format('woff');
-}
-
 /* 스크롤바 숨김 (모든 브라우저 호환) */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
