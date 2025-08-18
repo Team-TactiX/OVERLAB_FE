@@ -37,7 +37,7 @@ const Profile = ({ setMyProfile }) => {
   return (
     <Container>
       {/* 프로필 이미지 */}
-      <div className="relative mr-4 w-[10vh] h-[10vh] rounded-full border-4 border-gray-300 shadow-md overflow-hidden mb-3">
+      <div className="relative mr-4 w-[20%] rounded-full border-4 border-gray-300 shadow-md overflow-hidden mb-3">
         {userData.profileImage ? (
           <img
             src={userData.profileImage}
