@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import playerIcon from '../../img/player.png';
 import grayUniformIcon from '../../img/grayUniform.png';
 import uniformIcon from '../../img/uniform.png';
-import { useParams } from 'react-router-dom';
 
 const PRGameUpdatePageContainer = styled.div`
   display: flex;
