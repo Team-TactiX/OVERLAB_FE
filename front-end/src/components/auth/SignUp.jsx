@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import SignUpUserMail from './SignUpUserMail';
-import styled from 'styled-components';
 import SignUpInfo from './SignUpInfo';
 import SignUpPosition from './SignUpPosition';
 import useSignUp from '../../hooks/api/post/useSignUp';
-
-const Container = styled.div`
-  width: 100%;
-`;
 
 function SignUp() {
   const [step, setStep] = useState(1);
@@ -35,9 +30,8 @@ function SignUp() {
   };
 
   return (
-    // 부모 div에 flex 중앙정렬 추가
     <div className="flex justify-center w-full">
-      <Container>
+      <div className="flex justify-center w-full">
         {step === 1 && (
           <SignUpUserMail
             value={userMail}
@@ -59,7 +53,7 @@ function SignUp() {
             onSubmit={handleSubmit}
           />
         )}
-      </Container>
+      </div>
     </div>
   );
 }

@@ -1,59 +1,45 @@
-import { useEffect, useRef, useState } from 'react';
-import formations from '../../data/formation.json';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+import formations from '../../data/formation.json';
 
 const FormationCarousel = () => {
-  const formationsLength = formations.length;
-  const loopedOnce = useRef(false);
-  const [currentIndex, setCurrentIndex] = useState(
-    Math.floor(Math.random() * formations.length)
-  );
   const navigate = useNavigate();
+  const formationsLength = formations.length;
 
-  const containerRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(
+    Math.floor(Math.random() * formationsLength),
+  );
+
   const startX = useRef(0);
+
+  const handleSwipe = useCallback(
+    (endX) => {
+      const diff = startX.current - endX;
+      const threshold = 10;
+
+      if (diff > threshold) {
+        setCurrentIndex((prev) => (prev + 1) % formationsLength);
+      } else if (diff < -threshold) {
+        setCurrentIndex(
+          (prev) => (prev - 1 + formationsLength) % formationsLength,
+        );
+      }
+    },
+    [formationsLength],
+  );
 
   const handleTouchStart = (e) => {
     startX.current = e.touches[0].clientX;
   };
-
   const handleTouchEnd = (e) => {
-    const endX = e.changedTouches[0].clientX;
-    handleSwipe(endX);
+    handleSwipe(e.changedTouches[0].clientX);
   };
-
   const handleMouseDown = (e) => {
     startX.current = e.clientX;
   };
-
   const handleMouseUp = (e) => {
-    const endX = e.clientX;
-    handleSwipe(endX);
+    handleSwipe(e.clientX);
   };
-
-  const handleSwipe = (endX) => {
-    const diff = startX.current - endX;
-    const threshold = 10;
-
-    if (diff > threshold && currentIndex < formationsLength - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else if (diff > threshold && currentIndex === formationsLength - 1) {
-      setCurrentIndex(0);
-    } else if (diff < -threshold && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    } else if (diff < -threshold && currentIndex === 0)  {
-      setCurrentIndex(formationsLength - 1);
-    }
-  };
-
 
   const handleMove = () => {
     navigate(`/lib/detail/formation/${formations[currentIndex].id}`);
@@ -61,25 +47,8 @@ const FormationCarousel = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => {
-        if (prev === formationsLength - 1) {
-          clearInterval(interval);
-          loopedOnce.current = true;
-          return 0;
-        }
-        return prev + 1;
-      });
-    }, 1); // 초기에 빠르게 순환 (무한 루프 방지용)
-
-    return () => clearInterval(interval);
-  }, [formationsLength]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) =>
-        prev === formationsLength - 1 ? 0 : prev + 1
-      );
-    }, 10000); // 5초마다 자동 슬라이드
+      setCurrentIndex((prev) => (prev + 1) % formationsLength);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [formationsLength]);
@@ -87,18 +56,17 @@ const FormationCarousel = () => {
   const currentFormation = formations[currentIndex];
 
   return (
-    <Container 
-      className="carousel-container"
+    <div
+      className="flex flex-col justify-center items-center w-full"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <div className="w-full mb-[2vh] flex justify-center items-center pt-[1vh]">
-        {/* 카드 */}
+      <div className="w-full mb-4 flex justify-center items-center pt-2">
         <div
           key={currentFormation.id}
-          className="relative w-[90%] max-w-[70vh] cursor-pointer overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition"
+          className="relative w-[90%] max-w-2xl cursor-pointer overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition"
           onClick={handleMove}
         >
           <img
@@ -107,34 +75,29 @@ const FormationCarousel = () => {
             className="w-full object-contain"
             draggable={false}
           />
-
-          {/* 텍스트 오버레이 */}
-          <div
-            className="absolute bottom-0 w-full bg-gradient-to-t from-black/60 to-transparent text-white text-center p-[1.5vh] select-none"
-          >
-            <div className="text-[2.5vh] font-bold truncate">
+          <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/60 to-transparent text-white text-center p-4 select-none">
+            <div className="text-2xl font-bold truncate">
               {currentFormation.title}
             </div>
-            <div className="text-[1.5vh] truncate">
+            <div className="text-base truncate">
               {currentFormation.summation}
             </div>
           </div>
         </div>
       </div>
 
-      {/* 인디케이터 */}
-      <div className="flex gap-[1vh] mt-[1vh]">
-        {Array.from({ length: formationsLength }).map((_, idx) => (
+      <div className="flex gap-2 mt-2">
+        {formations.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`w-[1vh] h-[1vh] rounded-full transition ${
+            className={`w-2 h-2 rounded-full transition ${
               currentIndex === idx ? 'bg-green-500' : 'bg-gray-300'
             }`}
           ></button>
         ))}
       </div>
-    </Container>
+    </div>
   );
 };
 

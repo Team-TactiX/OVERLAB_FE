@@ -6,72 +6,36 @@ import {
   MdMap,
   MdAccountCircle,
 } from 'react-icons/md';
-import styled from 'styled-components';
-
-const TabBar = styled.nav`
-  position: fixed;
-  bottom: 0;
-  width: 50vh;
-  max-width: 100vw;
-  background-color: #ffffff;
-  height: 7vh;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1001;
-`;
-
-const TabItem = styled(Link)`
-  color: ${(props) => (props.$active === 'true' ? '#00C851' : '#ccc')};
-  font-size: 2.5vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  gap: 0.5vh;
-`;
-
-const Label = styled.span`
-  font-size: 1.2vh;
-`;
 
 const BottomTab = () => {
   const location = useLocation();
-  const userMail = sessionStorage.getItem('userMail');
   const userId = sessionStorage.getItem('userId');
+  const navItems = [
+    { to: '/main', Icon: MdHome, label: '홈' },
+    { to: '/teams', Icon: MdGroup, label: '팀 목록' },
+    { to: '/feed', Icon: MdSportsSoccer, label: '경기 모집' },
+    { to: '/lib', Icon: MdMap, label: '전술' },
+    { to: `/profile/${userId}`, Icon: MdAccountCircle, label: '프로필' },
+  ];
 
   return (
-    <TabBar>
-      <TabItem to="/main" $active={(location.pathname === '/main').toString()}>
-        <MdHome />
-        <Label>홈</Label>
-      </TabItem>
-      <TabItem
-        to="/teams"
-        $active={(location.pathname === '/teams').toString()}
-      >
-        <MdGroup />
-        <Label>팀 목록</Label>
-      </TabItem>
-      <TabItem to="/feed" $active={(location.pathname === '/feed').toString()}>
-        <MdSportsSoccer />
-        <Label>경기 모집</Label>
-      </TabItem>
-      <TabItem to="/lib" $active={(location.pathname === '/lib').toString()}>
-        <MdMap />
-        <Label>전술</Label>
-      </TabItem>
-      <TabItem
-        to={`/profile/${userId}`}
-        $active={(location.pathname === `/profile/${userId}`).toString()}
-      >
-        <MdAccountCircle />
-        <Label>프로필</Label>
-      </TabItem>
-    </TabBar>
+    <nav className="fixed bottom-0 left-1/2 w-full max-w-md -translate-x-1/2 transform bg-white h-20 flex justify-around items-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-[1001]">
+      {navItems.map((item) => {
+        const isActive = location.pathname === item.to;
+        return (
+          <Link
+            key={item.label}
+            to={item.to}
+            className={`flex flex-col items-center gap-[0.5vh] text-[2.5vh] no-underline ${
+              isActive ? 'text-[#00C851]' : 'text-[#ccc]'
+            }`}
+          >
+            <item.Icon />
+            <span className="text-[1.2vh]">{item.label}</span>
+          </Link>
+        );
+      })}
+    </nav>
   );
 };
 

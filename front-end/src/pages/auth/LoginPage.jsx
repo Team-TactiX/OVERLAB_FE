@@ -4,19 +4,23 @@ import logo from '../../assets/logo.png';
 
 const LoginPage = () => {
   return (
-    <div className="h-screen bg-white flex flex-col justify-center items-center relative">
+    <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
       {/* 로고 이미지 */}
       <img
         src={logo}
         alt="OVERLAB Logo"
-        className="w-[clamp(250px,38%,350px)] mb-[3vh]"
+        className="w-full max-w-[16rem] mb-8"
       />
 
       <LoginForm />
 
-      <div className="text-[16px] text-gray-500">
+      {/* 회원가입 링크 */}
+      <div className="text-base text-gray-500">
         <span>아직 계정이 없으신가요?&nbsp;</span>
-        <Link to="/signup" className="text-[#00B140] hover:underline">
+        <Link
+          to="/signup"
+          className="font-semibold text-[#00B140] hover:underline"
+        >
           회원가입
         </Link>
       </div>

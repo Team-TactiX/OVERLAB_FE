@@ -1,43 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import logo from "../../assets/logo.png"
-
-const HeaderWrapper = styled.header`
-  position: fixed;
-  text-align: left;
-  font-size: 3vh;
-  font-family: "MarinesBold", sans-serif;
-  padding: 2vh 1vw;
-  width: 100%;
-  z-index: 9999;
-  background-color: #f9f9f9;
-`;
-
-const LogoWrapper = styled.div`
-  position: relative;
-  height: 4.5vh;
-  width: auto;
-  background-image: url(${logo});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left;
-  z-index: 10000;
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import { Link } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 
 const Header = () => {
-  const navigate = useNavigate();
-
-  const hanbleMove = () => {
-    navigate("/main");
-  };
-
   return (
-    <HeaderWrapper>
-      <LogoWrapper onClick={hanbleMove} />
-    </HeaderWrapper>
+    <header className="fixed top-0 w-full max-w-md bg-gray-100 px-4 py-3 z-50">
+      <Link to="/main" className="inline-block w-fit">
+        <img src={logo} alt="OVERLAB" className="h-10 w-auto" />
+      </Link>
+    </header>
   );
 };
 

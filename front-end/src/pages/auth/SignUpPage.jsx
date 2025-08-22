@@ -1,22 +1,23 @@
+import { Link } from 'react-router-dom';
 import SignUp from '../../components/auth/SignUp';
-import { useNavigate } from 'react-router-dom';
-import logo from "../../assets/logo.png";
+import logo from '../../assets/logo.png';
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-center items-center px-6 relative">
-      {/* 로고 이미지로 변경 */}
-      <img src={logo} alt="OVERLAB Logo" className="h-[6vh] mb-[4vh]" />
+    <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
+      {/* 로고 이미지 */}
+      <img
+        src={logo}
+        alt="OVERLAB Logo"
+        className="w-full max-w-[16rem] mb-8"
+      />
 
-      <h2 className="mt-[3vh] text-[26px] font-semibold text-black">회원가입</h2>
+      <h2 className="mb-6 text-heading-2 font-semibold text-black">회원가입</h2>
 
       <SignUp />
-
-      <p className="mt-[6vh] text-[16px] text-gray-500 hover:underline cursor-pointer" onClick={() => navigate('/')}>
+      <Link to="/" className="mt-8 text-base text-gray-500 hover:underline">
         로그인 페이지로 이동
-      </p>
+      </Link>
     </div>
   );
 };

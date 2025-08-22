@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const useLogin = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ const useLogin = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://52.78.12.127:8080/api/users/login', {
+      const response = await fetch(`${API_BASE_URL}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userMail, password }),
@@ -21,9 +23,11 @@ const useLogin = () => {
         sessionStorage.setItem('userId', data.userId);
         navigate('/main');
       } else {
-        const errMsg = await response.text();
-        alert('로그인 실패: 아이디 또는 비밀번호를 확인하세요.');
-        console.error(errMsg);
+        const errorData = await response.json();
+        const errorMessage =
+          errorData.message || '아이디 또는 비밀번호를 확인하세요.';
+        alert(errorMessage);
+        console.error('로그인 실패:', errorData);
       }
     } catch (err) {
       console.error('로그인 오류:', err);

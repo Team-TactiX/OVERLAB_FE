@@ -1,6 +1,4 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import './App.css';
 import Header from './components/common/Header';
 import BottomTab from './components/common/BottomTab';
 import LoginPage from './pages/auth/LoginPage';
@@ -23,67 +21,66 @@ import GameDetailPage from './pages/game/GameDetailPage';
 import PRGameListPage from './pages/prgame/PRGameListPage';
 import PRGamePage from './pages/prgame/PRGamePage';
 import PRGameCreatePage from './pages/prgame/PRGameCreatePage';
+
 function App() {
   const location = useLocation();
 
-  // 게시판 자동 업로드용 상태
-  const [teamFeedPosts, setTeamFeedPosts] = useState([]);
-
-  // 로그인/회원가입 관련 경로에서는 BottomTab 숨기기
-  const hideTabPaths = ['/', '/signup', '/signup/password', '/signup/position'];
-  const shouldShowBottomTab = !hideTabPaths.includes(location.pathname);
-  const shouldShowHeader = !hideTabPaths.includes(location.pathname);
+  // 로그인 및 회원가입 경로에서는 헤더 및 바텀 탭 숨기기
+  const hidePaths = ['/', '/signup'];
+  const shouldShow = !hidePaths.includes(location.pathname);
 
   return (
-    <>
-      {/* Header */}
-      {shouldShowHeader && <Header />}
-      <Routes>
-        {/* auth */}
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+    <div className="w-full max-w-md mx-auto min-h-screen bg-white">
+      {/* 헤더 */}
+      {shouldShow && <Header />}
 
-        {/* main */}
-        <Route path="/main" element={<MainPage />} />
+      <main>
+        <Routes>
+          {/* auth */}
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
 
-        {/* teams */}
-        <Route path="/teams" element={<TeamListPage />} />
-        <Route path="/team/:teamId" element={<TeamDetailPage />} />
-        <Route path="/team/update/:teamId" element={<TeamUpdatePage />} />
+          {/* main */}
+          <Route path="/main" element={<MainPage />} />
 
-        {/* feed */}
-        <Route
-          path="/feed"
-          element={<FeedPage teamFeedPosts={teamFeedPosts} />}
-        />
-        <Route path="/feed/:contentId" element={<FeedDetailPage />} />
+          {/* teams */}
+          <Route path="/teams" element={<TeamListPage />} />
+          <Route path="/team/:teamId" element={<TeamDetailPage />} />
+          <Route path="/team/update/:teamId" element={<TeamUpdatePage />} />
 
-        {/* lib */}
-        <Route path="/lib" element={<LibPage />} />
-        <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
+          {/* feed */}
+          <Route path="/feed" element={<FeedPage />} />
+          <Route path="/feed/:contentId" element={<FeedDetailPage />} />
 
-        {/* profile */}
-        <Route path="/profile/:userId" element={<ProfilePage />} />
-        <Route path="/profile/update" element={<ProfileUpdatePage />} />
+          {/* lib */}
+          <Route path="/lib" element={<LibPage />} />
+          <Route path="/lib/detail/:type/:id" element={<LibDetailPage />} />
 
-        {/* myTeam */}
-        <Route path="/my-team" element={<MyTeamListPage />} />
+          {/* profile */}
+          <Route path="/profile/:userId" element={<ProfilePage />} />
+          <Route path="/profile/update" element={<ProfileUpdatePage />} />
 
-        {/* schedule */}
-        <Route path="/my-schedule" element={<MyScheduleListPage />} />
-        <Route path="/calender" element={<CalenderPage />} />
+          {/* myTeam */}
+          <Route path="/my-team" element={<MyTeamListPage />} />
 
-        {/* game */}
-        <Route path="/game/create" element={<CreateGamePage />} />
-        <Route path="/game/:gameId" element={<GameDetailPage />} />
+          {/* schedule */}
+          <Route path="/my-schedule" element={<MyScheduleListPage />} />
+          <Route path="/calender" element={<CalenderPage />} />
 
-        {/* prgame */}
-        <Route path="/pr/:prGameId" element={<PRGamePage />} />
-        <Route path="/pr/list/:quarterId" element={<PRGameListPage />} />
-        <Route path="/pr/create/:quarterId" element={<PRGameCreatePage />} />
-      </Routes>
-      {shouldShowBottomTab && <BottomTab />}
-    </>
+          {/* game */}
+          <Route path="/game/create" element={<CreateGamePage />} />
+          <Route path="/game/:gameId" element={<GameDetailPage />} />
+
+          {/* prgame */}
+          <Route path="/pr/:prGameId" element={<PRGamePage />} />
+          <Route path="/pr/list/:quarterId" element={<PRGameListPage />} />
+          <Route path="/pr/create/:quarterId" element={<PRGameCreatePage />} />
+        </Routes>
+      </main>
+
+      {/* 바텀 탭 */}
+      {shouldShow && <BottomTab />}
+    </div>
   );
 }
 
