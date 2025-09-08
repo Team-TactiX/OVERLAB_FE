@@ -32,16 +32,16 @@ const FeedCard = ({ post, onClick }) => {
           onError={(e) => {
             e.target.src = altImage;
           }}
-          className="w-20 h-20 rounded-full object-cover mr-2"
+          className="w-16 h-16 rounded-full object-cover mr-2"
           alt="team logo"
         />
 
         <div className="flex flex-col">
-          <p className="text-lg text-blue-500 m-0">{team.teamName}</p>
-          <p className="text-2xl">{post.title}</p>
+          <p className="text-base text-blue-500 m-0">{team.teamName}</p>
+          <p className="text-lg font-bold">{post.title}</p>
           {(post.category === '매칭' || post.category === '용병') &&
             post.matchDay && (
-              <div className="text-base font-bold mt-1 text-gray-800">
+              <div className="text-sm mt-1 text-gray-800">
                 {new Date(post.matchDay).toLocaleString('ko-KR', {
                   month: 'long',
                   day: 'numeric',
@@ -72,12 +72,12 @@ const FeedCard = ({ post, onClick }) => {
                 d="M12 12.75a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"
               />
             </svg>
-            <p className="text-base">{team.location}</p>
+            <p className="text-sm">{team.location}</p>
           </div>
         </div>
       </div>
       <div
-        className={`text-xl font-bold ${
+        className={`text-base font-bold pr-2 ${
           post.category === '매칭' ? 'text-green-500' : 'text-orange-500'
         }`}
       >

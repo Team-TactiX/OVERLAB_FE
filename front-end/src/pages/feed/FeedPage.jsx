@@ -8,13 +8,13 @@ const FeedPage = () => {
   const userMail = 'SYS@dankook.ac.kr'; // 나중에 ID로 변경 예정
 
   return (
-    <div className="max-w-md mx-auto bg-gray-100 relative">
+    <div className="max-w-md mx-auto relative">
       {/* 카테고리 탭 */}
       <div className="flex justify-around mb-4 border-b border-gray-300">
         {['매칭', '팀원 모집', '용병'].map((tab) => (
           <div
             key={tab}
-            className={`text-xl py-2 px-1 cursor-pointer ${
+            className={`text-lg py-2 px-1 cursor-pointer ${
               category === tab
                 ? 'font-bold border-b-2 border-black'
                 : 'font-normal'
@@ -30,11 +30,11 @@ const FeedPage = () => {
       <FeedList category={category} />
 
       {/* 글쓰기 버튼 */}
-      <div className="fixed bottom-40 left-1/2 -translate-x-1/2 w-full max-w-md z-30">
+      <div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-full max-w-md z-30">
         <div className="absolute right-2 group">
           <button
             onClick={() => setShowModal(true)}
-            className="w-16 h-16 border-2 border-green-500 text-green-500 bg-white rounded-full cursor-pointer shadow-lg flex items-center justify-center hover:bg-green-50 active:scale-95 transition-transform"
+            className="w-12 h-12 border-2 border-green-500 text-green-500 bg-white rounded-full cursor-pointer shadow-lg flex items-center justify-center hover:bg-green-50 active:scale-95 transition-transform"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ const FeedPage = () => {
               viewBox="0 0 24 24"
               strokeWidth="1"
               stroke="currentColor"
-              className="w-10"
+              className="w-8"
             >
               <path
                 strokeLinecap="round"

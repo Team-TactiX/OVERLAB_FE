@@ -4,7 +4,7 @@ import logo from '../../assets/logo.png';
 
 const LoginPage = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4">
+    <div className="flex flex-col justify-center items-center mt-20 p-4">
       {/* 로고 이미지 */}
       <img
         src={logo}
