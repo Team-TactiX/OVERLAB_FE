@@ -164,7 +164,7 @@ const FeedDetailPage = () => {
             )}
 
             <button
-              onClick={() => navigate(`/team/${post.team.teamId}`)}
+              onClick={() => navigate(`/team/${post.teamId}`)}
               className="flex justify-between items-center p-2"
             >
               <span>팀 상세페이지</span>

@@ -30,7 +30,7 @@ function App() {
   const shouldShow = !hidePaths.includes(location.pathname);
 
   return (
-    <div className="min-h-screen bg-white w-full max-w-md mx-auto pt-16">
+    <div className="min-h-screen bg-white w-full max-w-md mx-auto pt-16 pb-20">
       {/* 헤더 */}
       {shouldShow && <Header />}
 

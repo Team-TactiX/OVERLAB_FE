@@ -103,11 +103,11 @@ const FeedCreate = ({ userMail, onClose }) => {
   return (
     <div
       onClick={onClose}
-      className="fixed top-0 left-0 w-full overflow-y-auto bg-black bg-opacity-50 flex justify-center items-center z-40"
+      className="fixed top-0 min-h-screen left-0 w-full bg-black bg-opacity-50 flex justify-center p-4 items-center z-40"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-lg p-8 w-full max-w-md box-border shadow-lg relative animate-fadeIn"
+        className="bg-white max-h-[calc(100vh-2rem)] overflow-y-auto rounded-lg px-8 py-4 w-full max-w-md box-border shadow-lg relative animate-fadeIn"
       >
         <div className="flex justify-center items-center mb-8 relative">
           <h3 className="text-xl font-bold m-0 break-keep">게시글 작성</h3>

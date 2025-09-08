@@ -53,7 +53,7 @@ const FeedPage = () => {
           </button>
 
           {/* 툴팁 */}
-          <div className="absolute right-20 top-1/2 -translate-y-1/2 bg-green-50 text-gray-800 text-xl p-2 rounded-lg shadow group-hover:opacity-100 opacity-0 transition-opacity duration-300 whitespace-nowrap">
+          <div className="absolute right-16 top-1/2 -translate-y-1/2 bg-green-50 text-gray-800 text-base p-2 rounded-lg shadow group-hover:opacity-100 opacity-0 transition-opacity duration-300 whitespace-nowrap">
             {category === '매칭'
               ? '매칭 모집'
               : category === '팀원 모집'
