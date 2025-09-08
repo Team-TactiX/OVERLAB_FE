@@ -25,7 +25,7 @@ const FeedList = ({ category }) => {
   }, [category]);
 
   return (
-    <>
+    <div className="px-4">
       {posts.map((post) => (
         <FeedCard
           key={post.contentId}
@@ -33,7 +33,7 @@ const FeedList = ({ category }) => {
           onClick={() => navigate(`/feed/${post.contentId}`)}
         />
       ))}
-    </>
+    </div>
   );
 };
 

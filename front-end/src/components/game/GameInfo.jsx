@@ -96,7 +96,7 @@ const GameInfo = ({
     return <div className="text-center pt-[10vh]">권한 확인 중...</div>;
 
   return (
-    <div className="min-h-[100vh] w-full bg-[#f9f9f9] flex justify-center py-[10vh]">
+    <div className="min-h-[100vh] w-full bg-[#f9f9f9] flex justify-center py-[10vh] mb-20">
       <div className="w-[100%] max-w-[60vh] bg-f9f9f9 rounded-xl p-[3vh_3vw] shadow-lg animate-fadeUp">
         <div className="flex flex-col items-center animate-fadeIn">
           {/* 날짜 + VS 상대팀 */}

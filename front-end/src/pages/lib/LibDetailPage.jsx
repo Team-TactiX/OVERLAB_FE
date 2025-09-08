@@ -1,70 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import formations from '../../data/formation.json';
 import tactics from '../../data/tactic.json';
-import styled from 'styled-components';
 import backImg from '../../img/back.png';
-
-const Container = styled.div`
-  margin-top: 8vh;
-  background-color: #f9f9f9;
-  display: flex;
-  justify-content: center;
-`;
-
-const Card = styled.div`
-  width: 100%;
-  max-width: 60vh;
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 3vh;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-`;
-
-const BackRow = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 2vh;
-  position: relative;
-`;
-
-const BackIcon = styled.img`
-  width: 2.4vh;
-  height: 2.4vh;
-  cursor: pointer;
-  user-select: none;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-`;
-
-const Title = styled.h2`
-  font-size: 2.4vh;
-  font-weight: 700;
-  margin-bottom: 1.5vh;
-  text-align: center;
-  flex: 1;
-`;
-
-const Summary = styled.p`
-  font-size: 1.7vh;
-  font-weight: 500;
-  color: #333;
-  text-align: center;
-  margin-bottom: 2vh;
-`;
-
-const Description = styled.p`
-  font-size: 1.6vh;
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 2vh;
-`;
-
-const MediaBox = styled.div`
-  width: 100%;
-  margin-bottom: 2vh;
-`;
 
 const LibDetailPage = () => {
   const { type, id } = useParams();
@@ -76,15 +13,17 @@ const LibDetailPage = () => {
 
   if (!data) {
     return (
-      <Container>
-        <Card>
-          <Description>
+      // Container & Card 스타일 적용
+      <div className="mt-[8vh] bg-gray-50 flex justify-center">
+        <div className="w-full max-w-[60vh] bg-white rounded-xl p-[3vh] shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+          {/* Description 스타일 적용 */}
+          <p className="text-[1.6vh] text-gray-600 leading-relaxed mb-[2vh]">
             {type === 'formation'
               ? '포메이션 정보를 찾을 수 없습니다.'
               : '전술 정보를 찾을 수 없습니다.'}
-          </Description>
-        </Card>
-      </Container>
+          </p>
+        </div>
+      </div>
     );
   }
 
@@ -93,13 +32,14 @@ const LibDetailPage = () => {
     // mp4 동영상
     if (data.img.endsWith('.mp4')) {
       return (
-        <MediaBox>
+        // MediaBox 스타일 적용
+        <div className="w-full mb-[2vh]">
           <video
             src={data.img}
             controls
-            style={{ width: '100%', borderRadius: '1vh', marginTop: '2vh' }}
+            className="w-full rounded-[1vh] mt-[2vh]"
           />
-        </MediaBox>
+        </div>
       );
     }
     // 이미지
@@ -110,49 +50,67 @@ const LibDetailPage = () => {
       data.img.endsWith('.gif')
     ) {
       return (
-        <MediaBox>
+        // MediaBox 스타일 적용
+        <div className="w-full mb-[2vh]">
           <img
             src={data.img}
             alt={data.title}
-            style={{ width: '100%', borderRadius: '1vh', marginTop: '2vh' }}
+            className="w-full rounded-[1vh] mt-[2vh]"
           />
-        </MediaBox>
+        </div>
       );
     }
     // html 파일
     if (data.img.endsWith('.html')) {
       return (
-        <MediaBox>
+        // MediaBox 스타일 적용
+        <div className="w-full mb-[2vh]">
           <iframe
             src={data.img}
             title={data.title}
-            style={{
-              width: '100%',
-              minHeight: 'calc(min(100vw, 50vh) * 0.6)',
-              border: 'none',
-              borderRadius: '1vh',
-              marginTop: '2vh',
-            }}
+            className="w-full border-none rounded-[1vh] mt-[2vh]"
+            style={{ minHeight: 'calc(min(100vw, 50vh) * 0.6)' }}
           />
-        </MediaBox>
+        </div>
       );
     }
     return null;
   };
 
   return (
-    <Container>
-      <Card>
-        <BackRow>
-          <BackIcon src={backImg} alt='◀' onClick={() => navigate(-1)} />
-          <Title style={{ width: '100%' }}>{data.title}</Title>
-        </BackRow>
-        <Summary>{data.summation}</Summary>
-        <Description>{data.description1}</Description>
+    // Container 스타일 적용
+    <div className="mt-[8vh] bg-gray-50 flex justify-center">
+      {/* Card 스타일 적용 */}
+      <div className="w-full max-w-[60vh] bg-white rounded-xl p-[3vh] shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+        {/* BackRow 스타일 적용 */}
+        <div className="flex items-center mb-[2vh] relative">
+          {/* BackIcon 스타일 적용 */}
+          <img
+            src={backImg}
+            alt="◀"
+            onClick={() => navigate(-1)}
+            className="w-[2.4vh] h-[2.4vh] cursor-pointer select-none absolute left-0 top-1/2 -translate-y-1/2"
+          />
+          {/* Title 스타일 적용 */}
+          <h2 className="text-[2.4vh] font-bold mb-[1.5vh] text-center flex-1">
+            {data.title}
+          </h2>
+        </div>
+        {/* Summary 스타일 적용 */}
+        <p className="text-[1.7vh] font-medium text-gray-800 text-center mb-[2vh]">
+          {data.summation}
+        </p>
+        {/* Description 스타일 적용 */}
+        <p className="text-[1.6vh] text-gray-600 leading-relaxed mb-[2vh]">
+          {data.description1}
+        </p>
         {renderMedia()}
-        <Description>{data.description2}</Description>
-      </Card>
-    </Container>
+        {/* Description 스타일 적용 */}
+        <p className="text-[1.6vh] text-gray-600 leading-relaxed mb-[2vh]">
+          {data.description2}
+        </p>
+      </div>
+    </div>
   );
 };
 

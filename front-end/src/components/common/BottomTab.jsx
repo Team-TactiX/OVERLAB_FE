@@ -19,19 +19,19 @@ const BottomTab = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-1/2 w-full max-w-md -translate-x-1/2 transform bg-white h-20 flex justify-around items-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-[1001]">
+    <nav className="fixed bottom-0 left-1/2 w-full max-w-md -translate-x-1/2 transform bg-white h-20 flex justify-around items-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-30">
       {navItems.map((item) => {
         const isActive = location.pathname === item.to;
         return (
           <Link
             key={item.label}
             to={item.to}
-            className={`flex flex-col items-center gap-[0.5vh] text-[2.5vh] no-underline ${
+            className={`flex flex-col items-center gap-1 text-2xl no-underline ${
               isActive ? 'text-[#00C851]' : 'text-[#ccc]'
             }`}
           >
             <item.Icon />
-            <span className="text-[1.2vh]">{item.label}</span>
+            <span className="text-base">{item.label}</span>
           </Link>
         );
       })}

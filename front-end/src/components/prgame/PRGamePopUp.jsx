@@ -1,145 +1,4 @@
-import styled from 'styled-components';
 import { useEffect, useMemo, useState } from 'react';
-
-const PopupBox = styled.div`
-  position: fixed;
-  width: 100%;
-  min-height: 7vh;
-  height: ${({ $open }) => ($open ? '50vh' : '7vh')};
-  background: white;
-  transition: height 0.3s ease-in-out;
-  bottom: 56px;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 20px;
-  padding: 1vh 2vh;
-  max-width: 460px;
-  z-index: 500;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  box-sizing: border-box;
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-  }
-`;
-
-const PopupButton = styled.button`
-  width: 100%;
-  background-color: white;
-  border: none;
-  font-size: 2.3vh;
-  cursor: pointer;
-  padding: 1vh 0;
-  font-weight: bold;
-  color: #2c3e50;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5vh;
-  &:hover {
-    color: #00b894;
-  }
-  &:active {
-    transform: scale(0.95);
-  }
-`;
-
-const PopupTitle = styled.h4`
-  margin-top: 2vh;
-  margin-bottom: 1vh;
-  font-weight: bold;
-  padding-left: 1vh;
-`;
-
-const UsersBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1vh;
-`;
-
-const UserCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 1.2vh 1.5vh;
-  border-radius: 1vh;
-  background-color: #f9f9f9;
-  border-left: 5px solid #dcdde1;
-  transition: all 0.2s ease;
-  &:hover {
-    background-color: #ecf0f1;
-  }
-`;
-
-const Badge = styled.span`
-  display: inline-block;
-  background-color: ${({ role }) => {
-    if (['ST', 'CF', 'LS', 'RS', 'LW', 'RW'].includes(role)) return '#ff7675';
-    if (
-      [
-        'CAM',
-        'CM',
-        'CDM',
-        'LAM',
-        'RAM',
-        'LCM',
-        'RCM',
-        'LDM',
-        'RDM',
-        'LM',
-        'RM',
-      ].includes(role)
-    )
-      return '#55efc4';
-    if (['LB', 'RB', 'LCB', 'RCB', 'SW', 'LWB', 'RWB'].includes(role))
-      return '#74b9ff';
-    if (['GK'].includes(role)) return '#fdcb6e';
-    return '#b2bec3';
-  }};
-  color: white;
-  border-radius: 1vh;
-  padding: 0.3vh 0.7vh;
-  font-size: 1.2vh;
-  margin-right: 0.4vh;
-`;
-
-const UserNameBox = styled.div`
-  font-size: 1.9vh;
-  font-weight: bold;
-  color: #2d3436;
-  margin-bottom: 0.5vh;
-  display: flex;
-  align-items: center;
-  gap: 0.6vh;
-`;
-
-const UserPositionBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5vh;
-`;
-
-const ChangeButton = styled.button`
-  background-color: white;
-  color: #c0392b;
-  border: 2px solid #c0392b;
-  width: 100%;
-  height: 5vh;
-  font-size: 1.8vh;
-  border-radius: 3vh;
-  margin-top: 2vh;
-  box-sizing: border-box;
-  transition: all 0.2s;
-  &:hover {
-    background-color: #c0392b;
-    color: white;
-    transform: scale(0.97);
-  }
-  &:active {
-    transform: scale(0.93);
-  }
-`;
 
 const PRGamePopUp = ({
   isOpen,
@@ -228,14 +87,12 @@ const PRGamePopUp = ({
     fetchGame();
   }, [prGameId, quarterId, gameId, positionKeyToRole]);
 
-  // 포메이션에 들어간 선수 목록
   const assignedUserMails = new Set(
     Object.values(prGame || {})
       .map((user) => user?.userMail)
       .filter(Boolean),
   );
 
-  // 선수 선택 시
   const handleUserSelect = (user) => {
     if (!selectedPositionKey) return;
 
@@ -256,7 +113,6 @@ const PRGamePopUp = ({
     setIsOpen(false);
   };
 
-  // 추천 선수
   const preferredUsers =
     users?.filter(
       (user) =>
@@ -266,12 +122,36 @@ const PRGamePopUp = ({
         ),
     ) || [];
 
-  // 추천 아닌 선수
   const otherUsers =
     users?.filter(
       (user) =>
         !assignedUserMails.has(user.userMail) && !preferredUsers.includes(user),
     ) || [];
+
+  const getBadgeColor = (role) => {
+    if (['ST', 'CF', 'LS', 'RS', 'LW', 'RW'].includes(role))
+      return 'bg-red-400';
+    if (
+      [
+        'CAM',
+        'CM',
+        'CDM',
+        'LAM',
+        'RAM',
+        'LCM',
+        'RCM',
+        'LDM',
+        'RDM',
+        'LM',
+        'RM',
+      ].includes(role)
+    )
+      return 'bg-teal-400';
+    if (['LB', 'RB', 'LCB', 'RCB', 'SW', 'LWB', 'RWB'].includes(role))
+      return 'bg-blue-400';
+    if (['GK'].includes(role)) return 'bg-yellow-400';
+    return 'bg-gray-400';
+  };
 
   const renderUserCard = (user) => {
     const isGuest = !team?.users?.some(
@@ -279,78 +159,97 @@ const PRGamePopUp = ({
     );
 
     return (
-      <UserCard key={user.userMail} onClick={() => handleUserSelect(user)}>
-        <UserNameBox>
+      <div
+        key={user.userMail}
+        onClick={() => handleUserSelect(user)}
+        className="flex flex-col p-[1.2vh] rounded-[1vh] bg-gray-50 border-l-[5px] border-l-gray-300 transition-colors hover:bg-gray-200 cursor-pointer"
+      >
+        <div className="flex items-center gap-[0.6vh] font-bold text-[1.9vh] text-gray-800 mb-[0.5vh]">
           <span role="img" aria-label="user">
             👤
           </span>{' '}
           {user.userName}
           {isGuest && (
-            <span
-              style={{
-                fontSize: '1.2vh',
-                color: '#e17055',
-                marginLeft: '0.6vh',
-                background: '#ffeaa7',
-                padding: '0.2vh 0.5vh',
-                borderRadius: '0.5vh',
-              }}
-            >
+            <span className="ml-[0.6vh] text-[1.2vh] text-orange-600 bg-orange-100 py-[0.2vh] px-[0.5vh] rounded-[0.5vh]">
               용병
             </span>
           )}
-        </UserNameBox>
-        <UserPositionBox>
+        </div>
+        <div className="flex flex-wrap gap-[0.5vh]">
           {[user.firstPosition, user.secondPosition, user.thirdPosition]
             .filter(Boolean)
             .map((pos, i) => (
-              <Badge key={i} role={pos}>
+              <span
+                key={i}
+                className={`${getBadgeColor(
+                  pos,
+                )} text-white rounded-[1vh] px-[0.7vh] py-[0.3vh] text-[1.2vh]`}
+              >
                 {pos}
-              </Badge>
+              </span>
             ))}
-        </UserPositionBox>
-      </UserCard>
+        </div>
+      </div>
     );
   };
 
   return (
-    <PopupBox $open={isOpen}>
-      <PopupButton onClick={togglePopup}>
+    <div
+      className={`
+        fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-md
+        bg-white transition-all duration-300 ease-in-out
+        shadow-[0_-2px_8px_rgba(0,0,0,0.1)]
+        border-t-2 border-l-2 border-r-2 border-solid border-white
+        rounded-t-3xl p-[1vh]
+        z-50 box-border
+        overflow-y-scroll scrollbar-hide
+        ${isOpen ? 'h-96' : 'h-20'}
+      `}
+    >
+      <button
+        onClick={togglePopup}
+        className="w-full bg-white border-none text-[2.3vh] font-bold text-[#2c3e50] cursor-pointer py-[1vh] flex justify-center items-center gap-[0.5vh] hover:text-green-500 active:scale-95 mt-4"
+      >
         {isOpen ? '▼ 닫기' : '▲ 참가자 명단'}
-      </PopupButton>
+      </button>
 
       {isOpen && (
         <>
           {selectedPositionKey && (
             <>
-              <PopupTitle>추천 선수</PopupTitle>
+              <h4 className="mt-[2vh] mb-[1vh] font-bold pl-[1vh]">
+                추천 선수
+              </h4>
               {preferredUsers.length > 0 ? (
-                <UsersBox>{preferredUsers.map(renderUserCard)}</UsersBox>
+                <div className="flex flex-col gap-[1vh]">
+                  {preferredUsers.map(renderUserCard)}
+                </div>
               ) : (
-                <p style={{ textAlign: 'center', marginBottom: '6vh' }}>
-                  추천 선수가 없습니다
-                </p>
+                <p className="text-center mb-[6vh]">추천 선수가 없습니다</p>
               )}
             </>
           )}
 
           {selectedPositionKey && (
-            <ChangeButton onClick={handleRemovePlayer}>선수 제거</ChangeButton>
+            <button
+              onClick={handleRemovePlayer}
+              className="bg-white text-red-600 border-2 border-red-600 w-full h-[5vh] text-[1.8vh] rounded-[3vh] mt-[2vh] box-border transition-all duration-200 hover:bg-red-600 hover:text-white hover:scale-97 active:scale-93"
+            >
+              선수 제거
+            </button>
           )}
 
-          <PopupTitle>참가자 명단</PopupTitle>
+          <h4 className="mt-[2vh] mb-[1vh] font-bold pl-[1vh]">참가자 명단</h4>
           {otherUsers.length > 0 ? (
-            <UsersBox>
+            <div className="flex flex-col gap-[1vh]">
               {otherUsers.map((user) => renderUserCard(user))}
-            </UsersBox>
+            </div>
           ) : (
-            <p style={{ textAlign: 'center', marginBottom: '2vh' }}>
-              참가자가 없습니다
-            </p>
+            <p className="text-center mb-[2vh]">참가자가 없습니다</p>
           )}
         </>
       )}
-    </PopupBox>
+    </div>
   );
 };
 

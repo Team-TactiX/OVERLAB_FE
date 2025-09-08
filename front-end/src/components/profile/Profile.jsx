@@ -1,21 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { BsPersonFill } from 'react-icons/bs';
-
-const Container = styled.div`
-  display: flex;
-`;
-
-const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const BoxBox = styled.div`
-  display: flex;
-  gap: 2vh;
-`;
 
 const Profile = ({ setMyProfile }) => {
   const [userData, setUserData] = useState(null);
@@ -36,11 +21,12 @@ const Profile = ({ setMyProfile }) => {
   if (!userData) return <div className="text-center py-8">Loading...</div>;
 
   return (
-    <Container>
+    // <Container> 스타일 적용
+    <div className="flex">
       {/* 프로필 이미지 */}
       <div
         className="relative mr-3 w-24 h-24 rounded-full border-4 border-gray-300 shadow-md overflow-hidden mb-3
-              flex items-center justify-center"
+                   flex items-center justify-center"
       >
         {userData.profileImage ? (
           <img
@@ -49,17 +35,18 @@ const Profile = ({ setMyProfile }) => {
             className="w-full h-full object-cover"
           />
         ) : (
-          // 아이콘에 m-auto 대신, 부모의 flex 속성으로 중앙 정렬됩니다.
           <BsPersonFill size="80%" className="text-gray-500" />
         )}
       </div>
-      <Box>
-        <BoxBox>
+
+      {/* <Box> 스타일 적용 */}
+      <div className="flex flex-col">
+        {/* <BoxBox> 스타일 적용 */}
+        <div className="flex gap-[2vh]">
           {/* 이름 */}
           <h2 className="text-[1.3rem] font-bold text-gray-800 tracking-tight mb-1 text-center">
             {userData.userName}
           </h2>
-
           {/* 포지션 뱃지 */}
           <div className="flex justify-center gap-2 flex-wrap mb-4">
             {[
@@ -77,14 +64,13 @@ const Profile = ({ setMyProfile }) => {
                 </span>
               ))}
           </div>
-        </BoxBox>
-
+        </div>
         {/* 전화번호 */}
         <div className="bg-gray-100 px-4 py-2 rounded-lg text-base text-gray-600 mb-4 text-left">
           {userData.tel}
         </div>
-      </Box>
-    </Container>
+      </div>
+    </div>
   );
 };
 

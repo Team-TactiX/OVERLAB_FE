@@ -1,86 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import field from '../../img/field.png';
-
-const Container = styled.div`
-  padding: 3vh 2vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Title = styled.h2`
-  font-size: 2.4vh;
-  font-weight: bold;
-  margin-bottom: 4vh;
-`;
-
-const StyledSummitButton = styled.button`
-  background-color: black;
-  color: white;
-  width: 40vh;
-  height: 6vh;
-  font-size: 2vh;
-  border-radius: 0.7vh;
-  margin-bottom: 2vh;
-  box-sizing: border-box;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const StyledInput = styled.input`
-  width: 40vh;
-  height: 6vh;
-  font-size: 2vh;
-  border-radius: 0.7vh;
-  border: 1px solid #b9b9b9;
-  padding: 1vh;
-  margin-bottom: 2vh;
-  box-sizing: border-box;
-`;
-
-const Subtitle = styled.p`
-  margin: 4vh 0 2vh;
-  font-size: 2.2vh;
-  font-weight: bold;
-`;
-
-const FieldWrapper = styled.div`
-  position: relative;
-  width: 49vh;
-  height: 42vh;
-  background-image: url(${field});
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 2vh;
-`;
-
-const ButtonBox = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
-const StyledButton = styled.button`
-  position: absolute;
-  top: ${(props) => props.$top};
-  left: ${(props) => props.$left};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) =>
-    props.$selected ? 'black' : 'rgba(240, 228, 57, 0.7)'};
-  color: ${(props) => (props.$selected ? 'white' : 'black')};
-  border: 2px solid black;
-  border-radius: 20vh;
-  cursor: pointer;
-  width: 8.2vh;
-  height: 4vh;
-  font-size: 1.5vh;
-`;
 
 const POSITIONS = [
   { code: 'ST', top: '1vh', left: '20.3vh' },
@@ -121,16 +41,18 @@ const ProfileUpdate = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`http://52.78.12.127:8080/api/users/check/${userMail}`);
+        const res = await fetch(
+          `http://52.78.12.127:8080/api/users/check/${userMail}`,
+        );
         if (!res.ok) throw new Error('유저 정보를 불러올 수 없습니다.');
         const data = await res.json();
         setUserName(data.userName);
         setUserTel(data.tel);
-        setSelected([
-          data.firstPosition,
-          data.secondPosition,
-          data.thirdPosition,
-        ].filter(Boolean));
+        setSelected(
+          [data.firstPosition, data.secondPosition, data.thirdPosition].filter(
+            Boolean,
+          ),
+        );
       } catch (err) {
         alert(err.message);
       }
@@ -182,40 +104,67 @@ const ProfileUpdate = () => {
   };
 
   return (
-    <Container>
-      <Title>회원 정보 수정</Title>
-      <StyledInput
+    // Container 스타일 적용
+    <div className="flex flex-col items-center p-[3vh] px-[2vh]">
+      {/* Title 스타일 적용 */}
+      <h2 className="text-[2.4vh] font-bold mb-[4vh]">회원 정보 수정</h2>
+      {/* StyledInput 스타일 적용 */}
+      <input
+        type="text"
         placeholder="이름"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
+        className="w-[40vh] h-[6vh] text-[2vh] rounded-[0.7vh] border border-[#b9b9b9] p-[1vh] mb-[2vh] box-border"
       />
-      <StyledInput
+      <input
+        type="text"
         placeholder="전화번호"
         value={userTel}
         onChange={(e) => setUserTel(e.target.value)}
+        className="w-[40vh] h-[6vh] text-[2vh] rounded-[0.7vh] border border-[#b9b9b9] p-[1vh] mb-[2vh] box-border"
       />
-      <Subtitle>선호 포지션 (3개 선택)</Subtitle>
-      <FieldWrapper>
-        <ButtonBox>
+      {/* Subtitle 스타일 적용 */}
+      <p className="mt-[4vh] mb-[2vh] text-[2.2vh] font-bold">
+        선호 포지션 (3개 선택)
+      </p>
+      {/* FieldWrapper 스타일 적용 */}
+      <div
+        className="relative w-[49vh] h-[42vh] bg-contain bg-center bg-no-repeat mb-[2vh]"
+        style={{ backgroundImage: `url(${field})` }}
+      >
+        {/* ButtonBox 스타일 적용 */}
+        <div className="absolute w-full h-full">
           {POSITIONS.map(({ code, top, left }) => (
-            <StyledButton
+            // StyledButton 스타일 적용
+            <button
               key={code}
-              $top={top}
-              $left={left}
-              $selected={selected.includes(code)}
+              className={`
+                absolute flex justify-center items-center cursor-pointer
+                w-[8.2vh] h-[4vh] text-[1.5vh] rounded-[20vh] border-2 border-black
+                ${
+                  selected.includes(code)
+                    ? 'bg-black text-white'
+                    : 'bg-[#f0e439] text-black'
+                }
+              `}
+              style={{ top, left }}
               onClick={() => togglePosition(code)}
             >
               {selected.includes(code)
                 ? `${selected.indexOf(code) + 1}. ${code}`
                 : code}
-            </StyledButton>
+            </button>
           ))}
-        </ButtonBox>
-      </FieldWrapper>
-      <StyledSummitButton onClick={handleSubmit}>
+        </div>
+      </div>
+      {/* StyledSummitButton 스타일 적용 */}
+      <button
+        onClick={handleSubmit}
+        className="bg-black text-white w-[40vh] h-[6vh] text-[2vh] rounded-[0.7vh] mb-[2vh] box-border hover:cursor-pointer"
+      >
         회원정보 변경
-      </StyledSummitButton>
-    </Container>
+      </button>
+    </div>
   );
 };
 

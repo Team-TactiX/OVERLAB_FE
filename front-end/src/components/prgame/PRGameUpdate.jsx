@@ -1,57 +1,8 @@
-import styled from 'styled-components';
-import field from '../../img/field.png';
 import { useEffect, useState } from 'react';
+import field from '../../img/field.png';
 import playerIcon from '../../img/player.png';
 import grayUniformIcon from '../../img/grayUniform.png';
 import uniformIcon from '../../img/uniform.png';
-
-const PRGameUpdatePageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 8vh;
-`;
-
-const TitleInput = styled.input`
-  width: 60%;
-  height: 4vh;
-  margin: 2vh auto;
-  text-align: center;
-  font-size: 2.5vh;
-`;
-
-/* ───── 새 캡슐 버튼 ───── */
-const ChangeButton = styled.button`
-  width: 40vh;
-  height: 5.5vh;
-  border-radius: 3vh;
-  font-size: 1.8vh;
-  font-weight: 600;
-  background-color: ${({ variant }) =>
-    variant === 'primary' ? '#00C851' : '#000'};
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6vh;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.15s, background-color 0.15s;
-
-  &:hover {
-    background-color: ${({ variant }) =>
-      variant === 'primary' ? '#00b44b' : '#222'};
-    transform: translateY(-0.3vh) scale(1.05);
-    cursor: pointer;
-  }
-  &:active {
-    transform: scale(0.95);
-  }
-  &:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-    transform: none;
-  }
-`;
 
 const PRGameUpdate = ({
   prGameId,
@@ -72,7 +23,6 @@ const PRGameUpdate = ({
   const [title, setTitle] = useState(prGame.prGameName);
   console.log(prGame);
 
-  /* 초기 포메이션 세팅 */
   useEffect(() => {
     const resetFormation = () => {
       positionList.forEach(({ key }) =>
@@ -142,8 +92,12 @@ const PRGameUpdate = ({
   if (!game) return <div>로딩 중...</div>;
 
   return (
-    <PRGameUpdatePageContainer>
-      <TitleInput
+    // PRGameUpdatePageContainer 스타일 적용
+    <div className="flex flex-col items-center pt-[8vh]">
+      {/* TitleInput 스타일 적용 */}
+      <input
+        type="text"
+        className="w-3/5 h-[4vh] mx-auto my-[2vh] text-center text-[2.5vh] border"
         value={title}
         placeholder="제목을 입력하세요"
         onChange={(e) => setTitle(e.target.value)}
@@ -154,16 +108,12 @@ const PRGameUpdate = ({
       </h2>
 
       <div
-        className="relative w-[49vh] h-[42vh] mb-[4vh]"
-        style={{
-          backgroundImage: `url(${field})`,
-          backgroundSize: '100% 100%',
-        }}
+        className="relative w-[49vh] h-[42vh] mb-[4vh] bg-contain bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${field})` }}
       >
         <div className="absolute w-full h-full">
           {positionList.map(({ key, label, top, left }) => (
             <button key={key} onClick={() => handlePositionClick(key)}>
-              {/* 아이콘+이름 래퍼 하나만 absolute */}
               <div
                 className="absolute flex flex-col items-center"
                 style={{ top, left, transform: 'translateX(-0%)' }}
@@ -190,10 +140,21 @@ const PRGameUpdate = ({
         </div>
       </div>
 
-      <ChangeButton variant="primary" onClick={handleRequestPRGame}>
+      {/* ChangeButton 스타일 적용 */}
+      <button
+        onClick={handleRequestPRGame}
+        className={`
+          w-[40vh] h-[5.5vh] rounded-[3vh] text-[1.8vh] font-semibold
+          flex items-center justify-center gap-[0.6vh]
+          shadow-md transition-all duration-150 ease-in-out
+          active:scale-95
+          disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none
+          bg-green-500 text-white hover:bg-green-600 hover:-translate-y-0.5 hover:scale-105
+        `}
+      >
         ♻️&nbsp;포메이션&nbsp;수정 완료
-      </ChangeButton>
-    </PRGameUpdatePageContainer>
+      </button>
+    </div>
   );
 };
 

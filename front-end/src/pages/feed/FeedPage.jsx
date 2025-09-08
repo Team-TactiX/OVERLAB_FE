@@ -8,15 +8,15 @@ const FeedPage = () => {
   const userMail = 'SYS@dankook.ac.kr'; // 나중에 ID로 변경 예정
 
   return (
-    <div className="p-[8vh_2vw_10vh] max-w-[768px] mx-auto bg-[#f9f9f9]">
+    <div className="max-w-md mx-auto bg-gray-100 relative">
       {/* 카테고리 탭 */}
-      <div className="flex justify-around mb-[2vh] border-b border-gray-300">
+      <div className="flex justify-around mb-4 border-b border-gray-300">
         {['매칭', '팀원 모집', '용병'].map((tab) => (
           <div
             key={tab}
-            className={`text-[2vh] p-[1vh_2vh] cursor-pointer ${
+            className={`text-xl py-2 px-1 cursor-pointer ${
               category === tab
-                ? 'font-bold border-b-[3px] border-black'
+                ? 'font-bold border-b-2 border-black'
                 : 'font-normal'
             }`}
             onClick={() => setCategory(tab)}
@@ -30,35 +30,37 @@ const FeedPage = () => {
       <FeedList category={category} />
 
       {/* 글쓰기 버튼 */}
-      <div className="fixed bottom-[10vh] right-[calc(clamp(1vh,(100vw-50vh)/2+1vh,100vw))] z-[1000] group">
-        <button
-          onClick={() => setShowModal(true)}
-          className="w-[6.5vh] h-[6.5vh] border-2 border-green-500 text-green-500 bg-white rounded-full cursor-pointer shadow-lg flex items-center justify-center hover:bg-green-50 active:scale-95 transition-transform"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="currentColor"
-            className="w-[3vh] h-[3vh]"
+      <div className="fixed bottom-40 left-1/2 -translate-x-1/2 w-full max-w-md z-30">
+        <div className="absolute right-2 group">
+          <button
+            onClick={() => setShowModal(true)}
+            className="w-16 h-16 border-2 border-green-500 text-green-500 bg-white rounded-full cursor-pointer shadow-lg flex items-center justify-center hover:bg-green-50 active:scale-95 transition-transform"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M16.862 3.487a2.32 2.32 0 113.281 3.281L7.5 19.41l-4.245 1.06 1.06-4.244L16.862 3.487z"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1"
+              stroke="currentColor"
+              className="w-10"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.862 3.487a2.32 2.32 0 113.281 3.281L7.5 19.41l-4.245 1.06 1.06-4.244L16.862 3.487z"
+              />
+            </svg>
+          </button>
 
-        {/* 툴팁 */}
-        <div className="absolute right-[calc(100%+1.5vh)] top-1/2 -translate-y-1/2 bg-gray-200 text-gray-800 text-[1.6vh] px-[1.2vh] py-[0.7vh] rounded-[1vh] shadow group-hover:opacity-100 opacity-0 transition-opacity duration-300 whitespace-nowrap">
-          {category === '매칭'
-            ? '매칭 모집'
-            : category === '팀원 모집'
-            ? '팀원 모집 '
-            : '용병 모집'}
-          <div className="absolute top-1/2 left-full -translate-y-1/2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-gray-200"></div>
+          {/* 툴팁 */}
+          <div className="absolute right-20 top-1/2 -translate-y-1/2 bg-green-50 text-gray-800 text-xl p-2 rounded-lg shadow group-hover:opacity-100 opacity-0 transition-opacity duration-300 whitespace-nowrap">
+            {category === '매칭'
+              ? '매칭 모집'
+              : category === '팀원 모집'
+              ? '팀원 모집 '
+              : '용병 모집'}
+            <div className="absolute top-1/2 left-full -translate-y-1/2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-green-50"></div>
+          </div>
         </div>
       </div>
 

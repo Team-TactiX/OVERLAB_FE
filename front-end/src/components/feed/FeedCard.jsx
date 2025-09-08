@@ -24,7 +24,7 @@ const FeedCard = ({ post, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-[12px] p-[2vh_1vw] mb-[2vh] shadow-md flex justify-between items-center cursor-pointer transition hover:bg-gray-200"
+      className="bg-white rounded-lg p-2 mb-4 shadow-md flex justify-between items-center cursor-pointer transition hover:bg-gray-200"
     >
       <div className="flex items-center">
         <img
@@ -32,33 +32,34 @@ const FeedCard = ({ post, onClick }) => {
           onError={(e) => {
             e.target.src = altImage;
           }}
-          className="w-[6vh] h-[6vh] rounded-full object-cover mr-[2vh]"
+          className="w-20 h-20 rounded-full object-cover mr-2"
           alt="team logo"
         />
 
         <div className="flex flex-col">
-          <h3 className="text-[1.8vh] text-blue-500 m-0">{team.teamName}</h3>
-          <>{post.title}</>
-          {post.category === '매칭' && post.matchDay && (
-            <div className="text-[1.7vh] font-bold mt-[0.5vh] text-gray-800">
-              {new Date(post.matchDay).toLocaleString('ko-KR', {
-                month: 'long',
-                day: 'numeric',
-                weekday: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-              })}
-            </div>
-          )}
-          <div className="flex items-center text-[1.5vh] mt-[1vh] text-gray-600 gap-[0.5vh]">
+          <p className="text-lg text-blue-500 m-0">{team.teamName}</p>
+          <p className="text-2xl">{post.title}</p>
+          {(post.category === '매칭' || post.category === '용병') &&
+            post.matchDay && (
+              <div className="text-base font-bold mt-1 text-gray-800">
+                {new Date(post.matchDay).toLocaleString('ko-KR', {
+                  month: 'long',
+                  day: 'numeric',
+                  weekday: 'short',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })}
+              </div>
+            )}
+          <div className="flex items-center mt-1 text-gray-600 gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-[1.8vh] h-[1.8vh]"
+              className="w-4 h-4"
             >
               <path
                 strokeLinecap="round"
@@ -71,12 +72,12 @@ const FeedCard = ({ post, onClick }) => {
                 d="M12 12.75a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"
               />
             </svg>
-            <span>{team.location}</span>
+            <p className="text-base">{team.location}</p>
           </div>
         </div>
       </div>
       <div
-        className={`text-[1.6vh] font-bold ${
+        className={`text-xl font-bold ${
           post.category === '매칭' ? 'text-green-500' : 'text-orange-500'
         }`}
       >

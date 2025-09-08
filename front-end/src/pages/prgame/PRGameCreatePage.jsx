@@ -1,18 +1,8 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 import PopUp from '../../components/game/PopUp';
 import PRGameCreate from '../../components/prgame/PRGameCreate';
-import useGameData from '../../hooks/useGameData';
-import { useParams } from 'react-router-dom';
 import useData from '../../hooks/useData';
-
-const PRGameCreatePageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 8vh;
-`;
+import { useParams } from 'react-router-dom';
 
 const PRGameCreatePage = () => {
   const { quarterId } = useParams();
@@ -41,7 +31,8 @@ const PRGameCreatePage = () => {
   };
 
   return (
-    <PRGameCreatePageContainer>
+    // PRGameCreatePageContainer 스타일 적용
+    <div className="flex items-center flex-col justify-center pt-[8vh]">
       <PRGameCreate
         game={game}
         setGame={setGame}
@@ -68,7 +59,7 @@ const PRGameCreatePage = () => {
         setCurrentQuarter={setCurrentQuarter}
         team={team}
       />
-    </PRGameCreatePageContainer>
+    </div>
   );
 };
 

@@ -166,7 +166,7 @@ const PopUp = ({
 
   return (
     <div
-      className={`fixed bottom-16 w-full max-w-md min-h-20 bg-white transition-[height] duration-300 ease-in-out shadow-[0_-2px_8px_rgba(0,0,0,0.1)] rounded-tl-[12px] rounded-tr-[20px] px-[2vh] pt-1 pb-8 z-[500] overflow-y-scroll scrollbar-hide ${
+      className={`fixed bottom-20 w-full max-w-md min-h-20 bg-white transition-[height] duration-300 ease-in-out shadow-[0_-2px_8px_rgba(0,0,0,0.1)] rounded-tl-[12px] rounded-tr-[20px] px-[2vh] pt-1 pb-8 z-[500] overflow-y-scroll scrollbar-hide ${
         isOpen ? 'h-50' : 'h-20'
       }`}
     >

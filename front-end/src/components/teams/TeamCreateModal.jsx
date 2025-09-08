@@ -1,108 +1,23 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import altImage from '../../img/alt_image.png';
 
-const Overlay = styled.div`
-  position: fixed;
-  bottom: 5vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50vh;
-  max-width: 100vw;
-  background-color: #f4f4f4;
-  border-top-left-radius: 2vh;
-  border-top-right-radius: 2vh;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-`;
-
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1vh;
-`;
-
-const ImagePreview = styled.img`
-  width: 10vh;
-  height: 10vh;
-  border-radius: 50%;
-  margin: 2vh;
-  object-fit: cover;
-`;
-
-const Input = styled.input`
-  font-size: 1.8vh;
-  padding: 1vh;
-  margin: 0.5vh;
-  width: 80%;
-  border-radius: 1vh;
-  border: 1px solid #ccc;
-`;
-
-const ButtonBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 90%;
-`;
-
-const ColorBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 25%;
-  align-items: center;
-  position: relative;
-`;
-
-const ColorButton = styled.button`
-  margin-left: 2vh;
-  margin-bottom: 2vh;
-  width: 3vh;
-  height: 3vh;
-  border-radius: 50%;
-  border: none;
-  background-color: ${(props) => props.color};
-  opacity: ${(props) => (props.selected ? 1 : 0.4)};
-  border: ${(props) => (props.color === 'white' ? '1px solid black' : 'none')};
-`;
-
-const CreateButton = styled.button`
-  margin-left: 2vh;
-  margin-bottom: 2vh;
-  height: 4.3vh;
-  background-color: black;
-  color: white;
-  font-size: 2vh;
-  padding: 1vh 2vh;
-  border: none;
-  border-radius: 1vh;
-`;
-
-const ColorPalette = styled.div`
-  position: absolute;
-  bottom: 5.5vh;
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 3vh);
-  gap: 1vh;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 1vh;
-  border-radius: 1vh;
-  z-index: 999;
-`;
-
-const ColorOption = styled.div`
-  width: 3vh;
-  height: 3vh;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
-  border: ${(props) => (props.color === 'white' ? '1px solid black' : 'none')};
-  cursor: pointer;
-`;
-
 const ALL_COLORS = [
-  'red', 'blue', 'skyblue', 'navy', 'white', 'black', 'yellow', 'orange',
-  'green', 'darkgreen', 'maroon', 'purple', 'pink', 'gray', 'gold', 'teal',
+  'red',
+  'blue',
+  'skyblue',
+  'navy',
+  'white',
+  'black',
+  'yellow',
+  'orange',
+  'green',
+  'darkgreen',
+  'maroon',
+  'purple',
+  'pink',
+  'gray',
+  'gold',
+  'teal',
 ];
 
 const TeamCreateModal = ({ onClose, onSuccess }) => {
@@ -147,7 +62,9 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
 
     let userData;
     try {
-      const response = await fetch(`http://52.78.12.127:8080/api/users/check/${userMail}`);
+      const response = await fetch(
+        `http://52.78.12.127:8080/api/users/check/${userMail}`,
+      );
       if (response.ok) {
         userData = await response.json();
       } else {
@@ -165,7 +82,9 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
       try {
         const response = await fetch(altImage);
         const blob = await response.blob();
-        finalLogoFile = new File([blob], 'default-logo.png', { type: blob.type });
+        finalLogoFile = new File([blob], 'default-logo.png', {
+          type: blob.type,
+        });
       } catch (err) {
         console.error(err);
         alert('기본 로고 파일 불러오기 실패');
@@ -183,20 +102,26 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
 
     try {
       const formData = new FormData();
-      formData.append('team', new Blob([JSON.stringify(newTeam)], { type: 'application/json' }));
+      formData.append(
+        'team',
+        new Blob([JSON.stringify(newTeam)], { type: 'application/json' }),
+      );
       formData.append('logo', finalLogoFile);
 
-      const response = await fetch('http://52.78.12.127:8080/api/teams/create-team', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        'http://52.78.12.127:8080/api/teams/create-team',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
 
       if (response.ok) {
         alert('팀 생성 완료!');
         onClose();
         if (onSuccess) onSuccess();
       } else {
-        alert(await response.text() || '팀 생성 실패');
+        alert((await response.text()) || '팀 생성 실패');
       }
     } catch (error) {
       console.error('팀 생성 중 오류:', error);
@@ -205,15 +130,24 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <Overlay onClick={onClose}>
+    // Overlay 스타일 적용
+    <div
+      className="fixed bottom-20 left-1/2 -translate-x-1/2 max-w-md
+        bg-[#f4f4f4] rounded-t-[2vh] shadow-lg z-[1000]"
+      onClick={onClose}
+    >
       <div onClick={(e) => e.stopPropagation()}>
-        <Row>
+        {/* Row 스타일 적용 */}
+        <div className="flex items-center gap-[1vh]">
           <label>
-            <ImagePreview
+            {/* ImagePreview 스타일 적용 */}
+            <img
               src={logo || '/images/default-logo.png'}
               onError={(e) => {
                 e.target.src = altImage;
               }}
+              alt="team logo"
+              className="w-[10vh] h-[10vh] rounded-full m-[2vh] object-cover"
             />
             <input
               type="file"
@@ -222,59 +156,79 @@ const TeamCreateModal = ({ onClose, onSuccess }) => {
               style={{ display: 'none' }}
             />
           </label>
-          <div style={{ flex: 1 }}>
-            <Input
+          <div className="flex-1">
+            {/* Input 스타일 적용 */}
+            <input
               placeholder="Team Name"
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
+              className="text-[1.8vh] p-[1vh] m-[0.5vh] w-4/5 rounded-[1vh] border border-[#ccc]"
             />
-            <Input
+            <input
               placeholder="Location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              className="text-[1.8vh] p-[1vh] m-[0.5vh] w-4/5 rounded-[1vh] border border-[#ccc]"
             />
           </div>
-        </Row>
-        <Row>
-          <ButtonBox>
-            <ColorBox>
+        </div>
+        {/* Row 스타일 적용 */}
+        <div className="flex items-center gap-[1vh]">
+          {/* ButtonBox 스타일 적용 */}
+          <div className="flex justify-between w-11/12">
+            {/* ColorBox 스타일 적용 */}
+            <div className="flex justify-between w-1/4 items-center relative">
               <div>
-                <ColorButton
-                  color={homeColor}
-                  selected
+                {/* ColorButton 스타일 적용 */}
+                <button
                   onClick={() => {
                     setSelectedColorType('home');
                     setShowColorPicker(true);
                   }}
+                  className={`ml-[2vh] mb-[2vh] w-[3vh] h-[3vh] rounded-full border-none opacity-100
+                    ${homeColor === 'white' ? 'border border-black' : ''}`}
+                  style={{ backgroundColor: homeColor }}
                 />
               </div>
               <div>
-                <ColorButton
-                  color={awayColor}
-                  selected
+                {/* ColorButton 스타일 적용 */}
+                <button
                   onClick={() => {
                     setSelectedColorType('away');
                     setShowColorPicker(true);
                   }}
+                  className={`ml-[2vh] mb-[2vh] w-[3vh] h-[3vh] rounded-full border-none opacity-100
+                    ${awayColor === 'white' ? 'border border-black' : ''}`}
+                  style={{ backgroundColor: awayColor }}
                 />
               </div>
               {showColorPicker && (
-                <ColorPalette>
+                // ColorPalette 스타일 적용
+                <div className="absolute bottom-[5.5vh] left-0 grid grid-cols-4 gap-[1vh] bg-white border border-[#ccc] p-[1vh] rounded-[1vh] z-[999]">
                   {ALL_COLORS.map((color) => (
-                    <ColorOption
+                    // ColorOption 스타일 적용
+                    <div
                       key={color}
-                      color={color}
+                      className={`w-[3vh] h-[3vh] rounded-full cursor-pointer
+                        ${color === 'white' ? 'border border-black' : ''}`}
+                      style={{ backgroundColor: color }}
                       onClick={() => handleSelectPaletteColor(color)}
                     />
                   ))}
-                </ColorPalette>
+                </div>
               )}
-            </ColorBox>
-            <CreateButton onClick={handleCreate}>Create</CreateButton>
-          </ButtonBox>
-        </Row>
+            </div>
+            {/* CreateButton 스타일 적용 */}
+            <button
+              onClick={handleCreate}
+              className="ml-[2vh] mb-[2vh] h-[4.3vh] bg-black text-white text-[2vh] px-[2vh] border-none rounded-[1vh]"
+            >
+              Create
+            </button>
+          </div>
+        </div>
       </div>
-    </Overlay>
+    </div>
   );
 };
 

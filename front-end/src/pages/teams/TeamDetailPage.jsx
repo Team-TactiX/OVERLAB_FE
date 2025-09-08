@@ -1,21 +1,15 @@
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import TeamInfo from '../../components/teams/TeamInfo';
-
-const PageWrapper = styled.div`
-  padding: 8vh 2vh 2vh;
-  background-color: #f9f9f9;
-  min-height: 100vh;
-`;
 
 const TeamDetailPage = () => {
   const { teamId } = useParams();
   sessionStorage.setItem('teamId', teamId);
 
   return (
-    <PageWrapper>
+    // PageWrapper 스타일 적용
+    <div className="p-[8vh] px-[2vh] pb-[2vh] bg-gray-50 min-h-screen">
       <TeamInfo teamId={teamId} />
-    </PageWrapper>
+    </div>
   );
 };
 

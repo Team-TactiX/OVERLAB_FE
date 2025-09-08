@@ -1,53 +1,32 @@
 import FormationCarousel from '../../components/main/FormationCarousel';
 import MyTeamSection from '../../components/main/MyTeamSection';
 import ScheduleSection from '../../components/main/ScheduleSection';
-import styled from 'styled-components';
-
-const PageWrapper = styled.div`
-  padding-top: 8vh;
-  padding-bottom: 2vh;
-  background-color: #ffffff;
-  min-height: 120vh;
-`;
-
-const SectionWrapper = styled.div`
-  padding: 1vh 1.7vw;
-
-  @media (max-width: 768px) {
-    padding: 1.5vh 3vw;
-  }
-
-  @media (max-width: 480px) {
-    padding: 1vh 4vw;
-  }
-`;
-
-const Divider = styled.div`
-  height: 0.7vh;
-  background-color: #f2f2f2;
-  margin: 1vh 0;
-  border-radius: 1vh;
-`;
 
 const MainPage = () => {
   return (
-    <PageWrapper>
-      <SectionWrapper>
+    // PageWrapper 스타일 적용
+    <div className="mb-20 bg-white min-h-[120vh]">
+      {/* SectionWrapper 스타일 적용 */}
+      <div className="p-[1vh] px-[1.7vw] md:px-[3vw] sm:px-[4vw] md:py-[1.5vh]">
         <FormationCarousel />
-      </SectionWrapper>
+      </div>
 
-      <Divider />
+      {/* Divider 스타일 적용 */}
+      <div className="h-[0.7vh] bg-[#f2f2f2] my-[1vh] rounded-[1vh]" />
 
-      <SectionWrapper>
+      {/* SectionWrapper 스타일 적용 */}
+      <div className="p-[1vh] px-[1.7vw] md:px-[3vw] sm:px-[4vw] md:py-[1.5vh]">
         <MyTeamSection />
-      </SectionWrapper>
+      </div>
 
-      <Divider />
+      {/* Divider 스타일 적용 */}
+      <div className="h-[0.7vh] bg-[#f2f2f2] my-[1vh] rounded-[1vh]" />
 
-      <SectionWrapper>
+      {/* SectionWrapper 스타일 적용 */}
+      <div className="p-[1vh] px-[1.7vw] md:px-[3vw] sm:px-[4vw] md:py-[1.5vh]">
         <ScheduleSection />
-      </SectionWrapper>
-    </PageWrapper>
+      </div>
+    </div>
   );
 };
 

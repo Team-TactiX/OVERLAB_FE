@@ -1,19 +1,13 @@
 import { Link, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import PRGameList from '../../components/prgame/PRGameList';
-import { GiSoccerField } from 'react-icons/gi'; // ← 여기!
-
-const PRGamesListPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 8vh;
-`;
+import { GiSoccerField } from 'react-icons/gi';
 
 const PRGameListPage = () => {
   const { quarterId } = useParams();
 
   return (
-    <PRGamesListPageContainer>
+    // PRGamesListPageContainer 스타일 적용
+    <div className="flex flex-col pt-[8vh]">
       <PRGameList />
 
       {/* ───────── “포메이션 생성” Glass 버튼 ───────── */}
@@ -59,7 +53,7 @@ const PRGameListPage = () => {
           </span>
         </span>
       </Link>
-    </PRGamesListPageContainer>
+    </div>
   );
 };
 
